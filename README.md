@@ -1,14 +1,14 @@
-# eslint-config-moviepilot
-Moviepilot's ESLint config
+# eslint-config-nuc
+ESLint config
 
 ## Integration
 
-- `npm install --save-dev eslint babel-eslint eslint-config-moviepilot eslint-plugin-react`
+- `npm install --save-dev eslint babel-eslint eslint-config-nuc eslint-plugin-react`
 - Use the following `.eslintrc` if it's not in the repo (it should!)
 
 ```
 {
-  "extends": "moviepilot"
+  "extends": "nuc"
 }
 ```
 

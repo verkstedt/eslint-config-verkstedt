@@ -1,26 +1,24 @@
 {
-  "name": "eslint-config-moviepilot",
+  "name": "eslint-config-nuc",
   "version": "1.5.0",
-  "description": "Moviepilot's ESLint config",
+  "description": "ESLint config",
   "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moviepilot/eslint-config-moviepilot.git"
+    "url": "git+https://github.com/nuc/eslint-config-nuc.git"
   },
   "keywords": [
     "eslint",
     "eslintconfig"
   ],
-  "author": "Alessandro Delgado <adelgado1313@gmail.com>",
   "bugs": {
-    "url": "https://github.com/moviepilot/eslint-config-moviepilot/issues"
+    "url": "https://github.com/nuc/eslint-config-nuc/issues"
   },
-  "homepage": "https://github.com/moviepilot/eslint-config-moviepilot#readme",
+  "homepage": "https://github.com/nuc/eslint-config-nuc#readme",
   "dependencies": {
-    "babel-eslint": "^7.2.2",
-    "eslint": "^3.19.0",
-    "eslint-plugin-react": "^6.10.3"
-  },
-  "license": "UNLICENSED"
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.8.0",
+    "eslint-plugin-react": "^7.4.0"
+  }
 }
