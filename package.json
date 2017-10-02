@@ -1,21 +1,21 @@
 {
-  "name": "eslint-config-nuc",
+  "name": "eslint-config-verkstedt",
   "version": "2.0.0",
   "description": "ESLint config",
   "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nuc/eslint-config-nuc.git"
+    "url": "git+https://github.com/verkstedt/eslint-config-verkstedt.git"
   },
   "keywords": [
     "eslint",
     "eslintconfig"
   ],
   "bugs": {
-    "url": "https://github.com/nuc/eslint-config-nuc/issues"
+    "url": "https://github.com/verkstedt/eslint-config-verkstedt/issues"
   },
-  "homepage": "https://github.com/nuc/eslint-config-nuc#readme",
+  "homepage": "https://github.com/verkstedt/eslint-config-verkstedt#readme",
   "dependencies": {
     "babel-eslint": "^8.0.1",
     "eslint": "^4.8.0",
