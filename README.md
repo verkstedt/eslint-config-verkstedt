@@ -1,14 +1,14 @@
-# eslint-config-nuc
+# eslint-config-verkstedt
 ESLint config
 
 ## Integration
 
-- `npm install --save-dev eslint babel-eslint eslint-config-nuc eslint-plugin-react`
+- `npm install --save-dev eslint babel-eslint eslint-config-verkstedt eslint-plugin-react`
 - Use the following `.eslintrc` if it's not in the repo (it should!)
 
 ```
 {
-  "extends": "nuc"
+  "extends": "verkstedt"
 }
 ```
 
