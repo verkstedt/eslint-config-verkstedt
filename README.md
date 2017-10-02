@@ -8,7 +8,7 @@ ESLint config
 
 ```
 {
-  "extends": "verkstedt"
+  "extends": "@verkstedt/verkstedt"
 }
 ```
 
