@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/verkstedt/eslint-config-verkstedt#readme",
   "dependencies": {
-    "babel-eslint": "^8.0.1",
+    "babel-eslint": "^8.2.6",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
