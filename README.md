@@ -3,8 +3,8 @@ ESLint config
 
 ## Integration
 
-- `npm install --save-dev eslint babel-eslint eslint-config-verkstedt eslint-plugin-react`
-- Use the following `.eslintrc` if it's not in the repo (it should!)
+- `yarn add --dev eslint babel-eslint eslint-config-verkstedt eslint-plugin-react`
+- Add the following `.eslintrc`:
 
 ```
 {
