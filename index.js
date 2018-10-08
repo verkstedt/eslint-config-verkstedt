@@ -2,10 +2,10 @@ module.exports = {
   'extends': 'airbnb',
   'parser': 'babel-eslint',
   'env': {
+    'browser': true,
     'jest': true
   },
   'rules': {
-    'quote-props': ['error', 'consistent-as-needed'],
     'comma-dangle': ['error', 'never'],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
@@ -18,6 +18,7 @@ module.exports = {
     'no-extra-semi': 'error',
     'no-restricted-imports': ['error', { 'patterns': ['../*'] }],
     'no-restricted-modules': ['error', { 'patterns': ['../*'] }],
+    'quote-props': ['error', 'consistent-as-needed'],
     'react/jsx-curly-brace-presence': 'off',
     'react/jsx-filename-extension': ['error', { 'extensions': ['.js', '.jsx'] }],
     'react/prefer-stateless-function': 'off',
