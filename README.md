@@ -3,7 +3,7 @@ ESLint config
 
 ## Integration
 
-- `yarn add --dev eslint babel-eslint eslint-config-verkstedt eslint-plugin-react`
+- `yarn add --dev @verkstedt/eslint-config-verkstedt`
 - Add the following `.eslintrc`:
 
 ```
@@ -12,8 +12,20 @@ ESLint config
 }
 ```
 
-## Troubleshooting
+## VIM integration
 
-Issue: **vim can't find the local `eslint` binary, because it's located under `node_modules`.**
+Install [ale](https://github.com/w0rp/ale) and add the following in your `.vimrc`:
 
-Solution: There's a [nice workaround](http://blog.pixelastic.com/2015/10/05/use-local-eslint-in-syntastic/) for that, or use [ale](https://github.com/w0rp/ale).
+```
+" Ale
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'html': ['htmlhint'],
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
+```
