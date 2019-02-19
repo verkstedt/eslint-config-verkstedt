@@ -1,5 +1,5 @@
 module.exports = {
-  extends: 'airbnb',
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
   env: {
     browser: true,
@@ -24,6 +24,40 @@ module.exports = {
     'react/prefer-stateless-function': 'off',
     'react/sort-comp': ['error', { order: ['static-methods', 'instance-variables', 'lifecycle', 'everything-else', 'render'] }],
     'react/style-prop-object': 'off',
-    'semi': ['error', 'never']
+    'semi': ['error', 'never'],
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": 0,
+    "jsx-a11y/anchor-is-valid": 1,
+    "jsx-a11y/media-has-caption": 0,
+    "no-debugger": 1,
+    "react/prefer-stateless-function": 0,
+    "react/sort-comp": [
+      2,
+      {
+        "order": [
+          "static-methods",
+          "instance-variables",
+          "lifecycle",
+          "everything-else",
+          "render"
+        ]
+      }
+    ],
+    "react/style-prop-object": 0,
+    "no-restricted-imports": [
+      2,
+      {
+        "patterns": ["../*"]
+      }
+    ],
+    "no-restricted-modules": [
+      2,
+      {
+        "patterns": ["../*"]
+      }
+    ],
+    "prettier/prettier": "error"
   }
 }
