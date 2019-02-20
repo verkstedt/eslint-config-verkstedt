@@ -34,6 +34,6 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'react/destructuring-assignment': 'warn',
     'react/jsx-wrap-multilines': 'off',
-    'prettier/prettier': 'warn'
+    'prettier/prettier': 'error'
   }
 }
