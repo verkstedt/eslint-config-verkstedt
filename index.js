@@ -57,7 +57,6 @@ module.exports = {
       {
         "patterns": ["../*"]
       }
-    ],
-    "prettier/prettier": "error"
+    ]
   }
 }
