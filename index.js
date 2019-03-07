@@ -7,9 +7,11 @@ module.exports = {
   },
   rules: {
     'comma-dangle': ['error', 'never'],
+    'complexity': ['error', { 'max': 10 }],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'import/no-named-as-default': 0,
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
     'jsx-a11y/anchor-is-valid': 'warn',
