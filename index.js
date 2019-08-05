@@ -1,12 +1,12 @@
 module.exports = {
-  extends: ['airbnb', 'prettier'],
-  plugins: ['prettier'],
-  parser: 'babel-eslint',
-  env: {
-    browser: true,
-    jest: true
+  'extends': ['airbnb', 'prettier'],
+  'plugins': ['prettier'],
+  'parser': 'babel-eslint',
+  'env': {
+    'browser': true,
+    'jest': true
   },
-  rules: {
+  'rules': {
     'semi': ['error', 'never'],
     'lines-between-class-members': 'off',
     'no-else-return': 'off',
