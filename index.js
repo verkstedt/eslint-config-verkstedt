@@ -7,7 +7,9 @@ module.exports = {
     'jest': true
   },
   'rules': {
+  'rules': {
     'comma-dangle': ['error', 'never'],
+    'complexity': ['error', { 'max': 10 }],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
