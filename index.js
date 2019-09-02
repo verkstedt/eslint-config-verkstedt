@@ -1,3 +1,4 @@
+// prettier-ignore
 module.exports = {
   'extends': ['airbnb', 'prettier'],
   'plugins': ['prettier'],
@@ -20,7 +21,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'warn',
     'jsx-a11y/media-has-caption': 'off',
     'lines-between-class-members': 'off',
-    'max-params': ["error", 2],
+    'max-params': ['warn', 2],
     'no-debugger': 'warn',
     'no-else-return': 'off',
     'no-extra-semi': 'error',
