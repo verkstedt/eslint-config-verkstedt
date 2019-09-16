@@ -1,15 +1,15 @@
 // prettier-ignore
 module.exports = {
-  'extends': ['airbnb', 'prettier'],
-  'plugins': ['prettier'],
-  'parser': 'babel-eslint',
-  'env': {
-    'browser': true,
-    'jest': true
+  extends: ['airbnb', 'prettier'],
+  plugins: ['prettier'],
+  parser: 'babel-eslint',
+  env: {
+    browser: true,
+    jest: true
   },
-  'rules': {
+  rules: {
     'comma-dangle': ['error', 'never'],
-    'complexity': ['error', { 'max': 10 }],
+    'complexity': ['error', { max: 10 }],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
