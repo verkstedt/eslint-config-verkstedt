@@ -31,7 +31,7 @@ module.exports = {
     'quote-props': ['error', 'consistent-as-needed'],
     'react/destructuring-assignment': 'warn',
     'react/jsx-curly-brace-presence': 'off',
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/jsx-one-expression-per-line': 'off',
     'react/jsx-wrap-multilines': 'off',
     'react/prefer-stateless-function': 'off',
