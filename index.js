@@ -35,7 +35,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'react/jsx-wrap-multilines': 'off',
     'react/prefer-stateless-function': 'off',
-    'react/sort-comp': ['error', { order: ['static-methods', 'instance-variables', 'lifecycle', 'everything-else', 'render'] }],
+    'react/sort-comp': ['error', { order: ['static-variables', 'instance-variables', 'static-methods', 'lifecycle', 'everything-else', 'render'] }],
     'react/style-prop-object': 'off',
     'semi': ['error', 'never']
   }
