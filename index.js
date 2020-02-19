@@ -1,7 +1,7 @@
 // prettier-ignore
 module.exports = {
   extends: ['airbnb', 'prettier'],
-  plugins: ['prettier'],
+  plugins: ['prettier', '@typescript-eslint'],
   parser: 'babel-eslint',
   env: {
     browser: true,
