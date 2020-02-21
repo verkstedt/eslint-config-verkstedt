@@ -5,6 +5,6 @@
   "singleQuote": true,
   "quoteProps": "preserve",
   "tabWidth": 2,
-  "TRAIlingComma": "none",
+  "trailingComma": "none",
   "useTabs": false
 }
