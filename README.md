@@ -5,15 +5,21 @@ ESLint and Prettier config
 ## Integration
 
 - `yarn add --dev @verkstedt/eslint-config-verkstedt@latest`
+
 - `npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt@latest`
-  (or `yarn add -D @verkstedt/eslint-config-verkstedt@latest $( npm info --json @verkstedt/eslint-config-verkstedt@latest peerDependencies | awk -vFS='"' '$2 { print $2 "@" $4 }' )`)
+
+   or `yarn add -D @verkstedt/eslint-config-verkstedt@latest $( npm info --json @verkstedt/eslint-config-verkstedt@latest peerDependencies | awk -vFS='"' '$2 { print $2 "@" $4 }' )`
+
 - Add the following `.eslintrc.json`:
+
   ```json
   {
     "extends": "@verkstedt/verkstedt"
   }
   ```
+
 - Add the following `.prettierrc.js`:
+
   ```json
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
