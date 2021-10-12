@@ -21,7 +21,15 @@ jobs:
     steps:
       - name: 'Setup'
         id: setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         uses: verkstedt/setup-node-project-action@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
         working-directory: ${{ steps.setup.outputs.package-dir }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         run: npm run lint
