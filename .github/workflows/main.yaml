@@ -26,6 +26,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
         working-directory: ${{ steps.setup.outputs.package-dir }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
         run: npm run lint
