@@ -4,7 +4,7 @@
   "description": "ESLint config",
   "main": "index.js",
   "scripts": {
-    "lint": "yarn eslint -c index.js index.js"
+    "lint": "yarn eslint"
   },
   "repository": {
     "type": "git",

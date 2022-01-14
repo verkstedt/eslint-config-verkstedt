@@ -8,15 +8,13 @@ ESLint and Prettier config
 
 - `npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt@latest`
 
-   or `yarn add -D @verkstedt/eslint-config-verkstedt@latest $( npm info --json @verkstedt/eslint-config-verkstedt@latest peerDependencies | awk -vFS='"' '$2 { print $2 "@" $4 }' )`
+- In your EsLint config use one of those for `extend`:
 
-- Add the following `.eslintrc.json`:
-
-  ```json
-  {
-    "extends": "@verkstedt/verkstedt"
-  }
-  ```
+  - `@verkstedt/verkstedt/base` for react–less JavaScript projects
+  - `@verkstedt/verkstedt/typescript` for react–less TypeScript
+  - `@verkstedt/verkstedt/react` for react JavaScript projects
+  - `@verkstedt/verkstedt/typescript-react` for react TypeScript projects
+    Alias: `@verkstedt/verkstedt`
 
 - Add the following `.prettierrc.js`:
 
