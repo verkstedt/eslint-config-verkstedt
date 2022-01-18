@@ -35,18 +35,6 @@ ESLint and Prettier config
 
 ## VIM integration
 
-Install [ale](https://github.com/w0rp/ale) and add the following in your `.vimrc`:
+We recommend to use [CoC][vim-coc] with `coc-eslint` extension.
 
-```
-" Ale
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'html': ['htmlhint'],
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\}
-
-let g:ale_fix_on_save = 1
-```
+[vim-coc]: https://github.com/neoclide/coc.nvim
