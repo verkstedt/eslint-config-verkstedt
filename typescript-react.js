@@ -1,8 +1,7 @@
 const withTypescript = require('./lib/withTypescript')
-const withReact = require('./lib/withReact')
-const base = require('./base')
+const react = require('./react')
 
-const config = withTypescript(withReact(base))
+const config = withTypescript(react)
 
 module.exports = {
   ...config,

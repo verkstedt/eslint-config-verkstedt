@@ -12,7 +12,7 @@ ESLint and Prettier config
   yarn add --dev typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0
   ```
 
-- If your project _does not_ use TypeScript (we assume you use babel):
+- If your project _does not_ use TypeScript, but uses Babel:
 
   ```sh
   yarn add --dev @babel/core@^7.16.7 @babel/eslint-parser@^7.16.5
@@ -20,11 +20,12 @@ ESLint and Prettier config
 
 - In your EsLint config use one of those for `extend`:
 
-  - `@verkstedt/verkstedt/base` for react–less JavaScript projects
-  - `@verkstedt/verkstedt/typescript` for react–less TypeScript
-  - `@verkstedt/verkstedt/react` for react JavaScript projects
-  - `@verkstedt/verkstedt/typescript-react` for react TypeScript projects
-    Alias: `@verkstedt/verkstedt`
+  - `@verkstedt/verkstedt/typescript-react` for React TypeScript
+    _Alias: `@verkstedt/verkstedt`_
+  - `@verkstedt/verkstedt/typescript` for React–less TypeScript
+  - `@verkstedt/verkstedt/react` for React JavaScript projects using Babel
+  - `@verkstedt/verkstedt/babel` for React–less JavaScript projects using Babel
+  - `@verkstedt/verkstedt/vanilla` for React–less JavaScript projects
 
 - Add the following `.prettierrc.js`:
 

@@ -2,12 +2,11 @@ const withPrettier = require('./lib/withPrettier')
 
 const config = {
   extends: ['airbnb-base'],
-  plugins: [],
-  parser: '@babel/eslint-parser',
   env: {
     browser: true,
     jest: true
   },
+  plugins: [],
   rules: {
     'comma-dangle': ['error', 'never'],
     'complexity': ['error', { max: 10 }],
