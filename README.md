@@ -6,7 +6,17 @@ ESLint and Prettier config
 
 - `yarn add --dev @verkstedt/eslint-config-verkstedt@latest`
 
-- `npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt@latest`
+- If it does use TypeScript:
+
+  ```sh
+  yarn add --dev typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0
+  ```
+
+- If your project _does not_ use TypeScript (we assume you use babel):
+
+  ```sh
+  yarn add --dev @babel/core@^7.16.7 @babel/eslint-parser@^7.16.5
+  ```
 
 - In your EsLint config use one of those for `extend`:
 

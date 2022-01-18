@@ -3,7 +3,7 @@ const withPrettier = require('./lib/withPrettier')
 const config = {
   extends: ['airbnb-base'],
   plugins: [],
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   env: {
     browser: true,
     jest: true
@@ -22,8 +22,25 @@ const config = {
     'max-params': ['warn', 2],
     'no-debugger': 'warn',
     'no-else-return': 'off',
-    'no-restricted-imports': ['error', { patterns: ['../*'] }],
-    'no-restricted-modules': ['error', { patterns: ['../*'] }],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          {
+            group: ['../*'],
+            message:
+              'Use absolute paths for importing files from parent directories.'
+          }
+        ]
+      }
+    ],
+    'no-restricted-modules': [
+      'error',
+      {
+        // Seems it’s impossible to set up a message for a pattern
+        patterns: ['../*']
+      }
+    ],
     'semi': ['error', 'never']
   }
 }
