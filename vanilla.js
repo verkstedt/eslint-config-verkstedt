@@ -8,7 +8,7 @@ const config = {
   },
   plugins: [],
   rules: {
-    'comma-dangle': ['error', 'never'],
+    'comma-dangle': 'off', // Handled by prettier
     'complexity': ['error', { max: 10 }],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
@@ -18,7 +18,7 @@ const config = {
     'import/order': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
-    'max-params': ['warn', 2],
+    'max-params': ['warn', 4],
     'no-shadow': ['error'],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-debugger': 'warn',
