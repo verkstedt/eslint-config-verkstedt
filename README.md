@@ -22,6 +22,7 @@ ESLint and Prettier config
 
   - `@verkstedt/verkstedt/typescript-react` for React TypeScript
     _Alias: `@verkstedt/verkstedt`_
+  - `@verkstedt/verkstedt/typescript-next` for Next.js TypeScript
   - `@verkstedt/verkstedt/typescript` for React–less TypeScript
   - `@verkstedt/verkstedt/react` for React JavaScript projects using Babel
   - `@verkstedt/verkstedt/babel` for React–less JavaScript projects using Babel
