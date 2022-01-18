@@ -4,7 +4,7 @@ const config = {
   extends: ['airbnb-base'],
   env: {
     browser: true,
-    jest: true
+    jest: true,
   },
   plugins: [],
   rules: {
@@ -30,25 +30,25 @@ const config = {
           {
             group: ['../*'],
             message:
-              'Use absolute paths for importing files from parent directories.'
-          }
-        ]
-      }
+              'Use absolute paths for importing files from parent directories.',
+          },
+        ],
+      },
     ],
     'no-restricted-modules': [
       'error',
       {
         // Seems it’s impossible to set up a message for a pattern
-        patterns: ['../*']
-      }
+        patterns: ['../*'],
+      },
     ],
-    'semi': ['error', 'never']
+    'semi': ['error', 'never'],
   },
   overrides: [
     // Empty override to enable linting JSX files by default
     // See https://github.com/eslint/rfcs/blob/main/designs/2019-additional-lint-targets/
-    { files: ['*.jsx'] }
-  ]
+    { files: ['*.jsx'] },
+  ],
 }
 
 module.exports = withPrettier(config)
