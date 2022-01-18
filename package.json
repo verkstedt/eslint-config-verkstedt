@@ -12,7 +12,9 @@
   },
   "keywords": [
     "eslint",
-    "eslintconfig"
+    "eslint-config",
+    "typescript",
+    "next.js"
   ],
   "bugs": {
     "url": "https://github.com/verkstedt/eslint-config-verkstedt/issues"
