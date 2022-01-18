@@ -19,6 +19,8 @@ const config = {
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
     'max-params': ['warn', 2],
+    'no-shadow': ['error'],
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-debugger': 'warn',
     'no-else-return': 'off',
     'no-restricted-imports': [
