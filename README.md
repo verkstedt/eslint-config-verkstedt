@@ -30,7 +30,7 @@ ESLint and Prettier config
 
 - Add the following `.prettierrc.js`:
 
-  ```json
+  ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
 
