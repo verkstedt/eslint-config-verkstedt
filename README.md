@@ -6,7 +6,7 @@ ESLint and Prettier config
 
 - `yarn add --dev @verkstedt/eslint-config-verkstedt@latest`
 
-- If it does use TypeScript:
+- If your project uses TypeScript:
 
   ```sh
   yarn add --dev typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0
