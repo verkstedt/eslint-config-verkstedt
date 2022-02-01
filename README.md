@@ -4,7 +4,11 @@ ESLint and Prettier config
 
 ## Integration
 
-- `yarn add --dev @verkstedt/eslint-config-verkstedt@latest`
+- Install the package along with it’s peer dependencies:
+
+  ```sh
+  npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
+  ```
 
 - If your project uses TypeScript:
 
