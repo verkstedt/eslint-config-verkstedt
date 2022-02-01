@@ -1,5 +1,6 @@
 # eslint-config-verkstedt
 
+
 ESLint and Prettier config
 
 ## Integration
@@ -18,15 +19,18 @@ ESLint and Prettier config
   yarn add --dev @babel/core@^7.16.7 @babel/eslint-parser@^7.16.5
   ```
 
-- In your EsLint config use one of those for `extend`:
+- In your EsLint config use one of those for `extends`:
 
-  - `@verkstedt/verkstedt/typescript-react` for React TypeScript
-    _Alias: `@verkstedt/verkstedt`_
-  - `@verkstedt/verkstedt/typescript-next` for Next.js TypeScript
-  - `@verkstedt/verkstedt/typescript` for React–less TypeScript
-  - `@verkstedt/verkstedt/react` for React JavaScript projects using Babel
-  - `@verkstedt/verkstedt/babel` for React–less JavaScript projects using Babel
-  - `@verkstedt/verkstedt/vanilla` for React–less JavaScript projects
+  ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
+  --------------------------------------------|:-----:|:----------:|:-----:|:-------:|
+  `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️  |     ☑      |  ☑    |   ✖️     |
+  `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️  |     ☑      |  ☑    |   ☑     |
+  `@verkstedt/verkstedt/typescript`           | ☑ /✖️  |     ☑      |  ✖️    |   ✖️     |
+  `@verkstedt/verkstedt/react`                |  ☑    |     ✖️      |  ☑    |   ✖️     |
+  `@verkstedt/verkstedt/babel`                |  ☑    |     ✖️      |  ✖️    |   ✖️     |
+  `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
+
+  [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
 - Add the following `.prettierrc.js`:
 
