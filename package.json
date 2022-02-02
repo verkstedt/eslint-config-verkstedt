@@ -1,6 +1,6 @@
 {
   "name": "@verkstedt/eslint-config-verkstedt",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "ESLint config",
   "main": "index.js",
   "scripts": {
