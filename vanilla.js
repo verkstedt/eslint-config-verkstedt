@@ -7,6 +7,7 @@ const config = {
     jest: true,
   },
   plugins: [],
+  reportUnusedDisableDirectives: true,
   rules: {
     'comma-dangle': 'off', // Handled by prettier
     'complexity': ['error', { max: 10 }],
