@@ -20,7 +20,7 @@ ESLint and Prettier config
 - If your project _does not_ use TypeScript, but uses Babel:
 
   ```sh
-  yarn add --dev @babel/core@^7.16.7 @babel/eslint-parser@^7.16.5
+  yarn add --dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
   ```
 
 - In your EsLint config use one of those for `extends`:
