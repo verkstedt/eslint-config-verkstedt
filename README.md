@@ -14,7 +14,7 @@ ESLint and Prettier config
 - If your project uses TypeScript:
 
   ```sh
-  yarn add --dev typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0
+  yarn add --dev "typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0"
   ```
 
 - If your project _does not_ use TypeScript, but uses Babel:
