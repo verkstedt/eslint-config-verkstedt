@@ -50,7 +50,7 @@ We recommend to use [CoC][vim-coc] with `coc-eslint` extension.
 
 ## VS Code Integration
 
-To get this working with VS Code, you will first need to install the Prettier - Code formatter extension: `https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode`.
+To get this working with VS Code, you will first need to install the [Prettier - Code formatter extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
 Next, add the following values to your `settings.json`:
 
