@@ -52,7 +52,7 @@ We recommend to use [CoC][vim-coc] with `coc-eslint` extension.
 
 To get this working with VS Code, you will first need to install the [Prettier - Code formatter extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 
-Next, add the following values to your `settings.json`:
+Next, add the following values to global settings, or to to your per project folder settings (`./.vscode/settings.json`):
 
 ```json
   "editor.defaultFormatter": "esbenp.prettier-vscode",
