@@ -47,3 +47,28 @@ ESLint and Prettier config
 We recommend to use [CoC][vim-coc] with `coc-eslint` extension.
 
 [vim-coc]: https://github.com/neoclide/coc.nvim
+
+## VS Code Integration
+
+To get this working with VS Code, you will first need to install the Prettier - Code formatter extension: `https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode`.
+
+Next, add the following values to your `settings.json`:
+
+```json
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prettier.useEditorConfig": false,
+  "eslint.format.enable": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+```
