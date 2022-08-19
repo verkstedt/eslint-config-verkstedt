@@ -1,7 +1,6 @@
-const withBabel = require('./lib/withBabel')
-
 const vanilla = require('./vanilla')
 
-const config = withBabel(vanilla)
+const withBabel = require('./lib/withBabel')
+const withPrettier = require('./lib/withPrettier')
 
-module.exports = config
+module.exports = withPrettier(withBabel(vanilla))

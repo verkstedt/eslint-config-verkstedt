@@ -1,4 +1,6 @@
-const withTypescript = require('./lib/withTypescript')
 const react = require('./react')
 
-module.exports = withTypescript(react)
+const withTypescript = require('./lib/withTypescript')
+const withPrettier = require('./lib/withPrettier')
+
+module.exports = withPrettier(withTypescript(react))

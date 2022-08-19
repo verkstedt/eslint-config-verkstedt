@@ -1,7 +1,6 @@
-const withNext = require('./lib/withNext')
-
 const typescriptReact = require('./typescript-react')
 
-const config = withNext(typescriptReact)
+const withNext = require('./lib/withNext')
+const withPrettier = require('./lib/withPrettier')
 
-module.exports = config
+module.exports = withPrettier(withNext(typescriptReact))
