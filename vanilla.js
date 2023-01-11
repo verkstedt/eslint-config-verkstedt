@@ -7,6 +7,7 @@ const config = {
     jest: true,
   },
   plugins: [],
+  ignorePatterns: ['!/.*', '/node_modules/.*'],
   reportUnusedDisableDirectives: true,
   rules: {
     'comma-dangle': 'off', // Handled by prettier
