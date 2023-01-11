@@ -4,7 +4,7 @@ const config = {
     browser: true,
     jest: true,
   },
-  plugins: [],
+  plugins: ['eslint-plugin-import'],
   ignorePatterns: ['!/.*', '/node_modules/.*'],
   reportUnusedDisableDirectives: true,
   rules: {
@@ -15,7 +15,15 @@ const config = {
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'off',
     'import/no-useless-path-segments': 'off',
-    'import/order': 'off',
+    'import/order': [
+      'error',
+      {
+        // Check https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md#options
+        // for an explaination of these groups
+        'groups': ['builtin', 'external', 'parent', 'sibling', 'index', 'type'],
+      },
+    ],
+    'import/first': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
     'max-params': ['warn', 4],
@@ -43,7 +51,6 @@ const config = {
       },
     ],
     'semi': ['error', 'never'],
-    'sort-imports': ['error'],
   },
   overrides: [
     // Empty override to enable linting JSX files by default
