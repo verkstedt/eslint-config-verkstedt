@@ -1,7 +1,6 @@
+const withPrettier = require('./lib/withPrettier')
 const withTypescript = require('./lib/withTypescript')
 
-const vanilla = require('./vanilla')
+const base = require('./base')
 
-const config = withTypescript(vanilla)
-
-module.exports = config
+module.exports = withPrettier(withTypescript(base))

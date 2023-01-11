@@ -1,5 +1,6 @@
 const withReact = require('./lib/withReact')
 
 const babel = require('./babel')
+const withPrettier = require('./lib/withPrettier')
 
-module.exports = withReact(babel)
+module.exports = withPrettier(withReact(babel))
