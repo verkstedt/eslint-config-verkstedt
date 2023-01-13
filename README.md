@@ -1,6 +1,5 @@
 # eslint-config-verkstedt
 
-
 ESLint and Prettier config
 
 ## Integration
@@ -25,14 +24,14 @@ ESLint and Prettier config
 
 - In your EsLint config use one of those for `extends`:
 
-  ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
-  --------------------------------------------|:-----:|:----------:|:-----:|:-------:|
-  `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️  |     ☑      |  ☑    |   ✖️     |
-  `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️  |     ☑      |  ☑    |   ☑     |
-  `@verkstedt/verkstedt/typescript`           | ☑ /✖️  |     ☑      |  ✖️    |   ✖️     |
-  `@verkstedt/verkstedt/react`                |  ☑    |     ✖️      |  ☑    |   ✖️     |
-  `@verkstedt/verkstedt/babel`                |  ☑    |     ✖️      |  ✖️    |   ✖️     |
-  `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
+  | ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
+  | ------------------------------------------- | :---: | :--------: | :---: | :-----: |
+  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑      |   ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑      |   ☑   |    ☑    |
+  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑      |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |   ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/babel`                |   ☑   |     ✖️     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/vanilla`              |  ✖️   |     ✖️     |  ✖️   |   ✖️    |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
@@ -40,6 +39,11 @@ ESLint and Prettier config
 
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
+  ```
+
+- Add the following to `stylelint.config.js`:
+  ```js
+  module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
   ```
 
 ## VIM integration
@@ -76,3 +80,4 @@ Next, add the following values to global settings, or to to your per project fol
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   }
+```
