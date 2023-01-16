@@ -24,14 +24,14 @@ ESLint and Prettier config
 
 - In your EsLint config use one of those for `extends`:
 
-  | ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
-  | ------------------------------------------- | :---: | :--------: | :---: | :-----: |
-  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑      |   ☑   |   ✖️    |
-  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑      |   ☑   |    ☑    |
-  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑      |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |   ☑   |   ✖️    |
-  | `@verkstedt/verkstedt/babel`                |   ☑   |     ✖️     |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/vanilla`              |  ✖️   |     ✖️     |  ✖️   |   ✖️    |
+  ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
+  --------------------------------------------|:-----:|:----------:|:-----:|:-------:|
+  `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️  |     ☑      |  ☑    |   ✖️     |
+  `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️  |     ☑      |  ☑    |   ☑     |
+  `@verkstedt/verkstedt/typescript`           | ☑ /✖️  |     ☑      |  ✖️    |   ✖️     |
+  `@verkstedt/verkstedt/react`                |  ☑    |     ✖️      |  ☑    |   ✖️     |
+  `@verkstedt/verkstedt/babel`                |  ☑    |     ✖️      |  ✖️    |   ✖️     |
+  `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
