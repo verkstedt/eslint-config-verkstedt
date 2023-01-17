@@ -1,5 +1,6 @@
+const base = require('./base')
 const withPrettier = require('./lib/withPrettier')
+const withReact = require('./lib/withReact')
 const withTypescript = require('./lib/withTypescript')
-const react = require('./react')
 
-module.exports = withPrettier(withTypescript(react))
+module.exports = withPrettier(withTypescript(withReact(base)))
