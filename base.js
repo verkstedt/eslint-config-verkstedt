@@ -8,7 +8,6 @@ const config = {
   ignorePatterns: ['!/.*', '/node_modules/.*'],
   reportUnusedDisableDirectives: true,
   rules: {
-    'comma-dangle': 'off', // Handled by prettier
     'complexity': ['error', { max: 10 }],
     'function-paren-newline': 'off',
     'import/extensions': 'off',
