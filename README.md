@@ -1,6 +1,5 @@
 # eslint-config-verkstedt
 
-
 ESLint and Prettier config
 
 ## Integration
@@ -42,6 +41,11 @@ ESLint and Prettier config
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
 
+- Add the following to `stylelint.config.js`:
+  ```js
+  module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
+  ```
+
 ## VIM integration
 
 We recommend to use [CoC][vim-coc] with `coc-eslint` extension.
@@ -76,3 +80,4 @@ Next, add the following values to global settings, or to to your per project fol
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   }
+```
