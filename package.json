@@ -44,6 +44,9 @@
   "peerDependencies": {
     "eslint-plugin-prettier": "^4.0.0"
   },
+  "resolutions": {
+    "json5": "^2.2.2"
+  },
   "optionalDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/eslint-parser": "^7.16.5",
