@@ -42,13 +42,13 @@ ESLint and Prettier config
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
-- Add the following `.prettierrc.js`:
+- Add the following `.prettierrc.cjs`:
 
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
 
-- Add the following to `stylelint.config.js`:
+- Add the following to `stylelint.config.cjs`:
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
   ```
