@@ -48,6 +48,13 @@ ESLint and Prettier config
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
 
+  You probably also want `.prettierignore` with something like:
+
+  ```
+  /.next
+  /node_modules
+  ```
+
 - Add the following to `stylelint.config.cjs`:
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
