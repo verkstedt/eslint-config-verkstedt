@@ -7,18 +7,24 @@ ESLint and Prettier config
 - Install the package along with it’s peer dependencies:
 
   ```sh
+  npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
+  # or if you use yarn
   npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
   ```
 
 - If your project uses TypeScript:
 
   ```sh
+  npm install --sae-dev "typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0"
+  # or if you use yarn
   yarn add --dev "typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0"
   ```
 
 - If your project _does not_ use TypeScript, but uses Babel:
 
   ```sh
+  npm install --sae-dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
+  # or if you use yarn
   yarn add --dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
   ```
 
