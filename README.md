@@ -7,18 +7,24 @@ ESLint and Prettier config
 - Install the package along with it’s peer dependencies:
 
   ```sh
+  npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
+  # or if you use yarn
   npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
   ```
 
 - If your project uses TypeScript:
 
   ```sh
+  npm install --sae-dev "typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0"
+  # or if you use yarn
   yarn add --dev "typescript@^4.5.4 @typescript-eslint/eslint-plugin@^5.10.0 @typescript-eslint/parser@^5.10.0"
   ```
 
 - If your project _does not_ use TypeScript, but uses Babel:
 
   ```sh
+  npm install --sae-dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
+  # or if you use yarn
   yarn add --dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
   ```
 
@@ -29,19 +35,27 @@ ESLint and Prettier config
   `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️  |     ☑      |  ☑    |   ✖️     |
   `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️  |     ☑      |  ☑    |   ☑     |
   `@verkstedt/verkstedt/typescript`           | ☑ /✖️  |     ☑      |  ✖️    |   ✖️     |
+  `@verkstedt/verkstedt/next`                 | ☑ /✖️  |     ✖️      |  ☑    |   ☑     |
   `@verkstedt/verkstedt/react`                |  ☑    |     ✖️      |  ☑    |   ✖️     |
   `@verkstedt/verkstedt/babel`                |  ☑    |     ✖️      |  ✖️    |   ✖️     |
   `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
-- Add the following `.prettierrc.js`:
+- Add the following `.prettierrc.cjs`:
 
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
   ```
 
-- Add the following to `stylelint.config.js`:
+  You probably also want `.prettierignore` with something like:
+
+  ```
+  /.next
+  /node_modules
+  ```
+
+- Add the following to `stylelint.config.cjs`:
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
   ```
