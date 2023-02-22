@@ -52,9 +52,9 @@ const config = {
     'semi': ['error', 'never'],
   },
   overrides: [
-    // Empty override to enable linting JSX files by default
+    // Empty override to enable linting on other file extensions by default
     // See https://github.com/eslint/rfcs/blob/main/designs/2019-additional-lint-targets/
-    { files: ['*.jsx'] },
+    { files: ['*.jsx', '*.mjs', '*.cjs'] },
   ],
 }
 
