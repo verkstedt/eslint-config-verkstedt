@@ -4,7 +4,7 @@ const config = {
     browser: true,
     jest: true,
   },
-  plugins: ['eslint-plugin-import'],
+  plugins: ['eslint-plugin-import', 'prefer-optional-chaining'],
   ignorePatterns: ['!/.*', '/node_modules/.*'],
   reportUnusedDisableDirectives: true,
   rules: {
@@ -50,6 +50,7 @@ const config = {
       },
     ],
     'semi': ['error', 'never'],
+    'prefer-optional-chaining': 'error',
   },
   overrides: [
     // Empty override to enable linting on other file extensions by default
