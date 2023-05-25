@@ -56,8 +56,5 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "typescript": "^4.5.4"
-  },
-  "resolutions": {
-    "json5": "^2.2.2"
   }
 }
