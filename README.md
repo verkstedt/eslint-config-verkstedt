@@ -95,3 +95,13 @@ Next, add the following values to global settings, or to to your per project fol
     "editor.formatOnSave": true
   }
 ```
+
+## Note on dependencies of this project
+
+- `dependencies` — the usual
+
+- `devDependencies` — stuff required to run `npm run lint` in _this_ repository
+-
+- `peerDependencies` — stuff that needs to be installed as a direct dependency of a project using this config. These are packages that provide binaries (`eslint`, `prettier`, `stylelint`) as well as some weird packages that don’t work as regular dependency _cough_ `eslint-plugin-prettier` _cough_).
+-
+- `optionalDependencies` — stuff that might be needed depending on the preset you’ll need to use. Make sure that versions there are being kept in sync with versions used in commands in [“Integration” section](#integration).
