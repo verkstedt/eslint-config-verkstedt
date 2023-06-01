@@ -55,7 +55,17 @@ const config = {
   overrides: [
     // Empty override to enable linting on other file extensions by default
     // See https://github.com/eslint/rfcs/blob/main/designs/2019-additional-lint-targets/
-    { files: ['*.jsx', '*.mjs', '*.cjs'] },
+    { files: '*.cjs' },
+    {
+      files: '*.mjs',
+      rules: {
+        // Allow using relative paths in .mjs files, since they are
+        // often used natively in the browser where absolute paths will
+        // not work.
+        'no-restricted-imports': 'off',
+        'no-restricted-modules': 'off',
+      },
+    },
   ],
 }
 
