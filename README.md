@@ -13,6 +13,7 @@ ESLint and Prettier config
   ```
 
 - Then:
+
   - If your project uses TypeScript:
 
     ```sh
@@ -42,6 +43,14 @@ ESLint and Prettier config
   `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
+
+  E.g. make your `.eslintrc.cjs` the following:
+
+  ```js
+  module.exports = {
+    extends: ['@verkstedt/verkstedt/typescript-next'],
+  }
+  ```
 
 - Add the following `.prettierrc.cjs`:
 
