@@ -17,30 +17,30 @@ ESLint and Prettier config
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@^4.5.4" "@typescript-eslint/eslint-plugin@^5.10.0" "@typescript-eslint/parser@^5.10.0"
+    npm install --save-dev "typescript@^5.1.3" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
     # or if you use yarn
-    yarn add --dev "typescript@^4.5.4" "@typescript-eslint/eslint-plugin@^5.10.0" "@typescript-eslint/parser@^5.10.0"
+    yarn add --dev "typescript@^5.1.3" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
     ```
 
   - If your project _does not_ use TypeScript, but uses Babel:
 
     ```sh
-    npm install --sae-dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
+    npm install --sae-dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
     # or if you use yarn
-    yarn add --dev "@babel/core@^7.16.7" "@babel/eslint-parser@^7.16.5"
+    yarn add --dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
     ```
 
 - In your EsLint config use one of those for `extends`:
 
-  ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
-  --------------------------------------------|:-----:|:----------:|:-----:|:-------:|
-  `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️  |     ☑      |  ☑    |   ✖️     |
-  `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️  |     ☑      |  ☑    |   ☑     |
-  `@verkstedt/verkstedt/typescript`           | ☑ /✖️  |     ☑      |  ✖️    |   ✖️     |
-  `@verkstedt/verkstedt/next`                 | ☑ /✖️  |     ✖️      |  ☑    |   ☑     |
-  `@verkstedt/verkstedt/react`                |  ☑    |     ✖️      |  ☑    |   ✖️     |
-  `@verkstedt/verkstedt/babel`                |  ☑    |     ✖️      |  ✖️    |   ✖️     |
-  `@verkstedt/verkstedt/vanilla`              |  ✖️    |     ✖️      |  ✖️    |   ✖️     |
+  | ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
+  | ------------------------------------------- | :---: | :--------: | :---: | :-----: |
+  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑      |   ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑      |   ☑   |    ☑    |
+  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑      |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/next`                 | ☑ /✖️ |     ✖️     |   ☑   |    ☑    |
+  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |   ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/babel`                |   ☑   |     ✖️     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/vanilla`              |  ✖️   |     ✖️     |  ✖️   |   ✖️    |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
