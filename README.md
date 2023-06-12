@@ -17,9 +17,9 @@ ESLint and Prettier config
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@^5.1.3" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
+    npm install --save-dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
     # or if you use yarn
-    yarn add --dev "typescript@^5.1.3" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
+    yarn add --dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
     ```
 
   - If your project _does not_ use TypeScript, but uses Babel:
