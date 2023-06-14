@@ -26,6 +26,13 @@ const config = {
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
     'max-params': ['warn', 4],
+    'no-void': [
+      'error',
+      {
+        // Compat with @typescript-eslint/no-floating-promises
+        allowAsStatement: true,
+      },
+    ],
     'no-shadow': ['error'],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-debugger': 'warn',
