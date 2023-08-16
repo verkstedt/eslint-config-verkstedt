@@ -15,5 +15,27 @@ module.exports = {
         'scss/function-no-unknown': true,
       },
     },
+    {
+      files: ['*.module.css', '*.module.scss'],
+      rules: {
+        // Use camelCase for class names in CSS modules -- for ease of
+        // use after importing
+        'selector-class-pattern': [
+          '^([a-z][a-z0-9]*)([A-Z][a-z0-9]*)*$',
+          {
+            message: (selector) =>
+              `Expected class selector "${selector}" to be camelCase`,
+          },
+        ],
+        // Also for keyframes, for consistency
+        'keyframes-name-pattern': [
+          '^([a-z][a-z0-9]*)([A-Z][a-z0-9]*)*$',
+          {
+            message: (selector) =>
+              `Expected keyframes name "${selector}" to be camelCase`,
+          },
+        ],
+      },
+    },
   ],
 }
