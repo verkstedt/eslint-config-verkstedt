@@ -3,6 +3,13 @@ module.exports = {
   plugins: ['stylelint-scss', 'stylelint-order'],
   rules: {
     'media-feature-range-notation': null,
+    // Remove once StyleLint learns about @container
+    'at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: ['container'],
+      },
+    ],
   },
   overrides: [
     {
