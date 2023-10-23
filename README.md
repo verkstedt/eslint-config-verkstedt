@@ -18,16 +18,18 @@ ESLint and Prettier config
 
 - Then:
 
+  <!-- KEEP VERSIONS HERE IN SYNC WITH package.json -->
+
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
+    npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
     ```
 
     … or if you use yarn
 
     ```sh
-    yarn add --dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
+    yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
     ```
 
   - If your project _does not_ use TypeScript, but uses Babel:
@@ -39,7 +41,7 @@ ESLint and Prettier config
     … or if you use yarn
 
     ```sh
-    yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.5"
+    yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
     ```
 
 - In your EsLint config use one of those for `extends`:
