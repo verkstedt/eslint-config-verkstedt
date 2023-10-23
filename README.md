@@ -32,15 +32,15 @@ ESLint and Prettier config
 
 - In your EsLint config use one of those for `extends`:
 
-  | ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
-  | ------------------------------------------- | :---: | :--------: | :---: | :-----: |
-  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑      |   ☑   |   ✖️    |
-  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑      |   ☑   |    ☑    |
-  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑      |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/next`                 | ☑ /✖️ |     ✖️     |   ☑   |    ☑    |
-  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |   ☑   |   ✖️    |
+  | ↓ use this \\ if your project uses →        | Babel  | TypeScript | React | Next.js |
+  | ------------------------------------------- | :----: | :--------: | :---: | :-----: |
+  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑     |  ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑     |  ☑   |   ☑    |
+  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/next`                 | ☑ /✖️ |     ✖️     |  ☑   |   ☑    |
+  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |  ☑   |   ✖️    |
   | `@verkstedt/verkstedt/babel`                |   ☑   |     ✖️     |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/vanilla`              |  ✖️   |     ✖️     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/vanilla`              |   ✖️   |     ✖️     |  ✖️   |   ✖️    |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
@@ -111,7 +111,5 @@ Next, add the following values to global settings, or to to your per project fol
 - `dependencies` — the usual
 
 - `peerDependencies` — stuff that needs to be installed as a direct dependency of a project using this config. These are packages that provide binaries (`eslint`, `prettier`, `stylelint`) as well as some weird packages that don’t work as regular dependency _cough_ `eslint-plugin-prettier` _cough_).
-
-- `optionalDependencies` — stuff that might be needed depending on the preset you’ll need to use. Make sure that versions there are being kept in sync with versions used in commands in [“Integration” section](#integration).
 
 - `devDependencies` — stuff required to run `npm run lint` in _this_ repository. It’s `peerDependencies` and `optionalDependencies` merged together
