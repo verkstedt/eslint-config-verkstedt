@@ -33,7 +33,7 @@ ESLint and Prettier config
   - If your project _does not_ use TypeScript, but uses Babel:
 
     ```sh
-    npm install --sae-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.5"
+    npm install --save-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
     ```
 
     … or if you use yarn

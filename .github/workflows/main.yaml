@@ -12,7 +12,6 @@ env:
   REACT_APP_ENV: development
 
 jobs:
-
   # env.ACT is set when running locally with act <https://github.com/nektos/act>
 
   lint:
@@ -27,3 +26,14 @@ jobs:
       - name: Lint
         working-directory: ${{ steps.setup.outputs.package-dir }}
         run: npm run lint
+
+  validate-deps:
+    name: Validate dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v3
+      - name: 'Validate'
+        run: |
+          node ./validate-deps.js
