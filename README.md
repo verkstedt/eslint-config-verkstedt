@@ -8,7 +8,11 @@ ESLint and Prettier config
 
   ```sh
   npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
-  # or if you use yarn
+  ```
+
+  … or if you use yarn
+
+  ```sh
   npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
   ```
 
@@ -18,16 +22,24 @@ ESLint and Prettier config
 
     ```sh
     npm install --save-dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
-    # or if you use yarn
+    ```
+
+    … or if you use yarn
+
+    ```sh
     yarn add --dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
     ```
 
   - If your project _does not_ use TypeScript, but uses Babel:
 
     ```sh
-    npm install --sae-dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
-    # or if you use yarn
-    yarn add --dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
+    npm install --sae-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.5"
+    ```
+
+    … or if you use yarn
+
+    ```sh
+    yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.5"
     ```
 
 - In your EsLint config use one of those for `extends`:
@@ -60,7 +72,7 @@ ESLint and Prettier config
 
   You probably also want `.prettierignore` with something like:
 
-  ```
+  ```gitignore
   /.next
   /node_modules
   ```
@@ -69,6 +81,13 @@ ESLint and Prettier config
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
   ```
+
+## Upgrading
+
+Use the same commands as in previous section.
+
+After upgrading, review if all of your projects EsLint rule overwrites
+are still needed.
 
 ## VIM integration
 
