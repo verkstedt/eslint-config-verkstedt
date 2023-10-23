@@ -8,39 +8,53 @@ ESLint and Prettier config
 
   ```sh
   npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
-  # or if you use yarn
+  ```
+
+  … or if you use yarn
+
+  ```sh
   npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
   ```
 
 - Then:
 
+  <!-- KEEP VERSIONS HERE IN SYNC WITH package.json -->
+
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
-    # or if you use yarn
-    yarn add --dev "typescript@~5.0.0" "@typescript-eslint/eslint-plugin@^5.59.9" "@typescript-eslint/parser@^5.59.9"
+    npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
+    ```
+
+    … or if you use yarn
+
+    ```sh
+    yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
     ```
 
   - If your project _does not_ use TypeScript, but uses Babel:
 
     ```sh
-    npm install --sae-dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
-    # or if you use yarn
-    yarn add --dev "@babel/core@^7.22.5" "@babel/eslint-parser@^7.22.5"
+    npm install --save-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
+    ```
+
+    … or if you use yarn
+
+    ```sh
+    yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
     ```
 
 - In your EsLint config use one of those for `extends`:
 
-  | ↓ use this \\ if your project uses →        | Babel | TypeScript | React | Next.js |
-  | ------------------------------------------- | :---: | :--------: | :---: | :-----: |
-  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑      |   ☑   |   ✖️    |
-  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑      |   ☑   |    ☑    |
-  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑      |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/next`                 | ☑ /✖️ |     ✖️     |   ☑   |    ☑    |
-  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |   ☑   |   ✖️    |
+  | ↓ use this \\ if your project uses →        | Babel  | TypeScript | React | Next.js |
+  | ------------------------------------------- | :----: | :--------: | :---: | :-----: |
+  | `@verkstedt/verkstedt/typescript-react`[^1] | ☑ /✖️ |     ☑     |  ☑   |   ✖️    |
+  | `@verkstedt/verkstedt/typescript-next`      | ☑ /✖️ |     ☑     |  ☑   |   ☑    |
+  | `@verkstedt/verkstedt/typescript`           | ☑ /✖️ |     ☑     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/next`                 | ☑ /✖️ |     ✖️     |  ☑   |   ☑    |
+  | `@verkstedt/verkstedt/react`                |   ☑   |     ✖️     |  ☑   |   ✖️    |
   | `@verkstedt/verkstedt/babel`                |   ☑   |     ✖️     |  ✖️   |   ✖️    |
-  | `@verkstedt/verkstedt/vanilla`              |  ✖️   |     ✖️     |  ✖️   |   ✖️    |
+  | `@verkstedt/verkstedt/vanilla`              |   ✖️   |     ✖️     |  ✖️   |   ✖️    |
 
   [^1]: `@verkstedt/verkstedt/typescript-react` is also aliased as `@verkstedt/verkstedt`.
 
@@ -60,7 +74,7 @@ ESLint and Prettier config
 
   You probably also want `.prettierignore` with something like:
 
-  ```
+  ```gitignore
   /.next
   /node_modules
   ```
@@ -69,6 +83,13 @@ ESLint and Prettier config
   ```js
   module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
   ```
+
+## Upgrading
+
+Use the same commands as in previous section.
+
+After upgrading, review if all of your projects EsLint rule overwrites
+are still needed.
 
 ## VIM integration
 
@@ -111,7 +132,5 @@ Next, add the following values to global settings, or to to your per project fol
 - `dependencies` — the usual
 
 - `peerDependencies` — stuff that needs to be installed as a direct dependency of a project using this config. These are packages that provide binaries (`eslint`, `prettier`, `stylelint`) as well as some weird packages that don’t work as regular dependency _cough_ `eslint-plugin-prettier` _cough_).
-
-- `optionalDependencies` — stuff that might be needed depending on the preset you’ll need to use. Make sure that versions there are being kept in sync with versions used in commands in [“Integration” section](#integration).
 
 - `devDependencies` — stuff required to run `npm run lint` in _this_ repository. It’s `peerDependencies` and `optionalDependencies` merged together
