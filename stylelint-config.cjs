@@ -20,6 +20,11 @@ module.exports = {
         'scss/at-rule-no-unknown': true,
         'function-no-unknown': null,
         'scss/function-no-unknown': true,
+        // “This rule is only appropriate for CSS. You should not turn
+        //  it on for CSS-like languages, such as Sass or Less, as they
+        //  have their own syntaxes.”
+        // — https://stylelint.io/user-guide/rules/media-query-no-invalid/
+        'media-query-no-invalid': null,
       },
     },
     {
