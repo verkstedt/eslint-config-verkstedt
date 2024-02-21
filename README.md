@@ -66,18 +66,21 @@ ESLint and Prettier config
   }
   ```
 
-- Add the following `.prettierrc.cjs`:
+- Add the following `.prettierrc.json`:
 
-  ```js
-  module.exports = require('@verkstedt/eslint-config-verkstedt/prettier-config')
+  ```json
+  "@verkstedt/eslint-config-verkstedt/prettier-config"
   ```
 
   You probably also want `.prettierignore` with something like:
 
   ```gitignore
-  /.next
-  /node_modules
+  /.next/
+  /node_modules/
   ```
+
+  If you have any generated files (e.g. lingui locales), also add them
+  in there.
 
 - Add the following to `stylelint.config.cjs`:
   ```js
