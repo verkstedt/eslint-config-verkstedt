@@ -4,7 +4,9 @@
   "description": "ESLint config",
   "main": "index.js",
   "scripts": {
-    "lint": "yarn eslint ."
+    "lint": "npm-run-all lint:*",
+    "lint:js": "eslint .",
+    "lint:deps": "node ./validate-deps.js"
   },
   "repository": {
     "type": "git",
@@ -46,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.52.0",
+    "npm-run-all": "^4.1.5",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.0.3",
     "stylelint": "^15.11.0",
