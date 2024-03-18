@@ -4,7 +4,7 @@
   "description": "ESLint config",
   "main": "index.js",
   "scripts": {
-    "lint": "npm-run-all lint:*",
+    "lint": "npm-run-all 'lint:*'",
     "lint:js": "eslint .",
     "lint:deps": "node ./validate-deps.js"
   },
