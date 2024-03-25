@@ -7,13 +7,13 @@ ESLint and Prettier config
 - First, install the package along with it’s peer dependencies:
 
   ```sh
-  npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
+  npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt@latest
   ```
 
   <details><summary>… or if you use yarn</summary>
 
   ```sh
-  npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
+  npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt@latest
   ```
 
   </details>
