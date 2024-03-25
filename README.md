@@ -25,13 +25,13 @@ ESLint and Prettier config
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
+    npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
     ```
 
     <details><summary>… or if you use yarn</summary>
 
     ```sh
-    yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
+    yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
     ```
 
     </details>
@@ -39,13 +39,13 @@ ESLint and Prettier config
   - If your project _does not_ use TypeScript, but uses Babel:
 
     ```sh
-    npm install --save-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
+    npm install --save-dev "@babel/core@^7.24.3" "@babel/eslint-parser@^7.24.1"
     ```
 
     <details><summary>… or if you use yarn</summary>
 
     ```sh
-    yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
+    yarn add --dev "@babel/core@^7.24.3" "@babel/eslint-parser@^7.24.1"
     ```
 
     </details>
