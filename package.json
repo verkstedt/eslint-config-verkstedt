@@ -52,6 +52,6 @@
     "postcss-scss": "^4.0.9",
     "prettier": "^3.0.3",
     "stylelint": "^15.11.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.3"
   }
 }

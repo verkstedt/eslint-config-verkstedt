@@ -25,13 +25,13 @@ ESLint and Prettier config
   - If your project uses TypeScript:
 
     ```sh
-    npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
+    npm install --save-dev "typescript@^5.4.3" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
     ```
 
     <details><summary>… or if you use yarn</summary>
 
     ```sh
-    yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
+    yarn add --dev "typescript@^5.4.3" "@typescript-eslint/eslint-plugin@^7.3.1" "@typescript-eslint/parser@^7.3.1"
     ```
 
     </details>
