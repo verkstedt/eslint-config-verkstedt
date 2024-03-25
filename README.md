@@ -10,11 +10,13 @@ ESLint and Prettier config
   npx install-peerdeps --dev @verkstedt/eslint-config-verkstedt
   ```
 
-  … or if you use yarn
+  <details><summary>… or if you use yarn</summary>
 
   ```sh
   npx install-peerdeps --yarn --dev @verkstedt/eslint-config-verkstedt
   ```
+
+  </details>
 
 - Then:
 
@@ -26,11 +28,13 @@ ESLint and Prettier config
     npm install --save-dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
     ```
 
-    … or if you use yarn
+    <details><summary>… or if you use yarn</summary>
 
     ```sh
     yarn add --dev "typescript@^5.2.2" "@typescript-eslint/eslint-plugin@^6.8.0" "@typescript-eslint/parser@^6.8.0"
     ```
+
+    </details>
 
   - If your project _does not_ use TypeScript, but uses Babel:
 
@@ -38,11 +42,13 @@ ESLint and Prettier config
     npm install --save-dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
     ```
 
-    … or if you use yarn
+    <details><summary>… or if you use yarn</summary>
 
     ```sh
     yarn add --dev "@babel/core@^7.23.2" "@babel/eslint-parser@^7.22.15"
     ```
+
+    </details>
 
 - In your EsLint config use one of those for `extends`:
 
