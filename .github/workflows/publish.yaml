@@ -7,6 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  publish-npmjs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: './.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   publish-gpr:
     runs-on: ubuntu-latest
     permissions:
@@ -17,14 +30,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: './.nvmrc'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@verkstedt'
       - run: npm ci
-      - name: Publish package to GitHub Packages
+      - run: |
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm publish --access public --registry https://npm.pkg.github.com/
-      - name: Publish package to npmjs
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm publish --access public --registry https://registry.npmjs.org/
