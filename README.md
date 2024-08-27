@@ -143,3 +143,8 @@ Next, add the following values to global settings, or to to your per project fol
 - `peerDependencies` — stuff that needs to be installed as a direct dependency of a project using this config. These are packages that provide binaries (`eslint`, `prettier`, `stylelint`) as well as some weird packages that don’t work as regular dependency _cough_ `eslint-plugin-prettier` _cough_).
 
 - `devDependencies` — stuff required to run `npm run lint` in _this_ repository. It’s `peerDependencies` and `optionalDependencies` merged together
+
+
+## Release
+
+This package is published to npmjs.com and on to the github package registry when you push new version tag.
