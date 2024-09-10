@@ -20,6 +20,10 @@ const config = {
         // Check https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md#options
         // for an explaination of these groups
         'groups': ['builtin', 'external', 'parent', 'sibling', 'index', 'type'],
+        'newlines-between': 'always',
+        'alphabetize': {
+          order: 'asc',
+        },
       },
     ],
     'import/first': 'off',
