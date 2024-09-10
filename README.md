@@ -90,7 +90,7 @@ ESLint and Prettier config
 
 - Add the following to `stylelint.config.cjs`:
   ```js
-  module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config')
+  module.exports = require('@verkstedt/eslint-config-verkstedt/stylelint-config.cjs')
   ```
 
 ## Upgrading
