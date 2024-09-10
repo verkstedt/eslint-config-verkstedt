@@ -1,6 +1,5 @@
-const withBabel = require('./lib/withBabel')
-
 const base = require('./base')
+const withBabel = require('./lib/withBabel')
 
 const config = withBabel(base)
 
