@@ -144,7 +144,11 @@ Next, add the following values to global settings, or to to your per project fol
 
 - `devDependencies` — stuff required to run `npm run lint` in _this_ repository. It’s `peerDependencies` and `optionalDependencies` merged together
 
-
 ## Release
 
-This package is published to npmjs.com and on to the github package registry when you push new version tag.
+This package is published to npmjs.com and also to github package registry when you push new version tag:
+
+```sh
+npm version patch # or minor, or major -- depending on changes
+git push --follow-tags
+```
