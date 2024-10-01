@@ -39,6 +39,7 @@ const config = {
     ],
     'no-shadow': ['error'],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-redeclare': ['error'],
     'no-debugger': 'warn',
     'no-else-return': 'off',
     'no-restricted-imports': [
