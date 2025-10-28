@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": ["eslint/", "prettier/"],
+  "exclude": ["test/"],
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rewriteRelativeImportExtensions": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "strictNullChecks": true,
+    "declaration": true,
+    "outDir": "esm/"
+  }
+}
