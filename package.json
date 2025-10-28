@@ -1,0 +1,25 @@
+{
+  "name": "@verkstedt/lint",
+  "version": "11.0.0-0",
+  "description": "Linting configuration for verkstedt projects",
+  "type": "module",
+  "keywords": [
+    "lint",
+    "eslint",
+    "stylelint",
+    "prettier"
+  ],
+  "author": "verkstedt GmbH <info@verkstedt.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/verkstedt/lint.git"
+  },
+  "homepage": "https://www.npmjs.com/package/@verkstedt/lint",
+  "bugs": {
+    "url": "https://verkstedt.atlassian.net/jira/software/projects/VIP/boards/12"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
+}
