@@ -1,0 +1,13 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "eslint --max-warnings=0 ."
+  },
+  "devDependencies": {
+    "eslint": "../../node_modules/eslint",
+    "@verkstedt/lint": "../../"
+  },
+  "dependencies": {}
+}

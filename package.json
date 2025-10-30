@@ -37,12 +37,15 @@
     }
   },
   "scripts": {
+    "prepare": "npm run --silent holistic-check",
     "lint": "npm-run-all --print-name --print-label 'lint:*'",
     "lint:js": "eslint .",
     "lint:ts": "tsc --noEmit",
     "test": "npm-run-all --print-name --print-label 'test:*'",
-    "test:lint-eslint-prettier": "eslint-config-prettier eslint.config.js",
-    "test:unit": "./test.sh"
+    "test:eslint-prettier": "eslint-config-prettier eslint.config.ts",
+    "test:unit": "./test/test.sh",
+    "build": "tsc",
+    "holistic-check": "npm-run-all --print-name --print-label 'lint:!(ts)' build 'test:*'"
   },
   "peerDependencies": {
     "eslint": ">=9.38.0",

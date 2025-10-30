@@ -1,0 +1,11 @@
+{
+  "include": ["*"],
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rewriteRelativeImportExtensions": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "strictNullChecks": true
+  }
+}

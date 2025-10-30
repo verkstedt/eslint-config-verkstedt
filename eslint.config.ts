@@ -5,7 +5,7 @@ import createVerkstedtConfig from './eslint/index.ts';
 export default defineConfig(
   await createVerkstedtConfig({
     dir: fileURLToPath(new URL('.', import.meta.url)),
-    ignore: [],
+    ignore: ['test/'],
     allowDefaultProject: ['*.config.ts'],
   }),
 );
