@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+cd "$( dirname "$0" )/.."
+
 if echo " $* " | grep -qE ' (--help|-h) '
 then
   echo "Run tests for @verkstedt/lint."
