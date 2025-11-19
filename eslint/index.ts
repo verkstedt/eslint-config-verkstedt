@@ -263,7 +263,7 @@ async function createVerkstedtConfig({
     },
   ];
 
-  const missingDeps: Array<string> = [];
+  const missingDeps = new Set<string>();
   for (const moduleConfig of allModuleConfigs) {
     try {
       const configEntry = await moduleConfig.get();
@@ -280,18 +280,19 @@ async function createVerkstedtConfig({
         'code' in error &&
         error.code === 'ERR_MODULE_NOT_FOUND'
       ) {
-        missingDeps.push(moduleConfig.moduleName);
+        missingDeps.add(moduleConfig.moduleName);
       } else {
         throw error;
       }
     }
   }
 
-  if (missingDeps.length > 0) {
+  if (missingDeps.size > 0) {
     process.stderr.write(
       [
         'ERROR: Failed to create verkstedt EsLint config, because some dependencies are missing, run:',
-        '    npm install --save-dev ' + missingDeps.join(' '),
+        '    npm install --save-dev ' +
+          missingDeps.values().toArray().join(' '),
         '',
       ].join('\n'),
     );
