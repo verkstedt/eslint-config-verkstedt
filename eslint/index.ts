@@ -262,6 +262,25 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'storybook',
+      async get() {
+        if (!deps.some((dep) => dep === 'storybook')) {
+          return null;
+        } else {
+          // source: https://storybook.js.org/docs/configure/integration/eslint-plugin#configuration-flat-config-format
+
+          const { default: storybook } = await import(
+            'eslint-plugin-storybook'
+          );
+
+          return [
+            // FIXME Casting with `as` should not be necessary
+            ...(storybook.configs['flat/recommended'] as Array<Linter.Config>),
+          ];
+        }
+      },
+    },
+    {
       name: 'json',
       get() {
         return {
