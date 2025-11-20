@@ -41,7 +41,9 @@ interface PackageJson {
 type PromiseOrValue<Type> = Type | Promise<Type>;
 
 interface ModuleConfig {
-  moduleName: string | null;
+  /** Name for humans only */
+  name: string;
+  /** Return EsLint config entry, or null to skip */
   get: (
     this: ModuleConfig,
   ) => PromiseOrValue<null | Linter.Config | Array<Linter.Config>>;
@@ -119,7 +121,7 @@ async function createVerkstedtConfig({
 
   const allModuleConfigs: Array<ModuleConfig> = [
     {
-      moduleName: 'globals',
+      name: 'globals',
       get() {
         return {
           files: ALL_JS_FILES,
@@ -134,7 +136,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: '@eslint/js',
+      name: 'js',
       get() {
         return {
           ...js.configs.recommended,
@@ -143,7 +145,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: null,
+      name: 'custom',
       get() {
         return {
           rules: {
@@ -153,7 +155,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: 'typescript-eslint',
+      name: 'typescript',
       async get() {
         if (
           !deps.some((dep) =>
@@ -197,7 +199,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: 'eslint-plugin-react-hooks',
+      name: 'react',
       async get() {
         if (!deps.some((dep) => /^(react|react-dom)$/.test(dep))) {
           return null;
@@ -223,7 +225,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: '@eslint/json',
+      name: 'json',
       get() {
         return {
           files: JSON_FILES,
@@ -233,7 +235,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: '@eslint/markdown',
+      name: 'markdown',
       get() {
         return {
           files: MARKDOWN_FILES,
@@ -243,7 +245,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: '@eslint/css',
+      name: 'css',
       get() {
         return {
           files: CSS_FILES,
@@ -253,7 +255,7 @@ async function createVerkstedtConfig({
       },
     },
     {
-      moduleName: 'eslint-plugin-prettier',
+      name: 'prettier',
       get() {
         return {
           ...prettierRecommended,
@@ -270,17 +272,24 @@ async function createVerkstedtConfig({
       if (configEntry != null) {
         config.push(configEntry);
       } else {
-        debugLog('Skipping:', moduleConfig.moduleName);
+        debugLog('Skipping:', moduleConfig.name);
       }
     } catch (error: unknown) {
       if (
-        moduleConfig.moduleName != null &&
-        error &&
-        typeof error === 'object' &&
+        error instanceof Error &&
         'code' in error &&
-        error.code === 'ERR_MODULE_NOT_FOUND'
+        typeof error.code === 'string' &&
+        ['MODULE_NOT_FOUND', 'ERR_MODULE_NOT_FOUND'].includes(error.code)
       ) {
-        missingDeps.add(moduleConfig.moduleName);
+        const match =
+          /^Cannot find (?:module|package) '(@[^/']+\/[^/']+|[^/']+)(?:|\/[^']+)'/.exec(
+            error.message,
+          );
+        if (match) {
+          missingDeps.add(match[1]);
+        } else {
+          throw error;
+        }
       } else {
         throw error;
       }
