@@ -39,27 +39,30 @@ fi
 echo "$tests" |
   while IFS= read -r dir
   do
-    printf "🏃 TEST '%s'... " "$dir"
+    printf "🏃 TEST '%s'.." "$dir"
     (
       cd "$dir"
       export RUNNING_TEST=true
 
       rm -rf node_modules
+
+      set -- --ignore-scripts --silent
       if [ "${NODE_ENV-}" = "development" ]
       then
-        npm install --silent
+        npm install "$@"
         export NODE_DEBUG='@verkstedt/lint'
       else
-        if ! npm ci --silent
+        if ! npm ci "$@"
         then
           echo "ERROR: Failed to run 'npm ci' try running tests again with NODE_ENV=development to use 'install' instead of 'ci'." 2>&1
           exit 1
         fi
       fi
+      printf '.'
 
-      if npm test --silent
+      if npm test "$@"
       then
-          printf "✅ PASS\n"
+          printf " ✅ PASS\n"
       else
           printf "\n❌ FAIL %s\n" "$dir"
       fi
