@@ -180,6 +180,8 @@ async function createVerkstedtConfig({
         ) {
           return null;
         } else {
+          // source: https://typescript-eslint.io/getting-started
+
           const configs = (await import('typescript-eslint')).default.configs;
           const selectedConfigs = [
             ...configs.recommendedTypeChecked,
@@ -219,6 +221,8 @@ async function createVerkstedtConfig({
         if (!deps.some((dep) => /^(react|react-dom)$/.test(dep))) {
           return null;
         } else {
+          // source: https://react.dev/reference/eslint-plugin-react-hooks
+
           return [
             {
               ...(await import('eslint-plugin-react-hooks')).default.configs
