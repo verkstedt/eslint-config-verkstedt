@@ -225,6 +225,24 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'next.js',
+      async get() {
+        if (!deps.some((dep) => dep === 'next')) {
+          return null;
+        } else {
+          // source: https://nextjs.org/docs/app/api-reference/config/eslint#setup-eslint
+
+          const { default: nextVitals } = await import(
+            'eslint-config-next/core-web-vitals'
+          );
+          return [
+            ...nextVitals,
+            globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+          ];
+        }
+      },
+    },
+    {
       name: 'json',
       get() {
         return {
