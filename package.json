@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "prepare": "npm run --silent holistic-check",
+    "prepublishOnly": "npm run --silent holistic-check",
     "lint": "npm-run-all --print-name --print-label 'lint:*'",
     "lint:js": "eslint .",
     "lint:ts": "tsc --noEmit",
