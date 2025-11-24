@@ -40,8 +40,10 @@ Linting configuration for verkstedt projects
    ```mjs
    import { fileURLToPath } from 'node:url';
    import { defineConfig } from 'eslint/config';
-   import { includeIgnoreFile } from 'eslint/compat';
-   import { createVerkstedtConfig } from '@verkstedt/lint';
+   import {
+     createVerkstedtConfig,
+     includeIgnoreFile,
+   } from '@verkstedt/lint/eslint';
 
    export default defineConfig([
      // If you want to ignore files, specify them in `.prettierignore`,
@@ -53,7 +55,7 @@ Linting configuration for verkstedt projects
        fileURLToPath(new URL('./.prettierignore', import.meta.url)),
      ),
      await createVerkstedtConfig({
-       dir: fileURLToPath(import.meta.url),
+       dir: fileURLToPath(new URL('.', import.meta.url)),
        // If you have TypeScript files that are NOT included in your tsconfig (e.g.
        // config files), you specify them here.
        // https://typescript-eslint.io/packages/parser/#allowdefaultproject

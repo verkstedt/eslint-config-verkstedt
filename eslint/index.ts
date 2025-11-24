@@ -1,7 +1,7 @@
 import { debuglog, inspect } from 'node:util';
 import fs from 'node:fs/promises';
 import globals from 'globals';
-import { includeIgnoreFile } from '@eslint/compat';
+import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
@@ -10,7 +10,6 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import packageJson from '../package.json' with { type: 'json' };
 
 import type { Linter } from 'eslint';
-import type { FlatConfig } from '@eslint/compat';
 import { globalIgnores } from 'eslint/config';
 import { resolve } from 'node:path';
 import { WriteStream } from 'node:tty';
@@ -43,7 +42,7 @@ interface PackageJson {
 
 type PromiseOrValue<Type> = Type | Promise<Type>;
 
-type Config = Linter.Config | Array<Linter.Config> | FlatConfig;
+type Config = Linter.Config | Array<Linter.Config>;
 
 interface ModuleConfig {
   /** Name for humans only */
@@ -51,6 +50,11 @@ interface ModuleConfig {
   /** Return EsLint config entry, or null to skip */
   get: (this: ModuleConfig) => PromiseOrValue<null | Config>;
 }
+
+const includeIgnoreFile = includeIgnoreFileOriginal as (
+  ignoreFilePath: string,
+  name?: string,
+) => Linter.Config;
 
 function getColours(stream: WriteStream) {
   if (stream.isTTY) {
@@ -204,7 +208,11 @@ async function createVerkstedtConfig({
                 parserOptions: {
                   tsConfigRootDir: dir,
                   projectService: {
-                    allowDefaultProject,
+                    allowDefaultProject: [
+                      'eslint.config.ts',
+                      'prettier.config.ts',
+                      ...allowDefaultProject,
+                    ],
                   },
                 },
               },
@@ -392,4 +400,4 @@ async function createVerkstedtConfig({
   return config;
 }
 
-export default createVerkstedtConfig;
+export { createVerkstedtConfig, includeIgnoreFile };
