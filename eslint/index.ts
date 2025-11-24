@@ -281,6 +281,19 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'lingui',
+      async get() {
+        if (!deps.some((dep) => dep.startsWith('@lingui/'))) {
+          return null;
+        } else {
+          // source: https://lingui.dev/ref/eslint-plugin
+
+          const { default: lingui } = await import('eslint-plugin-lingui');
+          return [lingui.configs['flat/recommended']];
+        }
+      },
+    },
+    {
       name: 'json',
       get() {
         return {

@@ -78,6 +78,7 @@
     "eslint": "^9.38.0",
     "eslint-config-next": "^16.0.3",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-lingui": "^0.11.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-storybook": "^10.0.8",
     "jiti": "^2.6.1",
