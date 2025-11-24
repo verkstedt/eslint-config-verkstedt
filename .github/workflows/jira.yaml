@@ -1,4 +1,4 @@
-name: "Jira integration"
+name: 'Jira integration'
 
 # Move Jira issues when PRs are created, published or merged.
 #
@@ -23,6 +23,6 @@ on:
 
 jobs:
   jira:
-    name: "Move jira issues"
+    name: 'Move jira issues'
     uses: verkstedt/actions/.github/workflows/jira.yaml@v1
     secrets: inherit

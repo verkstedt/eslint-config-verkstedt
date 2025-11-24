@@ -1,4 +1,4 @@
-name: "Ref Comment in Commit"
+name: 'Ref Comment in Commit'
 
 # Make it possible to reference a GH comment in a commit message.
 #
@@ -13,10 +13,10 @@ on:
 
 jobs:
   ref-comments:
-    name: "Ref Comment in Commit"
+    name: 'Ref Comment in Commit'
     runs-on: ubuntu-latest
     steps:
-      - name: "Ref Comment in Commit"
-        uses: "verkstedt/actions/ref-comment-in-commit@v1"
+      - name: 'Ref Comment in Commit'
+        uses: 'verkstedt/actions/ref-comment-in-commit@v1'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

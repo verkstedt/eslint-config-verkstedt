@@ -1,4 +1,4 @@
-name: "CI"
+name: 'CI'
 
 # Detect interesting npm scripts and run them.
 #
@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   ci:
-    name: "CI"
+    name: 'CI'
     uses: verkstedt/actions/.github/workflows/ci.yaml@v1
     secrets: inherit
     with:
