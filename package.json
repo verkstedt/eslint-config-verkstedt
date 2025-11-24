@@ -44,7 +44,9 @@
     "test": "npm-run-all --print-name --print-label 'test:*'",
     "test:eslint-prettier": "eslint-config-prettier eslint.config.ts",
     "test:unit": "./test/test.sh",
-    "build": "tsc",
+    "build": "npm-run-all --print-name --print-label 'build:*'",
+    "build:ts": "tsc",
+    "build:copy": "mkdir -p esm/ && cp -r prettier/.prettierignore esm/prettier/",
     "holistic-check": "npm-run-all --print-name --print-label 'lint:!(ts)' build 'test:*'"
   },
   "peerDependencies": {

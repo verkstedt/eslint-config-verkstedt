@@ -14,7 +14,7 @@ Linting configuration for verkstedt projects
 1. Install:
 
    ```sh
-   npm install --save-dev eslint @verkstedt/lint
+   npm install --save-dev eslint prettier @verkstedt/lint
    ```
 
 2. Create `prettier.config.mjs`:
@@ -24,24 +24,36 @@ Linting configuration for verkstedt projects
    export { default as default } from '@verkstedt/lint/prettier';
    ```
 
+   …and an empty `.prettierignore`:
+
+   ```sh
+   touch .prettierignore
+   ```
+
    > [!NOTE]
-   > EsLint is set up to also use Prettier.
+   > EsLint is set up to also use Prettier, so you don’t have to run it
+   > separately, but you can, if you e.g. want to do just the
+   > formatting in your editor.
 
 3. Create `eslint.config.js`:
 
    ```mjs
    import { fileURLToPath } from 'node:url';
-   import { defineConfig, globalIgnores } from 'eslint/config';
+   import { defineConfig } from 'eslint/config';
+   import { includeIgnoreFile } from 'eslint/compat';
    import { createVerkstedtConfig } from '@verkstedt/lint';
 
    export default defineConfig([
-     globalIgnores([
-       // Files you don’t want to be linted, in addition to .gitignore from the
-       // root for the project
-       // https://eslint.org/docs/latest/use/configure/ignore#name-the-global-ignores-config
-     ]),
+     // If you want to ignore files, specify them in `.prettierignore`,
+     // so that they are also ignored by Prettier.
+     // Verkstedt config automatically ignores files specified in
+     // `.gitignore` in the same directory as this config file in
+     // addition to some other commonly ignored files.
+     includeIgnoreFile(
+       fileURLToPath(new URL('./.prettierignore', import.meta.url)),
+     ),
      await createVerkstedtConfig({
-       dir: fileURLToPath(new URL('.', import.meta.url)),
+       dir: fileURLToPath(import.meta.url),
        // If you have TypeScript files that are NOT included in your tsconfig (e.g.
        // config files), you specify them here.
        // https://typescript-eslint.io/packages/parser/#allowdefaultproject

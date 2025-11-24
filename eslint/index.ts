@@ -10,9 +10,11 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import packageJson from '../package.json' with { type: 'json' };
 
 import type { Linter } from 'eslint';
+import type { FlatConfig } from '@eslint/compat';
 import { globalIgnores } from 'eslint/config';
 import { resolve } from 'node:path';
 import { WriteStream } from 'node:tty';
+import { fileURLToPath } from 'node:url';
 
 const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
 const TS_EXTS = ['ts', 'tsx'];
@@ -41,13 +43,13 @@ interface PackageJson {
 
 type PromiseOrValue<Type> = Type | Promise<Type>;
 
+type Config = Linter.Config | Array<Linter.Config> | FlatConfig;
+
 interface ModuleConfig {
   /** Name for humans only */
   name: string;
   /** Return EsLint config entry, or null to skip */
-  get: (
-    this: ModuleConfig,
-  ) => PromiseOrValue<null | Linter.Config | Array<Linter.Config>>;
+  get: (this: ModuleConfig) => PromiseOrValue<null | Config>;
 }
 
 function getColours(stream: WriteStream) {
@@ -104,18 +106,16 @@ interface CreateVerkstedtConfigOptions {
 async function createVerkstedtConfig({
   dir,
   allowDefaultProject = [],
-}: CreateVerkstedtConfigOptions) {
+}: CreateVerkstedtConfigOptions): Promise<Array<Config>> {
   const startMs = performance.now();
 
   const packageJsonPath = resolve(dir, 'package.json');
   const gitignorePath = resolve(dir, '.gitignore');
 
-  const config: Array<Linter.Config | Array<Linter.Config>> = [];
+  const config: Array<Config> = [];
 
   if (gitignorePath && (await fileExists(gitignorePath))) {
-    config.push(
-      includeIgnoreFile(gitignorePath, '.gitignore') as Linter.Config, // FIXME Type mismatch
-    );
+    config.push(includeIgnoreFile(gitignorePath, '.gitignore'));
   }
 
   const packageJson = JSON.parse(
@@ -129,6 +129,17 @@ async function createVerkstedtConfig({
   );
 
   const allModuleConfigs: Array<ModuleConfig> = [
+    {
+      name: 'prettier ignore',
+      get() {
+        return includeIgnoreFile(
+          fileURLToPath(
+            new URL('../prettier/.prettierignore', import.meta.url),
+          ),
+          'prettierignore',
+        );
+      },
+    },
     {
       name: 'globals',
       get() {
