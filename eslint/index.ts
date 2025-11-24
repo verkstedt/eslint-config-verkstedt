@@ -12,6 +12,7 @@ import packageJson from '../package.json' with { type: 'json' };
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import { resolve } from 'node:path';
+import { WriteStream } from 'node:tty';
 
 const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
 const TS_EXTS = ['ts', 'tsx'];
@@ -49,25 +50,39 @@ interface ModuleConfig {
   ) => PromiseOrValue<null | Linter.Config | Array<Linter.Config>>;
 }
 
+function getColours(stream: WriteStream) {
+  if (stream.isTTY) {
+    return {
+      supported: true,
+      reset: '\x1B[0m',
+      dim: '\x1B[2m',
+      error: '\x1B[31m',
+    };
+  } else {
+    return {
+      supported: false,
+      reset: '',
+      dim: '',
+      error: '',
+    };
+  }
+}
+
 const NAME = packageJson.name;
 const DEBUG_ENABLED = debuglog(NAME).enabled;
 function debugLog(...args: Parameters<typeof console.debug>) {
   if (DEBUG_ENABLED) {
     const stream = process.stderr;
-    const colors = stream.isTTY;
+    const colours = getColours(stream);
     const message = args
-      .map((arg) => (typeof arg === 'string' ? arg : inspect(arg, { colors })))
+      .map((arg) =>
+        typeof arg === 'string'
+          ? arg
+          : inspect(arg, { colors: colours.supported }),
+      )
       .join(' ');
     stream.write(
-      [
-        colors ? '\x1B[2m' : '',
-        'DEBUG ',
-        NAME,
-        ' ',
-        message,
-        colors ? '\x1B[0m' : '',
-        '\n',
-      ].join(''),
+      [colours.dim, 'DEBUG ', NAME, ' ', message, colours.reset, '\n'].join(''),
     );
   }
 }
@@ -286,6 +301,7 @@ async function createVerkstedtConfig({
   const missingDeps = new Set<string>();
   for (const moduleConfig of allModuleConfigs) {
     try {
+      debugLog('Getting:', moduleConfig.name);
       const configEntry = await moduleConfig.get();
       if (configEntry != null) {
         config.push(configEntry);
@@ -315,9 +331,12 @@ async function createVerkstedtConfig({
   }
 
   if (missingDeps.size > 0) {
-    process.stderr.write(
+    const stream = process.stderr;
+    const colours = getColours(stream);
+    stream.write(
       [
-        'ERROR: Failed to create verkstedt EsLint config, because some dependencies are missing, run:',
+        '',
+        `${colours.error}ERROR: Failed to create verkstedt EsLint config, because some dependencies are missing${colours.reset}. Run:`,
         '    npm install --save-dev ' +
           missingDeps.values().toArray().join(' '),
         '',
