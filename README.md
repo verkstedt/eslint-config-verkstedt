@@ -31,16 +31,17 @@ Linting configuration for verkstedt projects
 
    ```mjs
    import { fileURLToPath } from 'node:url';
-   import { defineConfig } from 'eslint/config';
+   import { defineConfig, globalIgnores } from 'eslint/config';
    import { createVerkstedtConfig } from '@verkstedt/lint';
 
    export default defineConfig([
-     await createVerkstedtConfig({
-       dir: fileURLToPath(new URL('.', import.meta.url)),
+     globalIgnores([
        // Files you don’t want to be linted, in addition to .gitignore from the
        // root for the project
        // https://eslint.org/docs/latest/use/configure/ignore#name-the-global-ignores-config
-       ignore: [],
+     ]),
+     await createVerkstedtConfig({
+       dir: fileURLToPath(new URL('.', import.meta.url)),
        // If you have TypeScript files that are NOT included in your tsconfig (e.g.
        // config files), you specify them here.
        // https://typescript-eslint.io/packages/parser/#allowdefaultproject

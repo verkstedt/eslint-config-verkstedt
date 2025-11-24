@@ -98,13 +98,11 @@ async function fileExists(path: string): Promise<boolean> {
 
 interface CreateVerkstedtConfigOptions {
   dir: string;
-  ignore?: Parameters<typeof globalIgnores>[0];
   allowDefaultProject?: Array<string>;
 }
 
 async function createVerkstedtConfig({
   dir,
-  ignore,
   allowDefaultProject = [],
 }: CreateVerkstedtConfigOptions) {
   const startMs = performance.now();
@@ -118,10 +116,6 @@ async function createVerkstedtConfig({
     config.push(
       includeIgnoreFile(gitignorePath, '.gitignore') as Linter.Config, // FIXME Type mismatch
     );
-  }
-
-  if (ignore != null && ignore.length > 0) {
-    config.push(globalIgnores(ignore));
   }
 
   const packageJson = JSON.parse(
