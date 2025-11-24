@@ -184,7 +184,7 @@ async function createVerkstedtConfig({
 
           const configs = (await import('typescript-eslint')).default.configs;
           const selectedConfigs = [
-            ...configs.recommendedTypeChecked,
+            ...configs.strictTypeChecked, // extends recommended
             ...configs.stylisticTypeChecked,
           ].map((cfg) => ({
             ...cfg,
