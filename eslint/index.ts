@@ -25,6 +25,8 @@ const CSS_EXTS = ['css', 'scss'];
 const CSS_FILES = [`**/*.{${CSS_EXTS.join(',')}}`];
 const JSON_EXTS = ['json', 'jsonc'];
 const JSON_FILES = [`**/*.{${JSON_EXTS.join(',')}}`];
+const MS_JSONC_FILES = ['tsconfig.json', '.vscode/**/*.json'];
+const JSONC_FILES = ['**/*.jsonc', ...MS_JSONC_FILES];
 const MARKDOWN_EXTS = ['md', 'markdown'];
 const MARKDOWN_FILES = [`**/*.{${MARKDOWN_EXTS.join(',')}}`];
 const ALL_FILES_EXTS = [
@@ -313,6 +315,29 @@ async function createVerkstedtConfig({
           files: JSON_FILES,
           plugins: { json },
           language: 'json/json',
+        };
+      },
+    },
+    {
+      name: 'jsonc',
+      get() {
+        return {
+          files: JSONC_FILES,
+          plugins: { json },
+          language: 'json/jsonc',
+        };
+      },
+    },
+    {
+      name: 'jsonc with Microsoft extensions',
+      get() {
+        return {
+          files: MS_JSONC_FILES,
+          plugins: { json },
+          language: 'json/jsonc',
+          languageOptions: {
+            allowTrailingCommas: true,
+          },
         };
       },
     },
