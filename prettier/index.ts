@@ -5,6 +5,8 @@ const config: Config = {
   singleQuote: true,
   // Add trailing commas
   trailingComma: 'all',
+  // If one prop needs quotes, quote all
+  quoteProps: 'consistent',
 };
 
 export default config;
