@@ -433,6 +433,8 @@ async function createVerkstedtConfig({
                 : {}),
             },
             rules: {
+              // Disallow ${} in non–template strings
+              'no-template-curly-in-string': 'error',
               // Disallow shadowing variable names
               'no-shadow': 'error',
               // No console.* debug leftovers
