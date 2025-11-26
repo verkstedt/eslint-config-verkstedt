@@ -8,6 +8,7 @@ import markdown from '@eslint/markdown';
 import css from '@eslint/css';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import packageJson from '../package.json' with { type: 'json' };
+import importPlugin from 'eslint-plugin-import';
 
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
@@ -135,6 +136,12 @@ async function createVerkstedtConfig({
     ]),
   );
 
+  const usesTypeScript =
+    !deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
+    !(await fileExists('tsconfig.json'));
+  const usesReact = !deps.some((dep) => /^(react|react-dom)$/.test(dep));
+  const usesNextJs = deps.some((dep) => dep === 'next');
+
   const allModuleConfigs: Array<ModuleConfig> = [
     {
       name: 'prettier ignore',
@@ -172,6 +179,16 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'import',
+      get() {
+        return [
+          importPlugin.flatConfigs.recommended,
+          usesTypeScript && importPlugin.flatConfigs.typescript,
+          usesReact && importPlugin.flatConfigs.react,
+        ].filter((item) => item !== false);
+      },
+    },
+    {
       name: 'custom',
       get() {
         return {
@@ -184,12 +201,7 @@ async function createVerkstedtConfig({
     {
       name: 'typescript',
       async get() {
-        if (
-          !deps.some((dep) =>
-            /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep),
-          ) ||
-          !(await fileExists('tsconfig.json'))
-        ) {
+        if (usesTypeScript) {
           return null;
         } else {
           const additionalAllowDefaultProject: Array<string> =
@@ -265,7 +277,7 @@ async function createVerkstedtConfig({
     {
       name: 'react',
       async get() {
-        if (!deps.some((dep) => /^(react|react-dom)$/.test(dep))) {
+        if (!usesReact) {
           return null;
         } else {
           // source: https://react.dev/reference/eslint-plugin-react-hooks
@@ -293,7 +305,7 @@ async function createVerkstedtConfig({
     {
       name: 'next.js',
       async get() {
-        if (!deps.some((dep) => dep === 'next')) {
+        if (!usesNextJs) {
           return null;
         } else {
           // source: https://nextjs.org/docs/app/api-reference/config/eslint#setup-eslint
@@ -302,7 +314,15 @@ async function createVerkstedtConfig({
             'eslint-config-next/core-web-vitals'
           );
           return [
-            ...nextVitals,
+            ...nextVitals
+              // import plugin already included in importPlugin.flatConfigs.recommended,
+              // defining it again breaks the config
+              .map((cfgItem) => {
+                if (cfgItem.plugins?.import) {
+                  delete cfgItem.plugins.import;
+                }
+                return cfgItem;
+              }),
             globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
           ];
         }
