@@ -1,9 +1,10 @@
 import { fileURLToPath } from 'node:url';
-import { defineConfig } from 'eslint/config';
+
 import {
   createVerkstedtConfig,
   includeIgnoreFile,
 } from '@verkstedt/lint/eslint';
+import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   // If you want to ignore files, specify them in `.prettierignore`,
