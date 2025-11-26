@@ -53,7 +53,10 @@ interface ModuleConfig {
   /** Name for humans only */
   name: string;
   /** Return EsLint config entry, or null to skip */
-  get: (this: ModuleConfig) => PromiseOrValue<null | Config>;
+  get: (
+    this: ModuleConfig,
+    config: Array<Config>,
+  ) => PromiseOrValue<null | Config>;
 }
 
 const includeIgnoreFile = includeIgnoreFileOriginal as (
@@ -138,9 +141,9 @@ async function createVerkstedtConfig({
   );
 
   const usesTypeScript =
-    !deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
-    !(await fileExists('tsconfig.json'));
-  const usesReact = !deps.some((dep) => /^(react|react-dom)$/.test(dep));
+    deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
+    (await fileExists('tsconfig.json'));
+  const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
   const usesNextJs = deps.some((dep) => dep === 'next');
 
   const allModuleConfigs: Array<ModuleConfig> = [
@@ -186,35 +189,15 @@ async function createVerkstedtConfig({
           importPlugin.flatConfigs.recommended,
           usesTypeScript && importPlugin.flatConfigs.typescript,
           usesReact && importPlugin.flatConfigs.react,
-        ].filter((item) => item !== false);
-      },
-    },
-    {
-      name: 'custom',
-      get() {
-        return {
-          rules: {
-            'no-console': 'error',
-            'import/enforce-node-protocol-usage': ['error', 'always'],
-            'import/order': [
-              'error',
-              {
-                'alphabetize': { order: 'asc', caseInsensitive: true },
-                'newlines-between': 'always',
-                'named': {
-                  enabled: true,
-                  types: 'types-last',
-                },
-              },
-            ],
-          },
-        };
+        ]
+          .filter((item) => item !== false)
+          .map(({ languageOptions: _languageOptions, ...cfgItem }) => cfgItem);
       },
     },
     {
       name: 'typescript',
       async get() {
-        if (usesTypeScript) {
+        if (!usesTypeScript) {
           return null;
         } else {
           const additionalAllowDefaultProject: Array<string> =
@@ -274,13 +257,6 @@ async function createVerkstedtConfig({
                     ],
                   },
                 },
-              },
-              rules: {
-                // Use Array<…> instead of …[]
-                '@typescript-eslint/array-type': [
-                  'error',
-                  { default: 'generic' },
-                ],
               },
             },
           ];
@@ -435,15 +411,84 @@ async function createVerkstedtConfig({
         };
       },
     },
+    {
+      name: 'custom',
+      get(configSoFar) {
+        // To be able to overwrite @typescript-eslint rules, we need to
+        // include @typescript-eslint plugin in this section of the
+        // config. We can use its existence as a signal whether project
+        // is using TypeScript or not.
+        type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
+        const typescriptEsLintPlugin = (
+          configSoFar as unknown as Array<{ plugins?: Record<string, Plugin> }>
+        ).find((cfgItem) => cfgItem.plugins?.['@typescript-eslint'])?.plugins?.[
+          '@typescript-eslint'
+        ];
+
+        return [
+          {
+            plugins: {
+              ...(typescriptEsLintPlugin
+                ? { '@typescript-eslint': typescriptEsLintPlugin }
+                : {}),
+            },
+            rules: {
+              // No console.* debug leftovers
+              'no-console': 'error',
+              // Always use `node:…` for Node.js built-ins
+              'import/enforce-node-protocol-usage': ['error', 'always'],
+              // Sort imports
+              'import/order': [
+                'error',
+                {
+                  'alphabetize': { order: 'asc', caseInsensitive: true },
+                  'newlines-between': 'always',
+                  'named': {
+                    enabled: true,
+                    types: 'types-last',
+                  },
+                },
+              ],
+              // Allow unused vars starting with “_”
+              // Useful for using destructing to remove properties
+              // from objects
+              [typescriptEsLintPlugin
+                ? '@typescript-eslint/no-unused-vars'
+                : 'no-unused-vars']: [
+                'error',
+                {
+                  argsIgnorePattern: '^_',
+                  destructuredArrayIgnorePattern: '^_',
+                  varsIgnorePattern: '^_',
+                },
+              ],
+              // Disable the other no-unused-vars rule
+              [typescriptEsLintPlugin
+                ? 'no-unused-vars'
+                : '@typescript-eslint/no-unused-vars']: 'off',
+              // Use Array<…> instead of …[]
+              '@typescript-eslint/array-type': [
+                typescriptEsLintPlugin ? 'error' : 'off',
+                { default: 'generic' },
+              ],
+            },
+          },
+        ];
+      },
+    },
   ];
 
   const missingDeps = new Set<string>();
   for (const moduleConfig of allModuleConfigs) {
     try {
       debugLog('Getting:', moduleConfig.name);
-      const configEntry = await moduleConfig.get();
+      const configEntry = await moduleConfig.get(config);
       if (configEntry != null) {
-        config.push(configEntry);
+        if (Array.isArray(configEntry)) {
+          config.push(...configEntry);
+        } else {
+          config.push(configEntry);
+        }
       } else {
         debugLog('Skipping:', moduleConfig.name);
       }
