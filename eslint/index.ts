@@ -11,6 +11,7 @@ import packageJson from '../package.json' with { type: 'json' };
 
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
+import micromatch from 'micromatch';
 import { resolve } from 'node:path';
 import { WriteStream } from 'node:tty';
 import { fileURLToPath } from 'node:url';
@@ -191,6 +192,38 @@ async function createVerkstedtConfig({
         ) {
           return null;
         } else {
+          const additionalAllowDefaultProject: Array<string> =
+            await (async () => {
+              const tsconfigPath = resolve(dir, 'tsconfig.json');
+              const tsconfigJson = !(await fileExists(tsconfigPath))
+                ? '{}'
+                : await fs.readFile(tsconfigPath, 'utf-8');
+              interface TsConfig {
+                include?: Array<string>;
+                files?: Array<string>;
+              }
+              const tsconfig = JSON.parse(tsconfigJson) as TsConfig;
+              const tsconfigIncludes = [
+                ...(tsconfig.include ?? []),
+                ...(tsconfig.files ?? []),
+              ];
+              const tsconfigIncludesAll =
+                tsconfigIncludes.length === 0 ||
+                tsconfigIncludes.includes('**/*') ||
+                tsconfigIncludes.includes('*');
+
+              return ['eslint.config.ts', 'prettier.config.ts'].filter(
+                (filename) => {
+                  return !(
+                    tsconfigIncludesAll ||
+                    micromatch.isMatch(filename, tsconfigIncludes, {
+                      cwd: dir,
+                    })
+                  );
+                },
+              );
+            })();
+
           // source: https://typescript-eslint.io/getting-started
 
           const configs = (await import('typescript-eslint')).default.configs;
@@ -211,8 +244,7 @@ async function createVerkstedtConfig({
                   tsConfigRootDir: dir,
                   projectService: {
                     allowDefaultProject: [
-                      'eslint.config.ts',
-                      'prettier.config.ts',
+                      ...additionalAllowDefaultProject,
                       ...allowDefaultProject,
                     ],
                   },
