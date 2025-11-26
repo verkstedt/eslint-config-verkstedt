@@ -71,10 +71,21 @@
     "typescript-eslint": {
       "optional": true,
       "note": "Required if you are using TypeScript."
+    },
+    "eslint-config-next": {
+      "optional": true,
+      "note": "Required if you are using Next.js."
+    },
+    "eslint-plugin-storybook": {
+      "optional": true,
+      "note": "Required if you are using Storybook."
+    },
+    "eslint-plugin-lingui": {
+      "optional": true,
+      "note": "Required if you are using LinguiJS."
     }
   },
   "devDependencies": {
-    "@eslint/compat": "^1.4.1",
     "@types/eslint": "^9.6.1",
     "@types/micromatch": "^4.0.10",
     "@types/node": "^24.9.2",
@@ -91,6 +102,7 @@
     "typescript-eslint": "^8.46.2"
   },
   "dependencies": {
+    "@eslint/compat": "^1.4.1",
     "@eslint/css": "^0.13.0",
     "@eslint/js": "^9.38.0",
     "@eslint/json": "^0.13.2",
