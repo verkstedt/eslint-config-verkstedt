@@ -21,4 +21,10 @@ export default defineConfig([
     // https://typescript-eslint.io/packages/parser/#allowdefaultproject
     allowDefaultProject: [],
   }),
+  {
+    rules: {
+      // import plugin doesn’t handle our funky test imports well
+      'import/no-unresolved': 'off',
+    },
+  },
 ]);

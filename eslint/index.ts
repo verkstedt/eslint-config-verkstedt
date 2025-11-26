@@ -1,21 +1,22 @@
-import { debuglog, inspect } from 'node:util';
 import fs from 'node:fs/promises';
-import globals from 'globals';
-import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
-import js from '@eslint/js';
-import json from '@eslint/json';
-import markdown from '@eslint/markdown';
-import css from '@eslint/css';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
-import packageJson from '../package.json' with { type: 'json' };
-import importPlugin from 'eslint-plugin-import';
-
-import type { Linter } from 'eslint';
-import { globalIgnores } from 'eslint/config';
-import micromatch from 'micromatch';
 import { resolve } from 'node:path';
 import { WriteStream } from 'node:tty';
 import { fileURLToPath } from 'node:url';
+import { debuglog, inspect } from 'node:util';
+
+import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
+import css from '@eslint/css';
+import js from '@eslint/js';
+import json from '@eslint/json';
+import markdown from '@eslint/markdown';
+import type { Linter } from 'eslint';
+import { globalIgnores } from 'eslint/config';
+import importPlugin from 'eslint-plugin-import';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
+import micromatch from 'micromatch';
+
+import packageJson from '../package.json' with { type: 'json' };
 
 const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
 const TS_EXTS = ['ts', 'tsx'];
@@ -194,6 +195,18 @@ async function createVerkstedtConfig({
         return {
           rules: {
             'no-console': 'error',
+            'import/enforce-node-protocol-usage': ['error', 'always'],
+            'import/order': [
+              'error',
+              {
+                'alphabetize': { order: 'asc', caseInsensitive: true },
+                'newlines-between': 'always',
+                'named': {
+                  enabled: true,
+                  types: 'types-last',
+                },
+              },
+            ],
           },
         };
       },

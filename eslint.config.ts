@@ -1,5 +1,7 @@
 import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'eslint/config';
+
 import { createVerkstedtConfig, includeIgnoreFile } from './eslint/index.ts';
 
 export default defineConfig([
