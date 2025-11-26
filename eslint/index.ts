@@ -16,7 +16,7 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import micromatch from 'micromatch';
 
-import packageJson from '../package.json' with { type: 'json' };
+import configPackageJson from '../package.json' with { type: 'json' };
 
 const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
 const TS_EXTS = ['ts', 'tsx'];
@@ -82,7 +82,7 @@ function getColours(stream: WriteStream) {
   }
 }
 
-const NAME = packageJson.name;
+const NAME = configPackageJson.name;
 const DEBUG_ENABLED = debuglog(NAME).enabled;
 function debugLog(...args: Parameters<typeof console.debug>) {
   if (DEBUG_ENABLED) {
@@ -433,6 +433,8 @@ async function createVerkstedtConfig({
                 : {}),
             },
             rules: {
+              // Disallow shadowing variable names
+              'no-shadow': 'error',
               // No console.* debug leftovers
               'no-console': 'error',
               // Always use `node:…` for Node.js built-ins
