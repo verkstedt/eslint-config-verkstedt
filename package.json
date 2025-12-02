@@ -114,5 +114,9 @@
     "globals": "^16.4.0",
     "micromatch": "^4.0.8",
     "prettier": ">=3.6.2"
+  },
+  "config": {
+    "setup-repo-is-frontend": "No",
+    "setup-repo-version": "1.1.5+git.48e2424"
   }
 }
