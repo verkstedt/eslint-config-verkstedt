@@ -6,11 +6,13 @@ import { debuglog, inspect } from 'node:util';
 
 import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
 import css from '@eslint/css';
+import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
+import cssModulesPlugin from 'eslint-plugin-css-modules';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
@@ -147,6 +149,10 @@ async function createVerkstedtConfig({
     (await fileExists('tsconfig.json'));
   const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
   const usesNextJs = deps.some((dep) => dep === 'next');
+
+  const compat = new FlatCompat({
+    baseDirectory: import.meta.dirname,
+  });
 
   const allModuleConfigs: Array<ModuleConfig> = [
     {
@@ -401,6 +407,17 @@ async function createVerkstedtConfig({
           files: CSS_FILES,
           plugins: { css },
           language: 'css/css',
+        };
+      },
+    },
+    {
+      name: 'css-modules',
+      get() {
+        return {
+          plugins: {
+            'css-modules': cssModulesPlugin,
+          },
+          extends: compat.extends('plugin:css-modules/recommended'),
         };
       },
     },
