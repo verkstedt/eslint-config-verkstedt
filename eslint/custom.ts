@@ -14,6 +14,9 @@ function getVerkstedtConfig({
 }: GetVerkstedtConfigOptions): Array<Linter.Config> {
   return [
     {
+      linterOptions: {
+        reportUnusedDisableDirectives: 'error',
+      },
       plugins: {
         ...(typescriptEsLintPlugin
           ? { '@typescript-eslint': typescriptEsLintPlugin, 'foo': {} }
