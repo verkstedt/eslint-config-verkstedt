@@ -36,6 +36,13 @@
       }
     }
   },
+  "workspaces": [
+    ".",
+    "test/001-js",
+    "test/002-ts",
+    "test/003-react",
+    "test/004-next.js"
+  ],
   "scripts": {
     "prepublishOnly": "npm run --silent holistic-check",
     "lint": "npm-run-all --print-name --print-label 'lint:*'",
@@ -43,7 +50,7 @@
     "lint:ts": "tsc --noEmit",
     "test": "npm-run-all --print-name --print-label 'test:*'",
     "test:eslint-prettier": "eslint-config-prettier eslint.config.ts",
-    "test:unit": "./test/test.sh",
+    "test:unit": "npm run --workspaces --if-present 'test:unit:test'",
     "build": "npm-run-all --print-name --print-label 'build:*'",
     "build:ts": "tsc",
     "build:copy": "mkdir -p esm/ && cp -r prettier/.prettierignore esm/prettier/",

@@ -1,12 +1,11 @@
 {
-  "name": "test-project",
+  "name": "test-project-react",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "eslint --max-warnings=0 ."
+    "test:unit:test": "eslint --max-warnings=0 ."
   },
   "devDependencies": {
-    "@verkstedt/lint": "../../",
     "eslint": "../../node_modules/eslint"
   },
   "dependencies": {
