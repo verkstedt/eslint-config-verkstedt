@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 
 const Foo = ({ foo }) => {
+  useEffect(() => {
+    alert(foo);
+  }, [foo]);
+
   useEffect(
     () => {
       alert(foo);

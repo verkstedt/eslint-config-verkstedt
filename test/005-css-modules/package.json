@@ -1,0 +1,12 @@
+{
+  "name": "test-project-css-modules",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test:unit:test": "eslint --max-warnings=0 ."
+  },
+  "devDependencies": {
+    "eslint": "../../node_modules/eslint"
+  },
+  "dependencies": {}
+}
