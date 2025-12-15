@@ -7,9 +7,15 @@ Linting configuration for verkstedt projects
 - [🗪 Chat](https://app.slack.com/client/T6HMM3NG2/C8U48QUBA)
 - [🗒 Tasks](https://verkstedt.atlassian.net/jira/software/projects/VIP/boards/12?jql=labels%20%3D%20lint)
 
-## Usage
+## Installation
 
-### EsLint and Prettier
+### Automatic
+
+```sh
+npx @verkstedt/lint@latest .
+```
+
+### Manual
 
 1. Install:
 
@@ -17,7 +23,9 @@ Linting configuration for verkstedt projects
    npm install --save-dev eslint prettier @verkstedt/lint
    ```
 
-2. Create `prettier.config.mjs`:
+2. Create `prettier.config.ts` (or `prettier.config.mjs`)
+
+   <!-- PRETTIER_CONFIG -- Marker used for extracting code by install.sh -->
 
    ```mjs
    export * from '@verkstedt/lint/prettier';
@@ -35,7 +43,9 @@ Linting configuration for verkstedt projects
    > separately, but you can, if you e.g. want to do just the
    > formatting in your editor.
 
-3. Create `eslint.config.js`:
+3. Create `eslint.config.ts` (or `eslint.config.mjs`)
+
+   <!-- ESLINT_CONFIG -- Marker used for extracting code by install.sh -->
 
    ```mjs
    import { fileURLToPath } from 'node:url';

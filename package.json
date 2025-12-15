@@ -20,7 +20,9 @@
   "bugs": {
     "url": "https://verkstedt.atlassian.net/jira/software/projects/VIP/boards/12"
   },
-  "bin": {},
+  "bin": {
+    "verkstedt-lint-setup": "./install.sh"
+  },
   "type": "module",
   "exports": {
     "./eslint": {
