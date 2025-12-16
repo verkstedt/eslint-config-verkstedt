@@ -345,6 +345,33 @@ async function createVerkstedtConfig({
     {
       name: 'react',
       async get() {
+        // source: https://github.com/jsx-eslint/eslint-plugin-react
+
+        if (!usesReact) {
+          return null;
+        } else {
+          return [
+            {
+              files: ALL_JS_FILES,
+              languageOptions: {
+                parserOptions: {
+                  ecmaFeatures: {
+                    jsx: true,
+                  },
+                },
+              },
+            },
+            {
+              ...(await import('eslint-plugin-react')).default.configs,
+              files: ALL_JS_FILES,
+            },
+          ];
+        }
+      },
+    },
+    {
+      name: 'react hooks',
+      async get() {
         if (!usesReact) {
           return null;
         } else {
@@ -355,16 +382,6 @@ async function createVerkstedtConfig({
               ...(await import('eslint-plugin-react-hooks')).default.configs
                 .flat.recommended,
               files: ALL_JS_FILES,
-            },
-            {
-              files: ALL_JS_FILES,
-              languageOptions: {
-                parserOptions: {
-                  ecmaFeatures: {
-                    jsx: true,
-                  },
-                },
-              },
             },
           ];
         }
