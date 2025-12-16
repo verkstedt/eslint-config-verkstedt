@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { debuglog, inspect } from 'node:util';
 
 import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
+import type { Plugin } from '@eslint/core';
 import css from '@eslint/css';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
@@ -13,6 +14,7 @@ import markdown from '@eslint/markdown';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import cssModulesPlugin from 'eslint-plugin-css-modules';
+import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
@@ -507,20 +509,34 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'eslint-comments',
+      get() {
+        return {
+          plugins: {
+            'eslint-comments': eslintCommentsPlugin,
+          },
+          files: ALL_JS_FILES,
+          extends: compat.extends('plugin:eslint-comments/recommended'),
+        };
+      },
+    },
+    {
       name: 'custom',
       get(configSoFar) {
         // To be able to overwrite @typescript-eslint rules, we need to
         // include @typescript-eslint plugin in this section of the
         // config. We can use its existence as a signal whether project
         // is using TypeScript or not.
-        type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
         const typescriptEsLintPlugin = (
           configSoFar as unknown as Array<{ plugins?: Record<string, Plugin> }>
         ).find((cfgItem) => cfgItem.plugins?.['@typescript-eslint'])?.plugins?.[
           '@typescript-eslint'
         ];
 
-        return getVerkstedtConfig({ typescriptEsLintPlugin });
+        return getVerkstedtConfig({
+          typescriptEsLintPlugin,
+          eslintCommentsPlugin,
+        });
       },
     },
   ];

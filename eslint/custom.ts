@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import type { Linter } from 'eslint';
 
 type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
 
@@ -143,6 +143,12 @@ function getStylisticRules({
           [`${typescriptPluginName}/consistent-type-exports`]: 'error',
         }),
 
+    // Require descriptions to eslint comments
+    'eslint-comments/require-description': [
+      'error',
+      { ignore: ['eslint-env', 'eslint-enable'] },
+    ],
+
     // Use const when variable is not mutated
     'prefer-const': 'error',
 
@@ -153,6 +159,7 @@ function getStylisticRules({
 
 interface GetVerkstedtConfigOptions {
   typescriptEsLintPlugin?: Plugin;
+  eslintCommentsPlugin: Plugin;
 }
 
 /**
@@ -160,6 +167,7 @@ interface GetVerkstedtConfigOptions {
  */
 function getVerkstedtConfig({
   typescriptEsLintPlugin,
+  eslintCommentsPlugin,
 }: GetVerkstedtConfigOptions): Array<Linter.Config> {
   const typescriptPluginName = typescriptEsLintPlugin
     ? '@typescript-eslint'
@@ -174,6 +182,7 @@ function getVerkstedtConfig({
         ...(typescriptPluginName
           ? { [typescriptPluginName]: typescriptEsLintPlugin }
           : {}),
+        'eslint-comments': eslintCommentsPlugin,
       },
       rules: {
         ...getCodeSmallsRules({ typescriptPluginName }),
