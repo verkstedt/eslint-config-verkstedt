@@ -398,6 +398,9 @@ async function createVerkstedtConfig({
           const { default: nextVitals } =
             // includes recommended config as well
             await import('eslint-config-next/core-web-vitals');
+          const { default: nextTypeScript } = usesTypeScript
+            ? await import('eslint-config-next/typescript')
+            : { default: [] };
           return [
             ...nextVitals
               // import plugin already included in importPlugin.flatConfigs.recommended,
@@ -408,6 +411,7 @@ async function createVerkstedtConfig({
                 }
                 return cfgItem;
               }),
+            ...nextTypeScript,
             globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
           ];
         }
