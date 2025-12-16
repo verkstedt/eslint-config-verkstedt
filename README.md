@@ -17,13 +17,23 @@ npx @verkstedt/lint@latest .
 
 ### Manual
 
+<details>
+
 1. Install:
 
    ```sh
    npm install --save-dev eslint prettier @verkstedt/lint
    ```
 
-2. Create `prettier.config.ts` (or `prettier.config.mjs`)
+2. Make your `tsconfig.json` extend ours:
+
+   ```json
+   {
+     "$schema": "https://json.schemastore.org/tsconfig",
+     "extends": "@verkstedt/lint/tsconfig",
+   ```
+
+3. Create `prettier.config.ts` (or `prettier.config.mjs`)
 
    <!-- PRETTIER_CONFIG -- Marker used for extracting code by install.sh -->
 
@@ -43,7 +53,7 @@ npx @verkstedt/lint@latest .
    > separately, but you can, if you e.g. want to do just the
    > formatting in your editor.
 
-3. Create `eslint.config.ts` (or `eslint.config.mjs`)
+4. Create `eslint.config.ts` (or `eslint.config.mjs`)
 
    <!-- ESLINT_CONFIG -- Marker used for extracting code by install.sh -->
 
@@ -63,14 +73,16 @@ npx @verkstedt/lint@latest .
    ]);
    ```
 
-4. Run:
+</details>
 
-   ```sh
-   npx eslint .
-   ```
+### First run
 
-   Running this for the first time will most likely ask you to install
-   some additional npm packages.
+```sh
+npx eslint .
+```
+
+Running this for the first time might ask you to install some additional
+packages.
 
 ## Debugging
 

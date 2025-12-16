@@ -25,6 +25,7 @@
   },
   "type": "module",
   "exports": {
+    "./tsconfig": "./typescript/tsconfig.base.json",
     "./eslint": {
       "import": {
         "types": "./esm/eslint/index.d.ts",

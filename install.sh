@@ -65,8 +65,8 @@ read_file_from_markdown ()
         awk \
             -v marker="$marker" \
             '
-                p2 && /```/ { exit }
-                p1 && /```/ { p2=1; next }
+                p2 && /^\s*```$/ { exit }
+                p1 && /^\s*```[a-z]*$/ { p2=1; next }
                 $0 ~ marker { p1=1 }
                 p2
             ' \
@@ -87,6 +87,24 @@ read_file_from_markdown ()
 install_packages ()
 {
     npm install --save-dev eslint prettier @verkstedt/lint
+}
+
+###
+# Install TypeScript
+typescript_setup ()
+{
+    expected_extends='@verkstedt/lint/tsconfig'
+    actual_extends="$( jq -r .extends tsconfig.json )"
+    if [ "$actual_extends" != "$expected_extends" ]
+    then
+        new_tsconfig_content=$(
+            jq \
+                --arg extends "$expected_extends" \
+                '{ extends: $extends } + .' \
+                tsconfig.json
+        )
+        printf '%s\n' "$new_tsconfig_content" > tsconfig.json
+    fi
 }
 
 ###
@@ -174,6 +192,9 @@ main ()
     if npm ls typescript > /dev/null 2>&1
     then
         config_file_extension="ts"
+
+        printf "${ansi_bold}SETUP TYPESCRIPT${ansi_reset}\n"
+        typescript_setup
     else
         config_file_extension="mjs"
     fi
@@ -219,4 +240,4 @@ fi
 
 # Do the thing
 
-main "$terget_dir"
+main "$target_dir"
