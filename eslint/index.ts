@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { WriteStream } from 'node:tty';
+import type { WriteStream } from 'node:tty';
 import { fileURLToPath } from 'node:url';
 import { debuglog, inspect } from 'node:util';
 
@@ -112,6 +112,68 @@ async function fileExists(path: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+function getMissingDepNameFromError(error: unknown) {
+  if (
+    error instanceof Error &&
+    'code' in error &&
+    typeof error.code === 'string' &&
+    ['MODULE_NOT_FOUND', 'ERR_MODULE_NOT_FOUND'].includes(error.code)
+  ) {
+    const match =
+      /^Cannot find (?:module|package) '(@[^/']+\/[^/']+|[^/']+)(?:|\/[^']+)'/.exec(
+        error.message,
+      );
+    if (match) {
+      return match[1];
+    } else {
+      throw error;
+    }
+  } else {
+    throw error;
+  }
+}
+
+async function createConfigFromModules(allModuleConfigs: Array<ModuleConfig>) {
+  const config: Array<Config> = [];
+
+  const missingDeps = new Set<string>();
+  for (const moduleConfig of allModuleConfigs) {
+    try {
+      debugLog('Getting:', moduleConfig.name);
+      // eslint-disable-next-line no-await-in-loop -- getters may depend on things added by previous getters
+      const configEntry = await moduleConfig.get(config);
+      if (configEntry == null) {
+        debugLog('Skipping:', moduleConfig.name);
+      } else if (Array.isArray(configEntry)) {
+        config.push(...configEntry);
+      } else {
+        config.push(configEntry);
+      }
+    } catch (error: unknown) {
+      missingDeps.add(getMissingDepNameFromError(error));
+    }
+  }
+
+  if (missingDeps.size > 0) {
+    const stream = process.stderr;
+    const colours = getColours(stream);
+    stream.write(
+      [
+        '',
+        `${colours.error}ERROR: Failed to create verkstedt EsLint config, because some dependencies are missing${colours.reset}. Run:`,
+        `    npm install --save-dev ${missingDeps
+          .values()
+          .toArray()
+          .join(' ')}`,
+        '',
+      ].join('\n'),
+    );
+    process.exit(78); // EX_CONFIG
+  }
+
+  return config;
 }
 
 interface CreateVerkstedtConfigOptions {
@@ -373,6 +435,7 @@ async function createVerkstedtConfig({
           files: JSON_FILES,
           plugins: { json },
           language: 'json/json',
+          extends: ['json/recommended'],
         };
       },
     },
@@ -383,6 +446,7 @@ async function createVerkstedtConfig({
           files: JSONC_FILES,
           plugins: { json },
           language: 'json/jsonc',
+          extends: ['json/recommended'],
         };
       },
     },
@@ -396,6 +460,7 @@ async function createVerkstedtConfig({
           languageOptions: {
             allowTrailingCommas: true,
           },
+          extends: ['json/recommended'],
         };
       },
     },
@@ -406,6 +471,7 @@ async function createVerkstedtConfig({
           files: MARKDOWN_FILES,
           plugins: { markdown },
           language: 'markdown/gfm',
+          extends: ['markdown/recommended'],
         };
       },
     },
@@ -416,6 +482,7 @@ async function createVerkstedtConfig({
           files: CSS_FILES,
           plugins: { css },
           language: 'css/css',
+          extends: ['css/recommended'],
         };
       },
     },
@@ -458,56 +525,7 @@ async function createVerkstedtConfig({
     },
   ];
 
-  const missingDeps = new Set<string>();
-  for (const moduleConfig of allModuleConfigs) {
-    try {
-      debugLog('Getting:', moduleConfig.name);
-      const configEntry = await moduleConfig.get(config);
-      if (configEntry != null) {
-        if (Array.isArray(configEntry)) {
-          config.push(...configEntry);
-        } else {
-          config.push(configEntry);
-        }
-      } else {
-        debugLog('Skipping:', moduleConfig.name);
-      }
-    } catch (error: unknown) {
-      if (
-        error instanceof Error &&
-        'code' in error &&
-        typeof error.code === 'string' &&
-        ['MODULE_NOT_FOUND', 'ERR_MODULE_NOT_FOUND'].includes(error.code)
-      ) {
-        const match =
-          /^Cannot find (?:module|package) '(@[^/']+\/[^/']+|[^/']+)(?:|\/[^']+)'/.exec(
-            error.message,
-          );
-        if (match) {
-          missingDeps.add(match[1]);
-        } else {
-          throw error;
-        }
-      } else {
-        throw error;
-      }
-    }
-  }
-
-  if (missingDeps.size > 0) {
-    const stream = process.stderr;
-    const colours = getColours(stream);
-    stream.write(
-      [
-        '',
-        `${colours.error}ERROR: Failed to create verkstedt EsLint config, because some dependencies are missing${colours.reset}. Run:`,
-        '    npm install --save-dev ' +
-          missingDeps.values().toArray().join(' '),
-        '',
-      ].join('\n'),
-    );
-    process.exit(78); // EX_CONFIG
-  }
+  config.push(...(await createConfigFromModules(allModuleConfigs)));
 
   const durationMs = performance.now() - startMs;
   debugLog('Created ESLint config in', durationMs.toFixed(2), 'ms');
