@@ -1,5 +1,7 @@
 import type { Linter } from 'eslint';
 
+import { ALL_JS_FILES } from './file-globs.ts';
+
 type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
 
 interface GetRulesOptions {
@@ -175,6 +177,7 @@ function getVerkstedtConfig({
 
   return [
     {
+      files: ALL_JS_FILES,
       linterOptions: {
         reportUnusedDisableDirectives: 'error',
       },

@@ -23,28 +23,16 @@ import micromatch from 'micromatch';
 import configPackageJson from '../package.json' with { type: 'json' };
 
 import getVerkstedtConfig from './custom.ts';
-
-const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
-const TS_EXTS = ['ts', 'tsx'];
-const TS_FILES = [`**/*.{${TS_EXTS.join(',')}}`];
-const REACT_EXTS = ['jsx', 'tsx'];
-const ALL_JS_FILES_EXTS = [...VANILLA_JS_EXTS, ...TS_EXTS, ...REACT_EXTS];
-const ALL_JS_FILES = [`**/*.{${ALL_JS_FILES_EXTS.join(',')}}`];
-const CSS_EXTS = ['css', 'scss'];
-const CSS_FILES = [`**/*.{${CSS_EXTS.join(',')}}`];
-const JSON_EXTS = ['json', 'jsonc'];
-const JSON_FILES = [`**/*.{${JSON_EXTS.join(',')}}`];
-const MS_JSONC_FILES = ['tsconfig.json', '.vscode/**/*.json'];
-const JSONC_FILES = ['**/*.jsonc', ...MS_JSONC_FILES];
-const MARKDOWN_EXTS = ['md', 'markdown'];
-const MARKDOWN_FILES = [`**/*.{${MARKDOWN_EXTS.join(',')}}`];
-const ALL_FILES_EXTS = [
-  ...ALL_JS_FILES_EXTS,
-  ...CSS_EXTS,
-  ...JSON_EXTS,
-  ...MARKDOWN_EXTS,
-];
-const ALL_FILES = [`**/*.{${ALL_FILES_EXTS.join(',')}}`];
+import {
+  ALL_FILES,
+  ALL_JS_FILES,
+  CSS_FILES,
+  JSON_FILES,
+  JSONC_FILES,
+  MARKDOWN_FILES,
+  MS_JSONC_FILES,
+  TS_FILES,
+} from './file-globs.ts';
 
 interface PackageJson {
   dependencies?: Record<string, string>;
