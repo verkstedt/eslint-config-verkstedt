@@ -53,7 +53,15 @@ interface PackageJson {
 
 type PromiseOrValue<Type> = Type | Promise<Type>;
 
-type Config = Linter.Config | Array<Linter.Config>;
+type ArrayOrItem<Type> = Type | Array<Type>;
+
+// Not all plugins are typed as {import('@eslint/core').Plugin}
+type AnyPlugin = Plugin | typeof json | typeof css;
+type Config = ArrayOrItem<
+  Omit<Linter.Config, 'plugins'> & {
+    plugins?: Record<string, AnyPlugin>;
+  }
+>;
 
 interface ModuleConfig {
   /** Name for humans only */
