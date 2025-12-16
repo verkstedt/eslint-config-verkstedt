@@ -156,14 +156,25 @@ async function createVerkstedtConfig({
 
   const allModuleConfigs: Array<ModuleConfig> = [
     {
-      name: 'prettier ignore',
+      name: 'built–in prettier ignore',
       get() {
         return includeIgnoreFile(
           fileURLToPath(
             new URL('../prettier/.prettierignore', import.meta.url),
           ),
-          'prettierignore',
+          this.name,
         );
+      },
+    },
+    {
+      name: 'app prettier ignore',
+      async get() {
+        const prettierIgnorePath = resolve(dir, '.prettierignore');
+        if (await fileExists(prettierIgnorePath)) {
+          return includeIgnoreFile(prettierIgnorePath, this.name);
+        } else {
+          return null;
+        }
       },
     },
     {
@@ -307,9 +318,8 @@ async function createVerkstedtConfig({
         } else {
           // source: https://nextjs.org/docs/app/api-reference/config/eslint#setup-eslint
 
-          const { default: nextVitals } = await import(
-            'eslint-config-next/core-web-vitals'
-          );
+          const { default: nextVitals } =
+            await import('eslint-config-next/core-web-vitals');
           return [
             ...nextVitals
               // import plugin already included in importPlugin.flatConfigs.recommended,
@@ -333,9 +343,8 @@ async function createVerkstedtConfig({
         } else {
           // source: https://storybook.js.org/docs/configure/integration/eslint-plugin#configuration-flat-config-format
 
-          const { default: storybook } = await import(
-            'eslint-plugin-storybook'
-          );
+          const { default: storybook } =
+            await import('eslint-plugin-storybook');
 
           return [
             // FIXME Casting with `as` should not be necessary
