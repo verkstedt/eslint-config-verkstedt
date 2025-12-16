@@ -1,6 +1,6 @@
 import type { Linter } from 'eslint';
 
-import { ALL_JS_FILES } from './file-globs.ts';
+import { ALL_JS_FILES, MARKDOWN_FILES } from './file-globs.ts';
 
 type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
 
@@ -192,6 +192,26 @@ function getVerkstedtConfig({
         ...getPromisesRules({ typescriptPluginName }),
         ...getImportsRules({ typescriptPluginName }),
         ...getStylisticRules({ typescriptPluginName }),
+      },
+    },
+    {
+      files: MARKDOWN_FILES,
+      rules: {
+        // Parser does not recognise alerts in GitHub-Flavoured Markdown:
+        // https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts
+        // Remove this once https://github.com/eslint/markdown/issues/294 is resolved
+        'markdown/no-missing-label-refs': [
+          'error',
+          {
+            allowLabels: [
+              '!NOTE',
+              '!TIP',
+              '!IMPORTANT',
+              '!WARNING',
+              '!CAUTION',
+            ],
+          },
+        ],
       },
     },
   ];
