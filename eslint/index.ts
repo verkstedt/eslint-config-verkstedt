@@ -396,6 +396,7 @@ async function createVerkstedtConfig({
           // source: https://nextjs.org/docs/app/api-reference/config/eslint#setup-eslint
 
           const { default: nextVitals } =
+            // includes recommended config as well
             await import('eslint-config-next/core-web-vitals');
           return [
             ...nextVitals
