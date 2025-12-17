@@ -83,13 +83,6 @@ read_file_from_markdown ()
 }
 
 ###
-# Install npm packages
-install_packages ()
-{
-    npm install --save-dev eslint prettier @verkstedt/lint
-}
-
-###
 # Install TypeScript
 typescript_setup ()
 {
@@ -183,13 +176,24 @@ eslint_setup ()
 main ()
 {
     lint_dir=$( read_link_f "$0" )
+    target_dir="$1"
 
-    cd "$1"
+    cd "$target_dir"
+
+    uses_typescript=$(
+        npm ls typescript > /dev/null 2>&1 && echo "1" || echo ""
+    )
 
     printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
-    install_packages
+    set -- @verkstedt/lint eslint prettier
+    if [ -n "$uses_typescript" ]
+    then
+        # jiti is neede to load TypeScript ESLint config files
+        set -- "$@" jiti typescript-eslint
+    fi
+    npm install --save-dev "$@"
 
-    if npm ls typescript > /dev/null 2>&1
+    if [ -n "$uses_typescript" ]
     then
         config_file_extension="ts"
 

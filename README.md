@@ -25,6 +25,12 @@ npx @verkstedt/lint@latest .
    npm install --save-dev eslint prettier @verkstedt/lint
    ```
 
+   If you are using TypeScript, also:
+
+   ```sh
+   npm install --save-dev jiti
+   ```
+
 2. Make your `tsconfig.json` extend ours:
 
    ```json
