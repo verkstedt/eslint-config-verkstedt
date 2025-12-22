@@ -16,6 +16,9 @@ function getCodeSmallsRules({
       ? {
           // Include case for each possible value in switch statements
           [`${typescriptPluginName}/switch-exhaustiveness-check`]: 'error',
+          // In TypeScript projects, TSC handles catching unresolved
+          // imports
+          ['import/no-unresolved']: 'off',
         }
       : {}),
 
