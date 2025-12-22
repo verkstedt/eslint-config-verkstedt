@@ -6,7 +6,7 @@ import {
 } from '@verkstedt/lint/eslint';
 import { defineConfig } from 'eslint/config';
 
-const config = defineConfig([
+export default defineConfig([
   // If you want to ignore files, specify them in `.prettierignore`,
   // so that they are also ignored by Prettier.
   // Verkstedt config automatically ignores files specified in
@@ -23,10 +23,3 @@ const config = defineConfig([
     allowDefaultProject: [],
   }),
 ]);
-
-if (process.argv.includes('--print-config')) {
-  // eslint-disable-next-line no-console
-  console.log(config);
-}
-
-export default config;
