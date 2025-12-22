@@ -5,6 +5,8 @@
   "scripts": {
     "test:unit:test": "eslint --max-warnings=0 ."
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "@verkstedt/lint": "../../",
+    "eslint": "^9.39.2"
+  }
 }
