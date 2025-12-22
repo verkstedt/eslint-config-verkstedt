@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test:unit:test": "eslint --max-warnings=0 ."
+    "test:unit:test": "eslint --max-warnings=0 . && tsc --noEmit"
   },
   "devDependencies": {
     "@verkstedt/lint": "../../",
