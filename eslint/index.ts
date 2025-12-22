@@ -560,11 +560,14 @@ async function createVerkstedtConfig({
         // include @typescript-eslint plugin in this section of the
         // config. We can use its existence as a signal whether project
         // is using TypeScript or not.
-        const typescriptEsLintPlugin = (
-          configSoFar as unknown as Array<{ plugins?: Record<string, Plugin> }>
-        ).find((cfgItem) => cfgItem.plugins?.['@typescript-eslint'])?.plugins?.[
-          '@typescript-eslint'
-        ];
+        const typescriptEsLintPlugin = !usesTypeScript
+          ? undefined
+          : (
+              configSoFar as unknown as Array<{
+                plugins?: Record<string, Plugin>;
+              }>
+            ).find((cfgItem) => cfgItem.plugins?.['@typescript-eslint'])
+              ?.plugins?.['@typescript-eslint'];
 
         return getVerkstedtConfig({
           typescriptEsLintPlugin,
