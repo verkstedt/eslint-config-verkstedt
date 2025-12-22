@@ -362,7 +362,9 @@ async function createVerkstedtConfig({
               },
             },
             {
-              ...(await import('eslint-plugin-react')).default.configs,
+              ...(await import('eslint-plugin-react')).default.configs.flat[
+                'jsx-runtime'
+              ],
               files: ALL_JS_FILES,
             },
           ];
