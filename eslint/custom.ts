@@ -174,9 +174,8 @@ function getVerkstedtConfig({
   typescriptEsLintPlugin,
   eslintCommentsPlugin,
 }: GetVerkstedtConfigOptions): Array<Linter.Config> {
-  const typescriptPluginName = typescriptEsLintPlugin
-    ? '@typescript-eslint'
-    : null;
+  const typescriptPluginName =
+    typescriptEsLintPlugin?.meta?.name?.split('/').at(0) ?? null;
 
   return [
     {
