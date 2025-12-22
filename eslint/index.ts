@@ -143,7 +143,7 @@ async function createConfigFromModules(allModuleConfigs: Array<ModuleConfig>) {
       // eslint-disable-next-line no-await-in-loop -- getters may depend on things added by previous getters
       const configEntry = await moduleConfig.get(config);
       if (configEntry == null) {
-        debugLog('Skipping:', moduleConfig.name);
+        debugLog('Skip:', moduleConfig.name);
       } else if (Array.isArray(configEntry)) {
         config.push(...configEntry);
       } else {
@@ -209,6 +209,10 @@ async function createVerkstedtConfig({
     (await fileExists('tsconfig.json'));
   const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
   const usesNextJs = deps.some((dep) => dep === 'next');
+
+  debugLog('Uses TypeScript:', usesTypeScript);
+  debugLog('Uses React:', usesReact);
+  debugLog('Uses Next.js:', usesNextJs);
 
   const compat = new FlatCompat({
     baseDirectory: import.meta.dirname,
