@@ -272,6 +272,15 @@ async function createVerkstedtConfig({
           importPlugin.flatConfigs.recommended,
           usesTypeScript && importPlugin.flatConfigs.typescript,
           usesReact && importPlugin.flatConfigs.react,
+          {
+            settings: {
+              'import/resolver': {
+                typescript: usesTypeScript,
+                node: !usesTypeScript,
+                exports: true,
+              },
+            },
+          },
         ]
           .filter((item) => item !== false)
           .map(({ languageOptions: _languageOptions, ...cfgItem }) => cfgItem);
