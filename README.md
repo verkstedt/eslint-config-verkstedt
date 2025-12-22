@@ -90,6 +90,14 @@ npx eslint .
 Running this for the first time might ask you to install some additional
 packages.
 
+## Tests
+
+Tests are organised as separate packages. They are set up as [npm workspaces].
+Running `npm test` will run `eslint` in all of the workspace test
+packages.
+
+[npm workspaces]: https://docs.npmjs.com/cli/v8/using-npm/workspaces
+
 ## Debugging
 
 Run with `NODE_DEBUG=@verkstedt/lint` to see some debug logs.
