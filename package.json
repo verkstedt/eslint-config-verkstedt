@@ -39,14 +39,6 @@
       }
     }
   },
-  "workspaces": [
-    ".",
-    "test/001-js",
-    "test/002-ts",
-    "test/003-react",
-    "test/004-next.js",
-    "test/005-css-modules"
-  ],
   "scripts": {
     "prepublishOnly": "npm run --silent holistic-check",
     "lint": "npm-run-all --print-name --print-label 'lint:*'",
@@ -97,40 +89,39 @@
     }
   },
   "devDependencies": {
+    "@eslint/core": "^1.0.0",
     "@types/eslint": "^9.6.1",
     "@types/micromatch": "^4.0.10",
     "@types/node": "^24, <=24.12.0",
-    "baseline-browser-mapping": "^2.9.6",
-    "eslint": "^9.38.0",
-    "eslint-config-next": "^16.0.3",
-    "eslint-config-prettier": "^10.1.8",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.0.10",
     "eslint-plugin-lingui": "^0.11.0",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-storybook": "^10.0.8",
+    "eslint-plugin-storybook": "^10.1.9",
     "jiti": "^2.6.1",
-    "next": "^16.0.3",
     "npm-run-all": "^4.1.5",
+    "prettier": ">=3.7.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.50.0"
   },
   "dependencies": {
-    "@eslint/compat": "^1.4.1",
-    "@eslint/css": "^0.13.0",
+    "@eslint/compat": "^2.0.0",
+    "@eslint/css": "^0.14.1",
     "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.38.0",
-    "@eslint/json": "^0.13.2",
-    "@eslint/markdown": "^7.5.0",
+    "@eslint/js": "^9.39.2",
+    "@eslint/json": "^0.14.0",
+    "@eslint/markdown": "^7.5.1",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-css-modules": "^2.12.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react": "^7.37.5",
-    "globals": "^16.4.0",
-    "micromatch": "^4.0.8",
-    "prettier": ">=3.6.2"
+    "globals": "^16.5.0",
+    "micromatch": "^4.0.8"
   },
   "config": {
-    "setup-repo-is-frontend": "No",
-    "setup-repo-version": "1.1.5+git.48e2424"
+    "setup-repo-version": "1.1.5+git.48e2424",
+    "setup-repo-is-frontend": "No"
   }
 }
