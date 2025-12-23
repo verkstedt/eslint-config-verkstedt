@@ -12,6 +12,7 @@ function getCodeSmallsRules({
   typescriptPluginName,
 }: GetRulesOptions): Linter.RulesRecord {
   return {
+    // TypeScript-specific rules
     ...(typescriptPluginName
       ? {
           // Include case for each possible value in switch statements
@@ -32,12 +33,10 @@ function getCodeSmallsRules({
         varsIgnorePattern: '^_',
       },
     ],
-    ...(typescriptPluginName ? { 'no-unused-vars': 'off' } : {}),
 
     // Disallow shadowing variable names
     [typescriptPluginName ? `${typescriptPluginName}/no-shadow` : 'no-shadow']:
       'error',
-    ...(typescriptPluginName ? { 'no-shadow': 'off' } : {}),
 
     // No console.* debug leftovers
     'no-console': 'error',
@@ -51,17 +50,11 @@ function getCodeSmallsRules({
     // Comparing things to self is probably a mistake
     'no-self-compare': 'error',
 
-    // Warn about using template curly braces in regular strings
-    'no-template-curly-in-string': 'warn',
-
     // Loops that run only once is usually a misplaced break
     'no-unreachable-loop': 'error',
 
     // Disallow using variables before they are defined
     'no-use-before-define': 'error',
-
-    // Warn about assigning variables that are never used
-    'no-useless-assignment': 'warn',
 
     // Split complex functions
     'complexity': ['error', { max: 10 }],
@@ -72,8 +65,14 @@ function getCodeSmallsRules({
     // Do not assign and return in single statement
     'no-return-assign': ['error', 'always'],
 
-    // Warn about rethrowing without preserving original error
-    'preserve-caught-error': 'warn',
+    // Assigning variables that are never used
+    'no-useless-assignment': 'error',
+
+    // Using template curly braces in regular strings
+    'no-template-curly-in-string': 'error',
+
+    // Rethrowing without preserving original error
+    'preserve-caught-error': 'error',
   };
 }
 
@@ -82,13 +81,13 @@ function getPromisesRules(_options: GetRulesOptions): Linter.RulesRecord {
     // Require atomic updates to avoid race conditions
     'require-atomic-updates': 'error',
 
-    // Using await in loops, usually it should be refactored to use
-    // Promise.all
-    'no-await-in-loop': 'warn',
-
     // Returning in new Promise callback is usually a mistake, should
     // call resolve/reject instead
     'no-promise-executor-return': 'error',
+
+    // Using await in loops, usually it should be refactored to use
+    // Promise.all
+    'no-await-in-loop': 'error',
   };
 }
 
