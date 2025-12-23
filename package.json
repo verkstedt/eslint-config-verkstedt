@@ -69,6 +69,7 @@
     "eslint": ">=9.39.2",
     "eslint-config-next": ">=16.0.10",
     "eslint-plugin-lingui": ">=0.11.0",
+    "eslint-plugin-react": ">=7.37.5",
     "eslint-plugin-react-hooks": ">=7.0.1",
     "eslint-plugin-storybook": ">=10.1.9",
     "jiti": ">=2.6.1",
@@ -87,6 +88,10 @@
     "eslint-plugin-lingui": {
       "optional": true,
       "note": "Required if you are using LinguiJS."
+    },
+    "eslint-plugin-react": {
+      "optional": true,
+      "note": "Required if you are using React."
     },
     "eslint-plugin-react-hooks": {
       "optional": true,
