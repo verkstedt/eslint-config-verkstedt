@@ -42,12 +42,11 @@ function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
   const pkgVersion = packageJson.engines?.node?.trim();
   const nvmrcVersion = nvmrc.trim();
   const pkgTypesVersion = packageJson.devDependencies?.['@types/node']?.trim();
-  const versionRegExp = /^[0-9]+(\.[0-9]+){2}$/;
   const errors: Array<string> = [];
 
   if (!nvmrcVersion) {
     errors.push('Missing .nvmrc file');
-  } else if (!versionRegExp.test(nvmrcVersion)) {
+  } else if (!/^[0-9]+(?:\.[0-9]+){2}$/.test(nvmrcVersion)) {
     errors.push(
       `.nvmrc file must contain a specific version (e.g. "16.14.0"), got "${nvmrcVersion}"`,
     );
@@ -55,30 +54,31 @@ function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
 
   if (!pkgVersion) {
     errors.push('Missing "engines.node" field in package.json');
-  } else if (!versionRegExp.test(pkgVersion)) {
+  } else if (nvmrcVersion && pkgVersion !== `>=${nvmrcVersion}`) {
     errors.push(
-      `"engines.node" field in package.json must be a specific version (e.g. "16.14.0"), got "${pkgVersion}"`,
-    );
-  }
-
-  if (nvmrcVersion && pkgVersion && nvmrcVersion !== pkgVersion) {
-    errors.push(
-      `Node.js version mismatch: .nvmrc specifies "${nvmrcVersion}", but package.json specifies "${pkgVersion}"`,
+      `"engines.node" field in package.json must match .nvmrc version. Expected ">=${nvmrcVersion}", got "${pkgVersion}"`,
     );
   }
 
   if (!pkgTypesVersion) {
     errors.push('Missing "@types/node" devDependency in package.json');
   } else if (pkgVersion) {
-    const pkgVersionMajor = pkgVersion.split('.')[0];
-    // @types/node should match the version of Node.js being used, but
-    // not releases change API and for these versions new version of
-    // @types/node is not released. Therefore we cannot use exact match.
-    const expectedTypesVersion = `^${pkgVersionMajor}, <=${pkgVersion}`;
-    if (pkgTypesVersion !== expectedTypesVersion) {
+    const pkgVersionMatch = /^>=([0-9]+)((?:\.[0-9]+){2})$/.exec(pkgVersion);
+    if (!pkgVersionMatch) {
       errors.push(
-        `@types/node version mismatch: for Node.js version "${pkgVersion}", expected "@types/node" version "${expectedTypesVersion}", but got "${pkgTypesVersion}"`,
+        `Cannot parse major version from "engines.node" field: "${pkgVersion}"`,
       );
+    } else {
+      const [, pkgVersionMajor, pkgVersionRest] = pkgVersionMatch;
+      // @types/node should match the version of Node.js being used, but
+      // not releases change API and for these versions new version of
+      // @types/node is not released. Therefore we cannot use exact match.
+      const expectedTypesVersion = `^${pkgVersionMajor}, <=${pkgVersionMajor}${pkgVersionRest}`;
+      if (pkgTypesVersion !== expectedTypesVersion) {
+        errors.push(
+          `@types/node version mismatch: for Node.js version "${pkgVersion}", expected "@types/node" version "${expectedTypesVersion}", but got "${pkgTypesVersion}"`,
+        );
+      }
     }
   }
 
