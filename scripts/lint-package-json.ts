@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { join } from 'node:path';
 import { inspect, parseArgs, type ParseArgsOptionsConfig } from 'node:util';
 
 type PackageName = string;
@@ -33,10 +33,14 @@ const options: ParseArgsOptionsWithDescription = {
   },
 };
 
+function isTruthyEnvVar(value: string | undefined): boolean {
+  return ['1', 'true', 'yes'].includes((value ?? '').toLowerCase());
+}
+
 function shouldUseColours(): boolean {
-  if (process.env.FORCE_COLOR === '1') {
+  if (isTruthyEnvVar(process.env.FORCE_COLOR)) {
     return true;
-  } else if (process.env.NO_COLOR === '1') {
+  } else if (isTruthyEnvVar(process.env.NO_COLOR)) {
     return false;
   } else {
     return process.stdout.isTTY && process.stderr.isTTY;
@@ -84,8 +88,7 @@ function printHelp() {
 }
 
 async function readPackageJson() {
-  const packageDir = dirname(import.meta.dirname);
-  const packageJsonPath = `${packageDir}/package.json`;
+  const packageJsonPath = join(import.meta.dirname, '..', 'package.json');
   const packageJsonContent = await readFile(packageJsonPath, 'utf-8');
   return JSON.parse(packageJsonContent) as PackageJson;
 }
