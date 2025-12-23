@@ -63,9 +63,12 @@
   },
   "peerDependencies": {
     "eslint": ">=9.39.2",
+    "eslint-config-next": ">=16.0.10",
+    "eslint-plugin-lingui": ">=0.11.0",
     "eslint-plugin-react-hooks": ">=7.0.1",
-    "prettier": ">=3.7.4",
+    "eslint-plugin-storybook": ">=10.1.9",
     "jiti": ">=2.6.1",
+    "prettier": ">=3.7.4",
     "typescript": ">=5.9.3",
     "typescript-eslint": ">=8.50.0"
   },
@@ -73,35 +76,35 @@
     "eslint": {
       "optional": false
     },
-    "prettier": {
-      "optional": true,
-      "note": "We use prettier rules as part of EsLint, but it can also be ran separately."
-    },
-    "eslint-plugin-react-hooks": {
-      "optional": true,
-      "note": "Required if you are using React."
-    },
-    "typescript-eslint": {
-      "optional": true,
-      "note": "Required if you are using TypeScript."
-    },
     "eslint-config-next": {
       "optional": true,
       "note": "Required if you are using Next.js."
-    },
-    "eslint-plugin-storybook": {
-      "optional": true,
-      "note": "Required if you are using Storybook."
     },
     "eslint-plugin-lingui": {
       "optional": true,
       "note": "Required if you are using LinguiJS."
     },
+    "eslint-plugin-react-hooks": {
+      "optional": true,
+      "note": "Required if you are using React."
+    },
+    "eslint-plugin-storybook": {
+      "optional": true,
+      "note": "Required if you are using Storybook."
+    },
     "jiti": {
       "optional": true,
       "note": "Required if you are using TypeScript (for evaluating eslint.config.ts)."
     },
+    "prettier": {
+      "optional": true,
+      "note": "We use prettier rules as part of EsLint, but it can also be ran separately."
+    },
     "typescript": {
+      "optional": true,
+      "note": "Required if you are using TypeScript."
+    },
+    "typescript-eslint": {
       "optional": true,
       "note": "Required if you are using TypeScript."
     }
