@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
 import { inspect } from 'node:util';
 
 import { ansi } from './utils/ansi.ts';
@@ -30,7 +31,10 @@ const options: ParseArgsOptionsWithDescription = {
 };
 
 async function readPackageJson() {
-  const packageJsonPath = new URL('package.json', import.meta.dirname).pathname;
+  const packageJsonPath = new URL(
+    'package.json',
+    pathToFileURL(import.meta.dirname),
+  ).pathname;
   const packageJsonContent = await readFile(packageJsonPath, 'utf-8');
   return JSON.parse(packageJsonContent) as PackageJson;
 }

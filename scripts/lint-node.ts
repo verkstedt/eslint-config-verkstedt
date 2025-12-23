@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
 import { inspect } from 'node:util';
 
 import { ansi } from './utils/ansi.ts';
@@ -28,7 +29,8 @@ const options: ParseArgsOptionsWithDescription = {
 };
 
 async function readFileRel(filePathRel: string): Promise<string> {
-  const filePath = new URL(filePathRel, import.meta.dirname).pathname;
+  const filePath = new URL(filePathRel, pathToFileURL(import.meta.dirname))
+    .pathname;
   return readFile(filePath, 'utf-8');
 }
 
