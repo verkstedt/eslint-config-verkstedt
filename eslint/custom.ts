@@ -193,6 +193,15 @@ function getVerkstedtConfig({
       },
     },
     {
+      name: 'Be less restrictive in non–application code',
+      files: ['scripts/**'],
+      rules: {
+        'complexity': ['error', { max: 20 }],
+        'no-console': 'off',
+        'no-await-in-loop': 'off',
+      },
+    },
+    {
       files: MARKDOWN_FILES,
       rules: {
         // Parser does not recognise alerts in GitHub-Flavoured Markdown:
