@@ -28,8 +28,7 @@ const options: ParseArgsOptionsWithDescription = {
 };
 
 async function readFileRel(filePathRel: string): Promise<string> {
-  const filePath = new URL(filePathRel, new URL('..', import.meta.url))
-    .pathname;
+  const filePath = new URL(filePathRel, import.meta.dirname).pathname;
   return readFile(filePath, 'utf-8');
 }
 
@@ -71,7 +70,7 @@ function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
     } else {
       const [, pkgVersionMajor, pkgVersionRest] = pkgVersionMatch;
       // @types/node should match the version of Node.js being used, but
-      // not releases change API and for these versions new version of
+      // not all releases change API and for these versions new version of
       // @types/node is not released. Therefore we cannot use exact match.
       const expectedTypesVersion = `^${pkgVersionMajor}, <=${pkgVersionMajor}${pkgVersionRest}`;
       if (pkgTypesVersion !== expectedTypesVersion) {

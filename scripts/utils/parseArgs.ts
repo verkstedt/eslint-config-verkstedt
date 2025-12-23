@@ -27,7 +27,7 @@ function printHelp({ description, invocation, options }: ParseCliArgsConfig) {
       .join(', ');
     return { flags, description: opt.description };
   });
-  const maxFlagLength = Math.max(...opts.map((opt) => opt.flags.length));
+  const maxFlagLength = Math.max(0, ...opts.map((opt) => opt.flags.length));
 
   process.stdout.write(
     [
