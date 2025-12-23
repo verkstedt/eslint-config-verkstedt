@@ -18,6 +18,6 @@ export default defineConfig([
     // If you have TypeScript files that are NOT included in your tsconfig (e.g.
     // config files or scripts), you specify them here.
     // https://typescript-eslint.io/packages/parser/#allowdefaultproject
-    allowDefaultProject: ['scripts/*.ts'],
+    allowDefaultProject: ['scripts/*.ts', 'scripts/utils/*.ts'],
   }),
 ]);

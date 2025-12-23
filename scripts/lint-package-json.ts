@@ -2,13 +2,17 @@
 
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { inspect, parseArgs, type ParseArgsOptionsConfig } from 'node:util';
+import { inspect } from 'node:util';
+
+import { ansi } from './utils/ansi.ts';
+import parseArgs, {
+  type ParseArgsOptionsWithDescription,
+} from './utils/parseArgs.ts';
 
 type PackageName = string;
 type PackageVersionSpec = string;
 
 interface PackageJson {
-  name: PackageName;
   peerDependencies?: Record<PackageName, PackageVersionSpec>;
   peerDependenciesMeta?: Record<
     PackageName,
@@ -18,13 +22,6 @@ interface PackageJson {
   dependencies?: Record<PackageName, PackageVersionSpec>;
 }
 
-type ParseArgsOptionsWithDescription = Record<
-  string,
-  ParseArgsOptionsConfig[string] & {
-    description: string;
-  }
->;
-
 const options: ParseArgsOptionsWithDescription = {
   help: {
     type: 'boolean',
@@ -32,60 +29,6 @@ const options: ParseArgsOptionsWithDescription = {
     description: 'Show this help message',
   },
 };
-
-function isTruthyEnvVar(value: string | undefined): boolean {
-  return ['1', 'true', 'yes'].includes((value ?? '').toLowerCase());
-}
-
-function shouldUseColours(): boolean {
-  if (isTruthyEnvVar(process.env.FORCE_COLOR)) {
-    return true;
-  } else if (isTruthyEnvVar(process.env.NO_COLOR)) {
-    return false;
-  } else {
-    return process.stdout.isTTY && process.stderr.isTTY;
-  }
-}
-
-const ansi = shouldUseColours()
-  ? {
-      reset: '\u001b[0m',
-      bold: '\u001b[1m',
-      dim: '\u001b[2m',
-    }
-  : {
-      reset: '',
-      bold: '',
-      dim: '',
-    };
-
-function printHelp() {
-  interface Opt {
-    flags: string;
-    description: string;
-  }
-  const opts: Array<Opt> = Object.entries(options).map(([name, opt]) => {
-    const flags = [`--${name}`, opt.short ? `-${opt.short}` : null]
-      .filter(Boolean)
-      .join(', ');
-    return { flags, description: opt.description };
-  });
-  const maxFlagLength = Math.max(...opts.map((opt) => opt.flags.length));
-
-  process.stdout.write(
-    [
-      `${ansi.bold}Check if things in package.json are in sync.${ansi.reset}`,
-      '',
-      `${ansi.bold}Usage:${ansi.reset} npm run lint:pkg ${ansi.dim}[OPTIONS]${ansi.reset}`,
-      '',
-      `${ansi.bold}Options:${ansi.reset}`,
-      ...opts.map(
-        (opt) => `  ${opt.flags.padEnd(maxFlagLength)}  ${opt.description}`,
-      ),
-      '',
-    ].join('\n'),
-  );
-}
 
 async function readPackageJson() {
   const packageJsonPath = join(import.meta.dirname, '..', 'package.json');
@@ -152,15 +95,12 @@ function lintPeerDependencies(packageJson: PackageJson) {
 }
 
 async function main() {
-  const { values } = parseArgs({
+  parseArgs({
+    description: 'Check if things in package.json are in sync.',
+    invocation: 'npm run lint:pkg',
     options,
     allowPositionals: false,
   });
-
-  if (values.help) {
-    printHelp();
-    process.exit(0);
-  }
 
   let hasErrors = false;
 
