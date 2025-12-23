@@ -34,29 +34,25 @@ jobs:
     with:
       working-directory: .
 
-  # If you need to run additional things, run then _after_ `ci` to make
-  # sure we use its cache, e.g.:
-  #
-  # lint-something-else:
-  #   name: 'Lint something else'
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - ci
-  #   steps:
-  #     - name: Setup
-  #       uses: verkstedt/actions/setup@v1
-  #       with:
-  #         working-directory: .
-  #     - name: Lint something else
-  #       working-directory: .
-  #       run: npm run lint:something-else
+  lint-pkg:
+    name: 'Lint something else'
+    runs-on: ubuntu-latest
+    needs:
+      - ci
+    steps:
+      - name: Setup
+        uses: verkstedt/actions/setup@v1
+        with:
+          working-directory: .
+      - name: Lint package.json
+        working-directory: .
+        run: npm run lint:pkg
 
   notify-main-branch-failure:
     name: Notify about failure on main branch
     needs:
       - ci
-      # If you add any new jobs, also add them here:
-      #- lint-something-else
+      - lint-pkg
     if: failure() && github.head_ref == 'main'
     uses: verkstedt/actions/.github/workflows/notify-main-branch-failure.yaml@v1
     secrets: inherit
