@@ -1,4 +1,5 @@
-import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
+import { parseArgs } from 'node:util';
+import type { ParseArgsConfig, ParseArgsOptionsConfig } from 'node:util';
 
 import { ansi } from './ansi.ts';
 
@@ -45,12 +46,14 @@ function printHelp({ description, invocation, options }: ParseCliArgsConfig) {
 
 function parseCliArgs(config: ParseCliArgsConfig) {
   const { description: _d, invocation: _i, ...parseArgsConfig } = config;
-  const { values } = parseArgs(parseArgsConfig);
+  const result = parseArgs(parseArgsConfig);
 
-  if (values.help) {
+  if (result.values.help) {
     printHelp(config);
     process.exit(0);
   }
+
+  return result;
 }
 
 export default parseCliArgs;
