@@ -36,9 +36,9 @@ ERROR ()
 }
 
 ###
-# cross-platform `readlink -f`
+# Cross–platform dirname + readlink -f
 # $1: path to canonicalize
-read_link_f ()
+dirname_readlink ()
 {
     path="$1"
     cd "$( dirname "$path" )"
@@ -113,7 +113,7 @@ prettier_setup ()
         find . -maxdepth 1 -type f \( -name '.prettierrc' -or -name '.prettierrc.*' -or -name 'prettier.config.*' \)
     )
 
-    if [ -n "$( jq '.prettier // empty' package.json > /dev/null 2>&1 )" ]
+    if [ -n "$( jq '.prettier // empty' package.json 2>/dev/null )" ]
     then
         ERROR "Prettier configuration found in package.json. Migrate to $expected_config_file"
         exit 78 # EX_CONFIG
@@ -149,7 +149,7 @@ eslint_setup ()
         find . -maxdepth 1 -type f \( -name '.eslintrc' -or -name '.eslintrc.*' -or -name 'eslint.config.*' \)
     )
 
-    if [ -n "$( jq '.eslintConfig // empty' package.json > /dev/null 2>&1 )" ]
+    if [ -n "$( jq '.eslintConfig // empty' package.json 2>/dev/null )" ]
     then
         ERROR "ESLint configuration found in package.json. Migrate to $expected_config_file"
         exit 78 # EX_CONFIG
@@ -175,7 +175,7 @@ eslint_setup ()
 
 main ()
 {
-    lint_dir=$( read_link_f "$0" )
+    lint_dir=$( dirname_readlink "$0" )
     target_dir="$1"
 
     cd "$target_dir"
@@ -188,7 +188,7 @@ main ()
     set -- @verkstedt/lint eslint prettier
     if [ -n "$uses_typescript" ]
     then
-        # jiti is neede to load TypeScript ESLint config files
+        # jiti is needed to load TypeScript ESLint config files
         set -- "$@" jiti typescript-eslint
     fi
     npm install --save-dev "$@"
