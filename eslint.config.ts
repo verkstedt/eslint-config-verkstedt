@@ -16,8 +16,8 @@ export default defineConfig([
   await createVerkstedtConfig({
     dir: fileURLToPath(new URL('.', import.meta.url)),
     // If you have TypeScript files that are NOT included in your tsconfig (e.g.
-    // config files), you specify them here.
+    // config files or scripts), you specify them here.
     // https://typescript-eslint.io/packages/parser/#allowdefaultproject
-    allowDefaultProject: [],
+    allowDefaultProject: ['scripts/*.ts'],
   }),
 ]);
