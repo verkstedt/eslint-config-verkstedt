@@ -55,6 +55,7 @@
     "lint:pkg": "./scripts/lint-package-json.ts",
     "test": "npm-run-all --print-name --print-label 'test:*'",
     "test:eslint-prettier": "eslint-config-prettier eslint.config.ts",
+    "pretest:unit": "npm run build",
     "test:unit": "npm run --workspaces --if-present 'test:unit:test'",
     "build": "npm-run-all --print-name --print-label 'build:*'",
     "build:ts": "tsc",
