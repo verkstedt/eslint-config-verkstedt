@@ -35,7 +35,7 @@ jobs:
       working-directory: .
 
   lint-pkg:
-    name: 'Lint something else'
+    name: 'Lint package.json'
     runs-on: ubuntu-latest
     needs:
       - ci
