@@ -8,12 +8,15 @@ import parseArgs, {
   type ParseArgsOptionsWithDescription,
 } from './utils/parseArgs.ts';
 
+type PackageName = string;
+type PackageVersionSpec = string;
 type NodeVersionSpec = string;
 
 interface PackageJson {
   engines?: {
     node?: NodeVersionSpec;
   };
+  devDependencies?: Record<PackageName, PackageVersionSpec>;
 }
 
 const options: ParseArgsOptionsWithDescription = {
@@ -38,6 +41,7 @@ async function readPackageJson() {
 function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
   const pkgVersion = packageJson.engines?.node?.trim();
   const nvmrcVersion = nvmrc.trim();
+  const pkgTypesVersion = packageJson.devDependencies?.['@types/node']?.trim();
   const versionRegExp = /^[0-9]+(\.[0-9]+){2}$/;
   const errors: Array<string> = [];
 
@@ -57,10 +61,25 @@ function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
     );
   }
 
-  if (errors.length === 0 && nvmrcVersion !== pkgVersion) {
+  if (nvmrcVersion && pkgVersion && nvmrcVersion !== pkgVersion) {
     errors.push(
-      `Node.js version mismatch: .nvmrc specifies "${nvmrcVersion}", but package.json specifies "${pkgVersion ?? ''}"`,
+      `Node.js version mismatch: .nvmrc specifies "${nvmrcVersion}", but package.json specifies "${pkgVersion}"`,
     );
+  }
+
+  if (!pkgTypesVersion) {
+    errors.push('Missing "@types/node" devDependency in package.json');
+  } else if (pkgVersion) {
+    const pkgVersionMajor = pkgVersion.split('.')[0];
+    // @types/node should match the version of Node.js being used, but
+    // not releases change API and for these versions new version of
+    // @types/node is not released. Therefore we cannot use exact match.
+    const expectedTypesVersion = `^${pkgVersionMajor}, <=${pkgVersion}`;
+    if (pkgTypesVersion !== expectedTypesVersion) {
+      errors.push(
+        `@types/node version mismatch: for Node.js version "${pkgVersion}", expected "@types/node" version "${expectedTypesVersion}", but got "${pkgTypesVersion}"`,
+      );
+    }
   }
 
   if (errors.length > 0) {
