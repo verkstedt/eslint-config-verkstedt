@@ -206,7 +206,7 @@ async function createVerkstedtConfig({
 
   const usesTypeScript =
     deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
-    (await fileExists('tsconfig.json'));
+    (await fileExists(resolve(dir, 'tsconfig.json')));
   const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
   const usesNextJs = deps.some((dep) => dep === 'next');
 
@@ -341,7 +341,7 @@ async function createVerkstedtConfig({
               files: TS_FILES,
               languageOptions: {
                 parserOptions: {
-                  tsConfigRootDir: dir,
+                  tsconfigRootDir: dir,
                   projectService: {
                     allowDefaultProject: [
                       ...additionalAllowDefaultProject,
@@ -421,10 +421,16 @@ async function createVerkstedtConfig({
               // import plugin already included in importPlugin.flatConfigs.recommended,
               // defining it again breaks the config
               .map((cfgItem) => {
-                if (cfgItem.plugins?.import) {
+                if (!cfgItem.plugins?.import) {
+                  return cfgItem;
+                } else {
                   delete cfgItem.plugins.import;
+                  const { import: _import, ...restPlugins } = cfgItem.plugins;
+                  return {
+                    ...cfgItem,
+                    plugins: restPlugins,
+                  };
                 }
-                return cfgItem;
               }),
             ...nextTypeScript,
             globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),

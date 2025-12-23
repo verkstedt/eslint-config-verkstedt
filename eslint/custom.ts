@@ -8,7 +8,7 @@ interface GetRulesOptions {
   typescriptPluginName: string | null;
 }
 
-function getCodeSmallsRules({
+function getCodeSmellsRules({
   typescriptPluginName,
 }: GetRulesOptions): Linter.RulesRecord {
   return {
@@ -120,7 +120,7 @@ function getStylisticRules({
       : {
           // Use Array<…> instead of …[]
           [`${typescriptPluginName}/array-type`]: [
-            typescriptPluginName ? 'error' : 'off',
+            'error',
             { default: 'generic' },
           ],
 
@@ -186,7 +186,7 @@ function getVerkstedtConfig({
         'eslint-comments': eslintCommentsPlugin,
       },
       rules: {
-        ...getCodeSmallsRules({ typescriptPluginName }),
+        ...getCodeSmellsRules({ typescriptPluginName }),
         ...getPromisesRules({ typescriptPluginName }),
         ...getImportsRules({ typescriptPluginName }),
         ...getStylisticRules({ typescriptPluginName }),
