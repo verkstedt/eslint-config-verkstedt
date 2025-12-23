@@ -155,7 +155,7 @@ eslint_setup ()
         exit 78 # EX_CONFIG
     elif [ -z "$existing_config_files" ]
     then
-        echo "$config_contents" > "$expected_config_file"
+        printf "%s\n" "$config_contents" > "$expected_config_file"
     elif [ "$(echo "$existing_config_files" | wc -l)" -gt 1 ]
     then
         ERROR "Multiple ESLint configuration files found:\n$existing_config_files"

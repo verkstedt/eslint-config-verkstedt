@@ -424,7 +424,6 @@ async function createVerkstedtConfig({
                 if (!cfgItem.plugins?.import) {
                   return cfgItem;
                 } else {
-                  delete cfgItem.plugins.import;
                   const { import: _import, ...restPlugins } = cfgItem.plugins;
                   return {
                     ...cfgItem,
