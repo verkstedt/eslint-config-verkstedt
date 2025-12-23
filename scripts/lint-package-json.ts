@@ -129,7 +129,7 @@ function lintPeerDependencies(packageJson: PackageJson) {
   }
 
   for (const [metaDep, meta] of Object.entries(peerDepsMeta)) {
-    if (!(metaDep in peerDeps) && !meta.optional) {
+    if (!(metaDep in peerDeps)) {
       errors.push(
         `peerDependenciesMeta entry "${metaDep}" is not listed in peerDependencies and is not marked as optional.`,
       );
