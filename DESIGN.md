@@ -7,7 +7,7 @@
 
 - **Follow recommended configurations**
   - For stylistic rules that might be a matter of taste, follow
-    default or recommended settings, unless it’s there’s an overwhelming
+    default or recommended settings, unless there’s an overwhelming
     majority of users preferring a different option.
 
 - **Additional rules that help to avoid common pitfalls**

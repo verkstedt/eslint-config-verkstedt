@@ -97,7 +97,7 @@ packages.
 ## Tests
 
 Tests are organised as separate packages. They are set up as [npm workspaces].
-Running `npm test` will run `eslint` in all of the workspace test
+Running `npm test` will run `eslint` in all workspace test
 packages.
 
 [npm workspaces]: https://docs.npmjs.com/cli/v8/using-npm/workspaces
