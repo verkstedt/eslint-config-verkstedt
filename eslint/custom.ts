@@ -14,6 +14,16 @@ interface GetRulesOptions {
 function getCodeSmellsRules({
   typescriptPluginName,
 }: GetRulesOptions): RulesConfig {
+  const createMaybeTsRule = (ruleName: string, config: RuleConfig) =>
+    typescriptPluginName
+      ? {
+          [ruleName]: 'off',
+          [`${typescriptPluginName}/${ruleName}`]: config,
+        }
+      : {
+          [ruleName]: config,
+        };
+
   return {
     // TypeScript-specific rules
     ...(typescriptPluginName
@@ -26,20 +36,17 @@ function getCodeSmellsRules({
     // Allow unused vars starting with “_”
     // Useful for using destructing to remove properties
     // from objects
-    [typescriptPluginName
-      ? `${typescriptPluginName}/no-unused-vars`
-      : 'no-unused-vars']: [
+    ...createMaybeTsRule('no-unused-vars', [
       'error',
       {
         argsIgnorePattern: '^_',
         destructuredArrayIgnorePattern: '^_',
         varsIgnorePattern: '^_',
       },
-    ],
+    ]),
 
     // Disallow shadowing variable names
-    [typescriptPluginName ? `${typescriptPluginName}/no-shadow` : 'no-shadow']:
-      'error',
+    ...createMaybeTsRule('no-shadow', 'error'),
 
     // No console.* debug leftovers
     'no-console': 'error',
@@ -57,7 +64,7 @@ function getCodeSmellsRules({
     'no-unreachable-loop': 'error',
 
     // Disallow using variables before they are defined
-    'no-use-before-define': 'error',
+    ...createMaybeTsRule('no-use-before-define', 'error'),
 
     // Split complex functions
     'complexity': ['error', { max: 10 }],
