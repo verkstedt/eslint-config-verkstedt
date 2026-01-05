@@ -7,6 +7,10 @@ Linting configuration for verkstedt projects
 - [🗪 Chat](https://app.slack.com/client/T6HMM3NG2/C8U48QUBA)
 - [🗒 Tasks](https://verkstedt.atlassian.net/jira/software/projects/VIP/boards/12?jql=labels%20%3D%20lint)
 
+## Design
+
+See [DESIGN.md](./DESIGN.md).
+
 ## Installation
 
 ### Automatic
