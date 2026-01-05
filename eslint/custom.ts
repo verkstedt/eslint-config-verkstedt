@@ -1,8 +1,11 @@
-import type { Linter } from 'eslint';
+import type {
+  ConfigObject,
+  Plugin,
+  RuleConfig,
+  RulesConfig,
+} from '@eslint/core';
 
 import { ALL_JS_FILES, MARKDOWN_FILES } from './file-globs.ts';
-
-type Plugin = Exclude<Linter.Config['plugins'], undefined>[string];
 
 interface GetRulesOptions {
   typescriptPluginName: string | null;
@@ -10,7 +13,7 @@ interface GetRulesOptions {
 
 function getCodeSmellsRules({
   typescriptPluginName,
-}: GetRulesOptions): Linter.RulesRecord {
+}: GetRulesOptions): RulesConfig {
   return {
     // TypeScript-specific rules
     ...(typescriptPluginName
@@ -76,7 +79,7 @@ function getCodeSmellsRules({
   };
 }
 
-function getPromisesRules(_options: GetRulesOptions): Linter.RulesRecord {
+function getPromisesRules(_options: GetRulesOptions): RulesConfig {
   return {
     // Require atomic updates to avoid race conditions
     'require-atomic-updates': 'error',
@@ -91,7 +94,7 @@ function getPromisesRules(_options: GetRulesOptions): Linter.RulesRecord {
   };
 }
 
-function getImportsRules(_options: GetRulesOptions): Linter.RulesRecord {
+function getImportsRules(_options: GetRulesOptions): RulesConfig {
   return {
     // Always use `node:…` for Node.js built-ins
     'import/enforce-node-protocol-usage': ['error', 'always'],
@@ -113,7 +116,7 @@ function getImportsRules(_options: GetRulesOptions): Linter.RulesRecord {
 
 function getStylisticRules({
   typescriptPluginName,
-}: GetRulesOptions): Linter.RulesRecord {
+}: GetRulesOptions): RulesConfig {
   return {
     ...(!typescriptPluginName
       ? {}
@@ -169,7 +172,7 @@ interface GetVerkstedtConfigOptions {
 function getVerkstedtConfig({
   typescriptEsLintPlugin,
   eslintCommentsPlugin,
-}: GetVerkstedtConfigOptions): Array<Linter.Config> {
+}: GetVerkstedtConfigOptions): Array<ConfigObject> {
   const typescriptPluginName =
     typescriptEsLintPlugin?.meta?.name?.split('/').at(0) ?? null;
 
