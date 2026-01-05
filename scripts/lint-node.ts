@@ -20,13 +20,7 @@ interface PackageJson {
   devDependencies?: Record<PackageName, PackageVersionSpec>;
 }
 
-const options: ParseArgsOptionsWithDescription = {
-  help: {
-    type: 'boolean',
-    short: 'h',
-    description: 'Show this help message',
-  },
-};
+const options: ParseArgsOptionsWithDescription = {};
 
 async function readFileRel(filePathRel: string): Promise<string> {
   const filePath = new URL(filePathRel, pathToFileURL(import.meta.dirname))

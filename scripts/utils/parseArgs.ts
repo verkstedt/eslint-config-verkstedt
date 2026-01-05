@@ -46,7 +46,20 @@ function printHelp({ description, invocation, options }: ParseCliArgsConfig) {
 
 function parseCliArgs(config: ParseCliArgsConfig) {
   const { description: _d, invocation: _i, ...parseArgsConfig } = config;
-  const result = parseArgs(parseArgsConfig);
+  const options = structuredClone(parseArgsConfig.options);
+
+  if (!('help' in options)) {
+    options.help = {
+      type: 'boolean',
+      short: 'h',
+      description: 'Show help',
+    };
+  }
+
+  const result = parseArgs({
+    ...parseArgsConfig,
+    options,
+  });
 
   if (result.values.help) {
     printHelp(config);

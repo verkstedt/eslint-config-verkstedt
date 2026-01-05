@@ -22,13 +22,7 @@ interface PackageJson {
   dependencies?: Record<PackageName, PackageVersionSpec>;
 }
 
-const options: ParseArgsOptionsWithDescription = {
-  help: {
-    type: 'boolean',
-    short: 'h',
-    description: 'Show this help message',
-  },
-};
+const options: ParseArgsOptionsWithDescription = {};
 
 async function readPackageJson() {
   const packageJsonPath = new URL(
