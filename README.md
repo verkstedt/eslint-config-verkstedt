@@ -52,7 +52,6 @@ npx @verkstedt/lint@latest .
    <!-- PRETTIER_CONFIG -- Marker used for extracting code by install.sh -->
 
    ```mjs
-   export * from '@verkstedt/lint/prettier';
    export { default as default } from '@verkstedt/lint/prettier';
    ```
 
