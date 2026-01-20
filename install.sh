@@ -83,19 +83,73 @@ read_file_from_markdown ()
 }
 
 ###
+# Compare two strings, ignoring all spaces
+compare_no_spaces ()
+{
+    str1_no_spaces=$( printf '%s' "$1" | tr -d '[:space:]' )
+    str2_no_spaces=$( printf '%s' "$2" | tr -d '[:space:]' )
+
+    [ "$str1_no_spaces" = "$str2_no_spaces" ]
+}
+
+###
+# Check for required dependencies
+check_deps ()
+{
+    if ! command -v jq >/dev/null 2>&1
+    then
+        ERROR "jq is required but not installed. <https://jqlang.org/download/>"
+        exit 69 # EX_UNAVAILABLE
+    fi
+}
+
+###
 # Install TypeScript
 typescript_setup ()
 {
+    tsconfig_path="tsconfig.json"
+    if ! [ -f "$tsconfig_path" ]
+    then
+        ERROR "$tsconfig_path not found."
+        exit 78 # EX_CONFIG
+    fi
+
+    old_tsconfig_content=$( cat "$tsconfig_path" 2>/dev/null || echo "" )
+    if [ -z "$old_tsconfig_content" ]
+    then
+        ERROR "$tsconfig_path is empty."
+        exit 78 # EX_CONFIG
+    fi
+
     expected_extends='@verkstedt/lint/tsconfig'
-    actual_extends="$( jq -r .extends tsconfig.json )"
+    actual_extends=$(
+        echo "$old_tsconfig_content" \
+            | grep -oE '"extends"\s*:\s*"[^\"]+"' 2>/dev/null \
+            | sed 's/.*: *"\(.*\)".*/\1/'
+    )
+
     if [ "$actual_extends" != "$expected_extends" ]
     then
-        new_tsconfig_content=$(
-            jq \
-                --arg extends "$expected_extends" \
-                '{ extends: $extends } + .' \
-                tsconfig.json
-        )
+        if [ -z "$actual_extends" ]
+        then
+            new_tsconfig_content=$(
+              echo "$old_tsconfig_content" \
+                  | sed "1s|{|{\n  \"extends": "@verkstedt/lint/tsconfig\",\n|"
+            )
+        else
+            new_tsconfig_content=$(
+              echo "$old_tsconfig_content" \
+                  | sed "s|\"extends\"\s*:\s*\"[^\"]*\"|\"extends\": \"@verkstedt/lint/tsconfig\"|"
+            )
+        fi
+
+        # Note: This does not check if we didn’t break the JSONC
+        if [ -z "$new_tsconfig_content" ] || [ "$new_tsconfig_content" == "$old_tsconfig_content" ]
+        then
+            ERROR "Failed to update 'extends' in $tsconfig_path."
+            exit 1 # EX_SOFTWARE
+        fi
+
         printf '%s\n' "$new_tsconfig_content" > tsconfig.json
     fi
 }
@@ -112,6 +166,7 @@ prettier_setup ()
     existing_config_files=$(
         find . -maxdepth 1 -type f \( -name '.prettierrc' -or -name '.prettierrc.*' -or -name 'prettier.config.*' \)
     )
+    accepted_legacy_config_file_content='"@verkstedt/eslint-config-verkstedt/prettier-config"'
 
     if [ -n "$( jq '.prettier // empty' package.json 2>/dev/null )" ]
     then
@@ -124,7 +179,12 @@ prettier_setup ()
     then
         ERROR "Multiple Prettier configuration files found:\n$existing_config_files"
         exit 78 # EX_CONFIG
-    elif ! grep -qF "$expected_config_match" "$existing_config_files"
+    elif compare_no_spaces "$( cat "$existing_config_files" )" "$accepted_legacy_config_file_content"
+    then
+        printf "Removing legacy prettier configuration file: %s\n" "$existing_config_files"
+        rm -v "$existing_config_files"
+        printf "%s\n" "$config_contents" > "$expected_config_file"
+    elif ! grep -q "$expected_config_match" "$existing_config_files"
     then
         ERROR "Prettier configuration found in '${existing_config_files}', but does not use verkstedt linting setup."
         exit 78 # EX_CONFIG
@@ -148,6 +208,7 @@ eslint_setup ()
     existing_config_files=$(
         find . -maxdepth 1 -type f \( -name '.eslintrc' -or -name '.eslintrc.*' -or -name 'eslint.config.*' \)
     )
+    recognised_legacy_config_match="@verkstedt/verkstedt|@verkstedt/eslint-config-verkstedt"
 
     if [ -n "$( jq '.eslintConfig // empty' package.json 2>/dev/null )" ]
     then
@@ -159,6 +220,10 @@ eslint_setup ()
     elif [ "$(echo "$existing_config_files" | wc -l)" -gt 1 ]
     then
         ERROR "Multiple ESLint configuration files found:\n$existing_config_files"
+        exit 78 # EX_CONFIG
+    elif grep -qE "$recognised_legacy_config_match" "$existing_config_files"
+    then
+        ERROR "Legacy ESLint configuration found in '${existing_config_files}'. See <https://github.com/verkstedt/lint#user-content-install-migrate-from-eslint-config-verkstedt> for instructions."
         exit 78 # EX_CONFIG
     elif ! grep -qF "$expected_config_match" "$existing_config_files"
     then
@@ -177,6 +242,8 @@ main ()
 {
     lint_dir=$( dirname_readlink "$0" )
     target_dir="$1"
+
+    check_deps
 
     cd "$target_dir"
 
