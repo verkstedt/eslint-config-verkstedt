@@ -1,9 +1,7 @@
-const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
-const TS_EXTS = ['ts', 'tsx'];
-export const TS_FILES = [`**/*.{${TS_EXTS.join(',')}}`];
+const JS_EXTS = ['js', 'mjs', 'cjs', 'ts', 'mts'];
 
 const REACT_EXTS = ['jsx', 'tsx'];
-const ALL_JS_FILES_EXTS = [...VANILLA_JS_EXTS, ...TS_EXTS, ...REACT_EXTS];
+const ALL_JS_FILES_EXTS = [...JS_EXTS, ...REACT_EXTS];
 export const ALL_JS_FILES = [`**/*.{${ALL_JS_FILES_EXTS.join(',')}}`];
 
 const CSS_EXTS = ['css', 'scss'];

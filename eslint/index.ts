@@ -31,7 +31,6 @@ import {
   JSONC_FILES,
   MARKDOWN_FILES,
   MS_JSONC_FILES,
-  TS_FILES,
 } from './file-globs.ts';
 
 interface PackageJson {
@@ -332,13 +331,13 @@ async function createVerkstedtConfig({
             ...configs.stylisticTypeChecked,
           ].map((cfg) => ({
             ...cfg,
-            files: TS_FILES,
+            files: ALL_JS_FILES,
           }));
 
           return [
             ...selectedConfigs,
             {
-              files: TS_FILES,
+              files: ALL_JS_FILES,
               languageOptions: {
                 parserOptions: {
                   tsconfigRootDir: dir,
