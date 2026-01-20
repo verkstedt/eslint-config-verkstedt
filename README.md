@@ -13,11 +13,15 @@ See [DESIGN.md](./DESIGN.md).
 
 ## Installation
 
+<a id=user-content-install-automatic></a>
+
 ### Automatic
 
 ```sh
 npx @verkstedt/lint@latest .
 ```
+
+<a id=user-content-install-manual></a>
 
 ### Manual
 
@@ -84,6 +88,25 @@ npx @verkstedt/lint@latest .
    ```
 
 </details>
+
+<a id=user-content-install-migrate-from-eslint-config-verkstedt></a>
+
+### Migration from `@verkstedt/eslint-config-verkstedt`
+
+1. Remove all `*eslint*` and `*prettier*` packages you have installed.
+
+2. Remove old Prettier and EsLint config files and replace them with
+   minimal ones from [Manual](#user-content-install-manual) installation
+   above.
+
+3. Commit.
+
+4. Run the script from [Automatic](#user-content-install-automatic)
+   installation above. Commit.
+
+5. Check if you need to restore any of customisation you had in your old
+   config files (they may be included in new config files!). Consider
+   not adding things back to keep config consistent across projects.
 
 ### First run
 
