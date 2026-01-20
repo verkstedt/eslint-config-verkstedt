@@ -18,6 +18,7 @@ import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import { parse as parseJsonc } from 'jsonc-parser';
 import micromatch from 'micromatch';
 
 import configPackageJson from '../package.json' with { type: 'json' };
@@ -301,7 +302,7 @@ async function createVerkstedtConfig({
                 include?: Array<string>;
                 files?: Array<string>;
               }
-              const tsconfig = JSON.parse(tsconfigJson) as TsConfig;
+              const tsconfig = parseJsonc(tsconfigJson) as TsConfig;
               const tsconfigIncludes = [
                 ...(tsconfig.include ?? []),
                 ...(tsconfig.files ?? []),
