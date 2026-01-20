@@ -52,6 +52,7 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run --silent holistic-check",
+    "prepare": "npm run build",
     "lint": "npm-run-all --print-name --print-label 'lint:*'",
     "lint:js": "eslint .",
     "lint:ts": "tsc --noEmit",
