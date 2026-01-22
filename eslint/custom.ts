@@ -250,7 +250,17 @@ function getVerkstedtConfig({
     },
     {
       name: 'Be less restrictive in non–application code',
-      files: ['scripts/**'],
+      files: [
+        // Config files
+        '.storybook/**',
+        '*.config.*',
+        '.rc*',
+        // CLI scripts
+        'scripts/**',
+        // Test files
+        `*.test.*`,
+        '**/__tests__/**',
+      ],
       rules: {
         'complexity': ['error', { max: 20 }],
         'no-console': 'off',
