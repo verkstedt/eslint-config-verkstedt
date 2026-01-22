@@ -271,6 +271,12 @@ function getVerkstedtConfig({
     {
       files: CSS_FILES,
       rules: {
+        // EsLint CSS parser errors out when you use var() or env() in
+        // e.g. @supports, which is worse than not having that rule at
+        // all
+        // FIXME Remove this once this lands: https://github.com/csstree/csstree/pull/321
+        'css/no-invalid-at-rules': 'off',
+
         'css/no-invalid-properties': [
           'error',
           {
