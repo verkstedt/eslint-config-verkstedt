@@ -30,6 +30,20 @@ function getCodeSmellsRules({
       ? {
           // Include case for each possible value in switch statements
           [`${typescriptPluginName}/switch-exhaustiveness-check`]: 'error',
+          // Allow using numbers in template expressions
+          [`${typescriptPluginName}/restrict-template-expressions`]: [
+            'error',
+            {
+              allowNumber: true,
+            },
+          ],
+          // Allow empty interface if it extends something
+          [`${typescriptPluginName}/no-empty-object-type`]: [
+            'error',
+            {
+              allowInterfaces: 'with-single-extends',
+            },
+          ],
         }
       : {}),
 
@@ -83,6 +97,9 @@ function getCodeSmellsRules({
 
     // Rethrowing without preserving original error
     'preserve-caught-error': 'error',
+
+    // Allow disabling eslint rules for the whole file
+    'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
   };
 }
 
@@ -168,6 +185,31 @@ function getStylisticRules({
   };
 }
 
+/**
+ * Rules that are generally great idea to have, but we are being
+ * practical, so we don’t enforce them strictly
+ *
+ * Ideally we’d upgrade these to 'error' over time
+ */
+function getPracticalRules({
+  typescriptPluginName,
+}: GetRulesOptions): RulesConfig {
+  return {
+    ...(!typescriptPluginName
+      ? {}
+      : {
+          // Allow usage of `any` type, but warn about it
+          [`${typescriptPluginName}/no-explicit-any`]: 'warn',
+          // Allow unsafe TypeScript operations, but warn about it
+          [`${typescriptPluginName}/no-unsafe-argument`]: 'warn',
+          [`${typescriptPluginName}/no-unsafe-assignment`]: 'warn',
+          [`${typescriptPluginName}/no-unsafe-call`]: 'warn',
+          [`${typescriptPluginName}/no-unsafe-member-access`]: 'warn',
+          [`${typescriptPluginName}/no-unsafe-return`]: 'warn',
+        }),
+  };
+}
+
 interface GetVerkstedtConfigOptions {
   typescriptEsLintPlugin?: Plugin;
   eslintCommentsPlugin: Plugin;
@@ -200,6 +242,7 @@ function getVerkstedtConfig({
         ...getPromisesRules({ typescriptPluginName }),
         ...getImportsRules({ typescriptPluginName }),
         ...getStylisticRules({ typescriptPluginName }),
+        ...getPracticalRules({ typescriptPluginName }),
       },
     },
     {
