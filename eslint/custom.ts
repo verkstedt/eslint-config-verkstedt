@@ -98,6 +98,9 @@ function getCodeSmellsRules({
     // Rethrowing without preserving original error
     'preserve-caught-error': 'error',
 
+    // Mutating function arguments means functions have side–effects
+    'no-param-reassign': 'error',
+
     // Allow disabling eslint rules for the whole file
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
   };
