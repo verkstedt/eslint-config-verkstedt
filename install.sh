@@ -186,7 +186,7 @@ prettier_setup ()
         printf "%s\n" "$config_contents" > "$expected_config_file"
     elif ! grep -q "$expected_config_match" "$existing_config_files"
     then
-        ERROR "Prettier configuration found in '${existing_config_files}', but does not use verkstedt linting setup."
+        ERROR "Prettier configuration found in '${existing_config_files}', but does not use vanilla verkstedt linting setup."
         exit 78 # EX_CONFIG
     fi
 
