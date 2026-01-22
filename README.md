@@ -95,7 +95,8 @@ npx @verkstedt/lint@latest .
 
 ### Migration from `@verkstedt/eslint-config-verkstedt`
 
-1. Remove all `*eslint*` and `*prettier*` packages you have installed.
+1. Remove all `*eslint*`, `*prettier*` and `*stylelint*` packages you
+   have installed.
 
 2. Remove old Prettier and EsLint config files and replace them with
    minimal ones from [Manual](#user-content-install-manual) installation
