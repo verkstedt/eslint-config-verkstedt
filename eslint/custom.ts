@@ -5,7 +5,7 @@ import type {
   RulesConfig,
 } from '@eslint/core';
 
-import { ALL_JS_FILES, MARKDOWN_FILES } from './file-globs.ts';
+import { ALL_JS_FILES, CSS_FILES, MARKDOWN_FILES } from './file-globs.ts';
 
 interface GetRulesOptions {
   typescriptPluginName: string | null;
@@ -209,6 +209,24 @@ function getVerkstedtConfig({
         'complexity': ['error', { max: 20 }],
         'no-console': 'off',
         'no-await-in-loop': 'off',
+      },
+    },
+    {
+      files: CSS_FILES,
+      rules: {
+        'css/no-invalid-properties': [
+          'error',
+          {
+            // By default this is false, which means it will error out on
+            // variables that are not defined in the same file, but vars
+            // are often defined globally, in separate CSS file
+            allowUnknownVariables: true,
+          },
+        ],
+        // Do not restrict only to CSS features in the baseline.
+        // Authors are free to use use never CSS features as long as
+        // they do it in a progressive-enhancement way
+        'css/use-baseline': 'off',
       },
     },
     {
