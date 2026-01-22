@@ -4,8 +4,15 @@ import type {
   RuleConfig,
   RulesConfig,
 } from '@eslint/core';
+import deepmerge from 'deepmerge';
 
-import { ALL_JS_FILES, CSS_FILES, MARKDOWN_FILES } from './file-globs.ts';
+import {
+  ALL_JS_FILES,
+  ALL_JS_FILES_EXTS,
+  CSS_FILES,
+  MARKDOWN_FILES,
+} from './file-globs.ts';
+import type { NoRestrictedImportsConfig } from './types.ts';
 
 interface GetRulesOptions {
   typescriptPluginName: string | null;
@@ -121,7 +128,11 @@ function getPromisesRules(_options: GetRulesOptions): RulesConfig {
   };
 }
 
-function getImportsRules(_options: GetRulesOptions): RulesConfig {
+function getImportsRules({
+  noRestrictedImportsConfig,
+}: GetRulesOptions & {
+  noRestrictedImportsConfig: NoRestrictedImportsConfig;
+}): RulesConfig {
   return {
     // Always use `node:…` for Node.js built-ins
     'import/enforce-node-protocol-usage': ['error', 'always'],
@@ -138,6 +149,9 @@ function getImportsRules(_options: GetRulesOptions): RulesConfig {
         },
       },
     ],
+
+    // Commonly mis–imported modules
+    'no-restricted-imports': ['error', noRestrictedImportsConfig],
   };
 }
 
@@ -216,6 +230,7 @@ function getPracticalRules({
 interface GetVerkstedtConfigOptions {
   typescriptEsLintPlugin?: Plugin;
   eslintCommentsPlugin: Plugin;
+  noRestrictedImportsConfig: NoRestrictedImportsConfig;
 }
 
 /**
@@ -224,12 +239,40 @@ interface GetVerkstedtConfigOptions {
 function getVerkstedtConfig({
   typescriptEsLintPlugin,
   eslintCommentsPlugin,
+  noRestrictedImportsConfig: userNoRestrictedImportsConfig,
 }: GetVerkstedtConfigOptions): Array<ConfigObject> {
   const typescriptPluginName =
     typescriptEsLintPlugin?.meta?.name?.split('/').at(0) ?? null;
 
+  const ourNoRestrictedImportsConfig: NoRestrictedImportsConfig = {
+    paths: [
+      {
+        name: '@base-ui-components/react',
+        message:
+          'Do not import directly from @base-ui-components/react -- use @base-ui-components/react/<component> instead',
+      },
+      {
+        name: 'clsx',
+        message: 'Use a more lightweight clsx/lite import instead.',
+      },
+    ],
+
+    patterns: [
+      {
+        group: ['storybook/internal/*', '!storybook/internal/types'],
+        message: 'Avoid importing from storybook/internal',
+      },
+    ],
+  };
+
+  const noRestrictedImportsConfig = deepmerge<NoRestrictedImportsConfig>(
+    ourNoRestrictedImportsConfig,
+    userNoRestrictedImportsConfig,
+  );
+
   return [
     {
+      name: 'Overwrites from recommended configs: JS/TS',
       files: ALL_JS_FILES,
       linterOptions: {
         reportUnusedDisableDirectives: 'error',
@@ -243,13 +286,13 @@ function getVerkstedtConfig({
       rules: {
         ...getCodeSmellsRules({ typescriptPluginName }),
         ...getPromisesRules({ typescriptPluginName }),
-        ...getImportsRules({ typescriptPluginName }),
+        ...getImportsRules({ typescriptPluginName, noRestrictedImportsConfig }),
         ...getStylisticRules({ typescriptPluginName }),
         ...getPracticalRules({ typescriptPluginName }),
       },
     },
     {
-      name: 'Be less restrictive in non–application code',
+      name: 'Overwrites from recommended configs: Be less restrictive in non–application code',
       files: [
         // Config files
         '.storybook/**',
@@ -269,6 +312,7 @@ function getVerkstedtConfig({
       },
     },
     {
+      name: 'Overwrites from recommended configs: CSS',
       files: CSS_FILES,
       rules: {
         // EsLint CSS parser errors out when you use var() or env() in
@@ -293,6 +337,7 @@ function getVerkstedtConfig({
       },
     },
     {
+      name: 'Overwrites from recommended configs: Markdown',
       files: MARKDOWN_FILES,
       rules: {
         // Parser does not recognise alerts in GitHub-Flavoured Markdown:
@@ -309,6 +354,42 @@ function getVerkstedtConfig({
               '!CAUTION',
             ],
           },
+        ],
+      },
+    },
+    {
+      name: 'Overwrites from recommended configs: Stories',
+      files: [`**/*.stories.${ALL_JS_FILES_EXTS.join(',')}`],
+      rules: {
+        // This makes it easier for StoryBook to parse and enables
+        // migration codemod to work
+        'storybook/meta-inline-properties': 'error',
+        // Typing meta directly as `Meta<…>`, instead of using
+        // `satisfies Meta<…>` narrows the type too match and disables
+        // some features
+        'storybook/meta-satisfies-type': 'error',
+      },
+    },
+    {
+      name: 'Overwrites from recommended configs: non–Stories',
+      files: ALL_JS_FILES,
+      ignores: [
+        '.storybook/**',
+        '**/*.stories.*',
+        // There’s a vitest storybook plugin
+        'vitest.config.*',
+      ],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          deepmerge<NoRestrictedImportsConfig>(noRestrictedImportsConfig, {
+            patterns: [
+              {
+                group: ['storybook', 'storybook/*', '@storybook/*'],
+                message: 'Do NOT use storybook things outside of stories.',
+              },
+            ],
+          }),
         ],
       },
     },

@@ -82,6 +82,9 @@ npx @verkstedt/lint@latest .
        // config files or scripts), you specify them here.
        // https://typescript-eslint.io/packages/parser/#allowdefaultproject
        allowDefaultProject: [],
+       // Custom config for no-restricted-imports rule
+       // https://eslint.org/docs/latest/rules/no-restricted-imports
+       noRestrictedImportsConfig: {},
      }),
    ]);
    ```

@@ -7,7 +7,7 @@ const REACT_JS_EXTS = ['jsx', ...REACT_TS_EXTS];
 const ALL_TS_FILES_EXTS = [...TS_EXTS, ...REACT_TS_EXTS];
 export const ALL_TS_FILES = [`**/*.{${ALL_TS_FILES_EXTS.join(',')}}`];
 
-const ALL_JS_FILES_EXTS = [...JS_EXTS, ...REACT_JS_EXTS];
+export const ALL_JS_FILES_EXTS = [...JS_EXTS, ...REACT_JS_EXTS];
 export const ALL_JS_FILES = [`**/*.{${ALL_JS_FILES_EXTS.join(',')}}`];
 
 const CSS_EXTS = ['css', 'scss'];

@@ -34,6 +34,7 @@ import {
   MARKDOWN_FILES,
   MS_JSONC_FILES,
 } from './file-globs.ts';
+import type { NoRestrictedImportsConfig } from './types.ts';
 
 interface PackageJson {
   dependencies?: Record<string, string>;
@@ -178,11 +179,13 @@ async function createConfigFromModules(allModuleConfigs: Array<ModuleConfig>) {
 interface CreateVerkstedtConfigOptions {
   dir: string;
   allowDefaultProject?: Array<string>;
+  noRestrictedImportsConfig?: NoRestrictedImportsConfig;
 }
 
 async function createVerkstedtConfig({
   dir,
   allowDefaultProject = [],
+  noRestrictedImportsConfig = {},
 }: CreateVerkstedtConfigOptions): Promise<Array<Config>> {
   const startMs = performance.now();
 
@@ -591,6 +594,7 @@ async function createVerkstedtConfig({
         return getVerkstedtConfig({
           typescriptEsLintPlugin,
           eslintCommentsPlugin,
+          noRestrictedImportsConfig,
         });
       },
     },
