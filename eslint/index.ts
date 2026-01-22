@@ -27,6 +27,7 @@ import getVerkstedtConfig from './custom.ts';
 import {
   ALL_FILES,
   ALL_JS_FILES,
+  ALL_TS_FILES,
   CSS_FILES,
   JSON_FILES,
   JSONC_FILES,
@@ -301,27 +302,40 @@ async function createVerkstedtConfig({
               interface TsConfig {
                 include?: Array<string>;
                 files?: Array<string>;
+                compilerOptions?: {
+                  allowJs?: boolean;
+                };
               }
               const tsconfig = parseJsonc(tsconfigJson) as TsConfig;
-              const tsconfigIncludes = [
+              const includes = [
                 ...(tsconfig.include ?? []),
                 ...(tsconfig.files ?? []),
               ];
-              const tsconfigIncludesAll =
-                tsconfigIncludes.length === 0 ||
-                tsconfigIncludes.includes('**/*') ||
-                tsconfigIncludes.includes('*');
+              const doesIncludeAll =
+                includes.length === 0 ||
+                includes.includes('**/*') ||
+                includes.includes('*');
+              const allowJs = tsconfig.compilerOptions?.allowJs ?? false;
 
-              return ['eslint.config.ts', 'prettier.config.ts'].filter(
-                (filename) => {
-                  return !(
-                    tsconfigIncludesAll ||
-                    micromatch.isMatch(filename, tsconfigIncludes, {
-                      cwd: dir,
-                    })
-                  );
-                },
+              const files = await Array.fromAsync(
+                fs.glob(['*.config.*', `scripts/${ALL_JS_FILES.join(',')}`]),
               );
+
+              return doesIncludeAll && allowJs
+                ? files
+                : files.filter((filename) => {
+                    if (allowJs || micromatch.isMatch(filename, ALL_TS_FILES)) {
+                      // If tsconfig allows JS, include it only if not
+                      // already included by tsconfig
+                      return !micromatch.isMatch(filename, includes, {
+                        cwd: dir,
+                      });
+                    } else {
+                      // If tsconfig doesn’t allow JS and file is not
+                      // TS, include it
+                      return true;
+                    }
+                  });
             })();
 
           // source: https://typescript-eslint.io/getting-started
