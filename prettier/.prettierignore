@@ -1,4 +1,6 @@
 # Generated
 /CHANGELOG.md
-*.min.js
 package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.min.js
