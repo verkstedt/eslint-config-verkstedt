@@ -265,6 +265,7 @@ function getVerkstedtConfig({
         'complexity': ['error', { max: 20 }],
         'no-console': 'off',
         'no-await-in-loop': 'off',
+        'css/no-important': 'off',
       },
     },
     {
