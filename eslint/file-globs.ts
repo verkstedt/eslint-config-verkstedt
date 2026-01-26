@@ -10,8 +10,8 @@ export const ALL_TS_FILES = [`**/*.{${ALL_TS_FILES_EXTS.join(',')}}`];
 export const ALL_JS_FILES_EXTS = [...JS_EXTS, ...REACT_JS_EXTS];
 export const ALL_JS_FILES = [`**/*.{${ALL_JS_FILES_EXTS.join(',')}}`];
 
-const CSS_EXTS = ['css', 'scss'];
-export const CSS_FILES = [`**/*.{${CSS_EXTS.join(',')}}`];
+const CSS_EXTS = ['css'];
+export const CSS_FILES = [`**/*.css`];
 
 const JSON_EXTS = ['json', 'jsonc'];
 export const JSON_FILES = [`**/*.{${JSON_EXTS.join(',')}}`];
