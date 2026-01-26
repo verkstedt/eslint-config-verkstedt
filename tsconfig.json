@@ -1,6 +1,17 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./typescript/tsconfig.base.json",
+  "include": ["*.d.ts", "eslint/", "prettier/"],
+  "exclude": ["test/"],
   "compilerOptions": {
-    "noEmit": true
-  },
-  "files": ["./test-input.ts"]
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rewriteRelativeImportExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "outDir": "esm/",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
+  }
 }
