@@ -134,7 +134,7 @@ typescript_setup ()
         then
             new_tsconfig_content=$(
               echo "$old_tsconfig_content" \
-                  | sed "1s|{|{\n  \"extends": "@verkstedt/lint/tsconfig\",\n|"
+                  | sed "1s|{|{\n  \"extends\": \"@verkstedt/lint/tsconfig\",|"
             )
         else
             new_tsconfig_content=$(
@@ -144,7 +144,7 @@ typescript_setup ()
         fi
 
         # Note: This does not check if we didn’t break the JSONC
-        if [ -z "$new_tsconfig_content" ] || [ "$new_tsconfig_content" == "$old_tsconfig_content" ]
+        if [ -z "$new_tsconfig_content" ] || [ "$new_tsconfig_content" = "$old_tsconfig_content" ]
         then
             ERROR "Failed to update 'extends' in $tsconfig_path."
             exit 1 # EX_SOFTWARE
