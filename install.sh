@@ -209,6 +209,13 @@ eslint_setup ()
         find . -maxdepth 1 -type f \( -name '.eslintrc' -or -name '.eslintrc.*' -or -name 'eslint.config.*' \)
     )
     recognised_legacy_config_match="@verkstedt/verkstedt|@verkstedt/eslint-config-verkstedt"
+    vanilla_legacy_config_match=$(
+        echo "
+          ^module.exports = {
+              extends: \[[\"']@verkstedt/verkstedt[^'\"]*[\"'],?\],?
+          };?$
+          " | tr -d '[:space:]'
+    )
 
     if [ -n "$( jq '.eslintConfig // empty' package.json 2>/dev/null )" ]
     then
@@ -221,6 +228,12 @@ eslint_setup ()
     then
         ERROR "Multiple ESLint configuration files found:\n$existing_config_files"
         exit 78 # EX_CONFIG
+    elif
+        cat "$existing_config_files" | tr -d '[:space:]' \
+            | grep -qE "$vanilla_legacy_config_match"
+    then
+        rm -v "$existing_config_files"
+        printf "%s\n" "$config_contents" > "$expected_config_file"
     elif grep -qE "$recognised_legacy_config_match" "$existing_config_files"
     then
         ERROR "Legacy ESLint configuration found in '${existing_config_files}'. See <https://github.com/verkstedt/lint#user-content-install-migrate-from-eslint-config-verkstedt> for instructions."
