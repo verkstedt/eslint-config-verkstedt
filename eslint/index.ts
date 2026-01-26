@@ -296,20 +296,33 @@ async function createVerkstedtConfig({
         if (!usesTypeScript) {
           return null;
         } else {
+          interface TsConfig {
+            include?: Array<string>;
+            files?: Array<string>;
+            compilerOptions?: {
+              allowJs?: boolean;
+            };
+          }
+
+          const tsconfigPath = resolve(dir, 'tsconfig.json');
+          const tsconfigJson = !(await fileExists(tsconfigPath))
+            ? '{}'
+            : await fs.readFile(tsconfigPath, 'utf-8');
+          const tsconfig = parseJsonc(tsconfigJson) as TsConfig;
+
+          const checkIsTs = (filename: string) =>
+            micromatch.isMatch(filename, ALL_TS_FILES);
+
+          /*
+           * tsconfig doesn’t include config files, scripts and such,
+           * but we do want them to be checked by EsLint using TS
+           * parser. For that we need to add them to
+           * allowDefaultProject, _but_ adding files there that are also
+           * included in tsconfig causes error, so we need to filter
+           * them out.
+           */
           const additionalAllowDefaultProject: Array<string> =
             await (async () => {
-              const tsconfigPath = resolve(dir, 'tsconfig.json');
-              const tsconfigJson = !(await fileExists(tsconfigPath))
-                ? '{}'
-                : await fs.readFile(tsconfigPath, 'utf-8');
-              interface TsConfig {
-                include?: Array<string>;
-                files?: Array<string>;
-                compilerOptions?: {
-                  allowJs?: boolean;
-                };
-              }
-              const tsconfig = parseJsonc(tsconfigJson) as TsConfig;
               const includes = [
                 ...(tsconfig.include ?? []),
                 ...(tsconfig.files ?? []),
@@ -318,6 +331,11 @@ async function createVerkstedtConfig({
                 includes.length === 0 ||
                 includes.includes('**/*') ||
                 includes.includes('*');
+              const checkIsIncluded = doesIncludeAll
+                ? () => true
+                : (filename: string) =>
+                    micromatch.isMatch(filename, includes, { cwd: dir });
+
               const allowJs = tsconfig.compilerOptions?.allowJs ?? false;
 
               const files = await Array.fromAsync(
@@ -327,17 +345,10 @@ async function createVerkstedtConfig({
               return doesIncludeAll && allowJs
                 ? files
                 : files.filter((filename) => {
-                    if (allowJs || micromatch.isMatch(filename, ALL_TS_FILES)) {
-                      // If tsconfig allows JS, include it only if not
-                      // already included by tsconfig
-                      return !micromatch.isMatch(filename, includes, {
-                        cwd: dir,
-                      });
-                    } else {
-                      // If tsconfig doesn’t allow JS and file is not
-                      // TS, include it
-                      return true;
-                    }
+                    return (
+                      (!allowJs && !checkIsTs(filename)) ||
+                      !checkIsIncluded(filename)
+                    );
                   });
             })();
 
