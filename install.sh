@@ -264,12 +264,25 @@ main ()
         npm ls typescript > /dev/null 2>&1 && echo "1" || echo ""
     )
 
+    get_dep_with_version ()
+    {
+        pkg="$1"
+        ver="$( cat "$lint_dir/package.json" | jq --arg pkg "$pkg" -r '.devDependencies[$pkg]' )"
+        printf '%s@%s' "$pkg" "$ver"
+    }
+
     printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
-    set -- @verkstedt/lint eslint prettier
+    set -- \
+        @verkstedt/lint \
+        "$( get_dep_with_version eslint )" \
+        "$( get_dep_with_version prettier )"
     if [ -n "$uses_typescript" ]
     then
         # jiti is needed to load TypeScript ESLint config files
-        set -- "$@" jiti typescript-eslint
+        set -- \
+            "$@" \
+            "$( get_dep_with_version jiti )" \
+            "$( get_dep_with_version typescript-eslint )"
     fi
     npm install --save-dev "$@"
 
