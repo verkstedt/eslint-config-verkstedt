@@ -72,8 +72,9 @@ npx @verkstedt/lint@latest .
 
    ```mjs
    import { fileURLToPath } from 'node:url';
-   import { defineConfig } from 'eslint/config';
+
    import { createVerkstedtConfig } from '@verkstedt/lint/eslint';
+   import { defineConfig } from 'eslint/config';
 
    export default defineConfig([
      await createVerkstedtConfig({
