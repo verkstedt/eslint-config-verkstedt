@@ -22,7 +22,7 @@ jobs:
         #       accessing secrets inside `if` is not allowed.
         if: ${{ env.NPM_TOKEN != '' || env.GITHUB_TOKEN != '' }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: ${{ env.NPM_TOKEN != '' || env.GITHUB_TOKEN != '' }}
         with:
           node-version-file: './.nvmrc'
@@ -44,7 +44,7 @@ jobs:
 
       - name: 'Switch Node.js to GitHub registry'
         if: ${{ env.GITHUB_TOKEN != '' }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: './.nvmrc'
           registry-url: 'https://npm.pkg.github.com'
