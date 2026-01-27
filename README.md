@@ -152,3 +152,7 @@ This package is published to npmjs.com and also to github package registry when 
 npm version patch # or minor, or major -- depending on changes
 git push --follow-tags
 ```
+
+## License
+
+[MIT](./LICENSE)
