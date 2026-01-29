@@ -61,6 +61,7 @@ function getCodeSmellsRules({
       'error',
       {
         argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
         destructuredArrayIgnorePattern: '^_',
         varsIgnorePattern: '^_',
       },
