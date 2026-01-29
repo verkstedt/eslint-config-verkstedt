@@ -11,6 +11,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
+import braces from 'braces';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import cssModulesPlugin from 'eslint-plugin-css-modules';
@@ -339,17 +340,23 @@ async function createVerkstedtConfig({
               const allowJs = tsconfig.compilerOptions?.allowJs ?? false;
 
               const files = await Array.fromAsync(
-                fs.glob(['*.config.*', `scripts/${ALL_JS_FILES.join(',')}`]),
+                fs.glob([
+                  '*.config.*',
+                  '.storybook/{main,preview}.{js,ts,jsx,tsx}',
+                  `scripts/${ALL_JS_FILES.join(',')}`,
+                ]),
               );
 
               return doesIncludeAll && allowJs
                 ? files
-                : files.filter((filename) => {
-                    return (
-                      (!allowJs && !checkIsTs(filename)) ||
-                      !checkIsIncluded(filename)
-                    );
-                  });
+                : files
+                    .flatMap((pattern) => braces.expand(pattern))
+                    .filter((filename) => {
+                      return (
+                        (!allowJs && !checkIsTs(filename)) ||
+                        !checkIsIncluded(filename)
+                      );
+                    });
             })();
 
           // source: https://typescript-eslint.io/getting-started
