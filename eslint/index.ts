@@ -575,10 +575,20 @@ async function createVerkstedtConfig({
     {
       name: 'prettier',
       get() {
-        return {
-          ...prettierRecommended,
-          files: ALL_FILES,
-        };
+        return [
+          {
+            ...prettierRecommended,
+            files: ALL_FILES,
+          },
+          // (Only in some projects) prettier plugin tries to parse
+          // markdown files as JavaScript
+          {
+            files: MARKDOWN_FILES,
+            rules: {
+              'prettier/prettier': ['error', { parser: 'markdown' }],
+            },
+          },
+        ];
       },
     },
     {
