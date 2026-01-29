@@ -35,6 +35,26 @@ ERROR ()
     printf "${ansi_error}ERROR: %s${ansi_reset}\n" "$1" >&2
 }
 
+pkg_ls ()
+{
+    if [ -e yarn.lock ]
+    then
+        yarn ls "$@"
+    else
+        npm ls "$@"
+    fi
+}
+
+pkg_install_dev ()
+{
+    if [ -e yarn.lock ]
+    then
+        yarn add -D "$@"
+    else
+        npm install --save-dev "$@"
+    fi
+}
+
 ###
 # Cross–platform dirname + readlink -f
 # $1: path to canonicalize
@@ -261,7 +281,7 @@ main ()
     cd "$target_dir"
 
     uses_typescript=$(
-        npm ls typescript > /dev/null 2>&1 && echo "1" || echo ""
+        pkg_ls typescript > /dev/null 2>&1 && echo "1" || echo ""
     )
 
     get_dep_with_version ()
@@ -284,7 +304,7 @@ main ()
             "$( get_dep_with_version jiti )" \
             "$( get_dep_with_version typescript-eslint )"
     fi
-    npm install --save-dev "$@"
+    pkg_install_dev "$@"
 
     if [ -n "$uses_typescript" ]
     then
