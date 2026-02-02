@@ -390,6 +390,24 @@ function getVerkstedtConfig({
                 message: 'Do NOT use storybook things outside of stories.',
               },
             ],
+            paths: [
+              {
+                name: '@lingui/core/macro',
+                allowImportNames: ['msg', 'plural', 't'],
+                message:
+                  'Import equivalent from `@lingui/react/macro` instead.',
+              },
+              {
+                name: '@lingui/core/macro',
+                importNames: ['t'],
+                message: 'Use `useLingui` macro to get `t` function instead.',
+              },
+              {
+                name: '@mui/system',
+                importNames: ['useTheme'],
+                message: 'Import `useTheme` from `@mui/material` instead.',
+              },
+            ],
           }),
         ],
       },

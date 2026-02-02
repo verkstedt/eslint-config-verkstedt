@@ -293,7 +293,7 @@ main ()
 
     printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
     set -- \
-        @verkstedt/lint \
+        /home/saji/src/@verkstedt/lint \
         "$( get_dep_with_version eslint )" \
         "$( get_dep_with_version prettier )"
     if [ -n "$uses_typescript" ]
