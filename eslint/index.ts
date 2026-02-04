@@ -391,6 +391,18 @@ async function createVerkstedtConfig({
       },
     },
     {
+      name: 'typescript-import',
+      get() {
+        if (usesTypeScript) {
+          // This package is not used anywhere in the config, but needs
+          // to exist for EsLint to resolve TypeScript imports using
+          // tsconfig (e.g. respecting `baseUrl` and `paths`).
+          import.meta.resolve('eslint-import-resolver-typescript');
+        }
+        return null;
+      },
+    },
+    {
       name: 'react',
       async get() {
         // source: https://github.com/jsx-eslint/eslint-plugin-react
