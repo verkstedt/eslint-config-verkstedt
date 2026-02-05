@@ -68,7 +68,7 @@ function lintNodeVersions(nvmrc: string, packageJson: PackageJson): boolean {
       // @types/node should match the version of Node.js being used, but
       // not all releases change API and for these versions new version of
       // @types/node is not released. Therefore we cannot use exact match.
-      const expectedTypesVersion = `^${pkgVersionMajor}, <=${pkgVersionMajor}${pkgVersionRest}`;
+      const expectedTypesVersion = `^${pkgVersionMajor} <=${pkgVersionMajor}${pkgVersionRest}`;
       if (pkgTypesVersion !== expectedTypesVersion) {
         errors.push(
           `@types/node version mismatch: for Node.js version "${pkgVersion}", expected "@types/node" version "${expectedTypesVersion}", but got "${pkgTypesVersion}"`,
