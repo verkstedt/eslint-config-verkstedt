@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import type { WriteStream } from 'node:tty';
 import { fileURLToPath } from 'node:url';
 import { debuglog, inspect } from 'node:util';
@@ -11,7 +11,6 @@ import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
-import braces from 'braces';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import cssModulesPlugin from 'eslint-plugin-css-modules';
@@ -19,8 +18,7 @@ import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import { parse as parseJsonc } from 'jsonc-parser';
-import micromatch from 'micromatch';
+import typescript from 'typescript';
 
 import configPackageJson from '../package.json' with { type: 'json' };
 
@@ -28,7 +26,7 @@ import getVerkstedtConfig from './custom.ts';
 import {
   ALL_FILES,
   ALL_JS_FILES,
-  ALL_TS_FILES,
+  ALL_JS_FILES_EXTS,
   CSS_FILES,
   JSON_FILES,
   JSONC_FILES,
@@ -113,6 +111,46 @@ async function fileExists(path: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+async function getTsConfigPath(dir: string): Promise<string | null> {
+  const tsconfigPath = resolve(dir, 'tsconfig.json');
+  if (await fileExists(tsconfigPath)) {
+    return tsconfigPath;
+  } else {
+    return null;
+  }
+}
+
+function readTsConfig(tsconfigPath: string | null) {
+  if (!tsconfigPath) {
+    throw new Error('Failed to find tsconfig.json');
+  }
+
+  const tsconfigResult = typescript.readConfigFile(
+    tsconfigPath,
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- this is fine
+    typescript.sys.readFile,
+  );
+  if (tsconfigResult.error) {
+    const cause = tsconfigResult.error;
+    const errorMessage =
+      typeof cause.messageText !== 'string' &&
+      'messageText' in cause.messageText
+        ? cause.messageText.messageText
+        : cause.messageText;
+    throw new Error(`Failed to read ${tsconfigPath}: ${errorMessage}`, {
+      cause,
+    });
+  }
+  const tsconfig = typescript.parseJsonConfigFileContent(
+    tsconfigResult.config,
+
+    typescript.sys,
+    dirname(tsconfigPath),
+  );
+
+  return tsconfig;
 }
 
 function getMissingDepNameFromError(error: unknown) {
@@ -209,13 +247,14 @@ async function createVerkstedtConfig({
     ]),
   );
 
-  const usesTypeScript =
+  const tsconfigPath = await getTsConfigPath(dir);
+  const usesTypeScript: boolean =
     deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
-    (await fileExists(resolve(dir, 'tsconfig.json')));
+    (tsconfigPath != null && (await fileExists(tsconfigPath)));
   const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
   const usesNextJs = deps.some((dep) => dep === 'next');
 
-  debugLog('Uses TypeScript:', usesTypeScript);
+  debugLog('Uses TypeScript:', usesTypeScript, '; tsconfig at', tsconfigPath);
   debugLog('Uses React:', usesReact);
   debugLog('Uses Next.js:', usesNextJs);
 
@@ -297,67 +336,42 @@ async function createVerkstedtConfig({
         if (!usesTypeScript) {
           return null;
         } else {
-          interface TsConfig {
-            include?: Array<string>;
-            files?: Array<string>;
-            compilerOptions?: {
-              allowJs?: boolean;
-            };
-          }
-
-          const tsconfigPath = resolve(dir, 'tsconfig.json');
-          const tsconfigJson = !(await fileExists(tsconfigPath))
-            ? '{}'
-            : await fs.readFile(tsconfigPath, 'utf-8');
-          const tsconfig = parseJsonc(tsconfigJson) as TsConfig;
-
-          const checkIsTs = (filename: string) =>
-            micromatch.isMatch(filename, ALL_TS_FILES);
+          const tsconfig = readTsConfig(tsconfigPath);
 
           /*
-           * tsconfig doesn’t include config files, scripts and such,
-           * but we do want them to be checked by EsLint using TS
+           * tsconfig usually doesn’t include config files, scripts and
+           * such, but we do want them to be checked by EsLint using TS
            * parser. For that we need to add them to
            * allowDefaultProject, _but_ adding files there that are also
            * included in tsconfig causes error, so we need to filter
            * them out.
            */
-          const additionalAllowDefaultProject: Array<string> =
-            await (async () => {
-              const includes = [
-                ...(tsconfig.include ?? []),
-                ...(tsconfig.files ?? []),
-              ];
-              const doesIncludeAll =
-                includes.length === 0 ||
-                includes.includes('**/*') ||
-                includes.includes('*');
-              const checkIsIncluded = doesIncludeAll
-                ? () => true
-                : (filename: string) =>
-                    micromatch.isMatch(filename, includes, { cwd: dir });
-
-              const allowJs = tsconfig.compilerOptions?.allowJs ?? false;
-
-              const files = await Array.fromAsync(
-                fs.glob([
-                  '*.config.*',
-                  '.storybook/{main,preview}.{js,ts,jsx,tsx}',
-                  `scripts/${ALL_JS_FILES.join(',')}`,
-                ]),
-              );
-
-              return doesIncludeAll && allowJs
-                ? files
-                : files
-                    .flatMap((pattern) => braces.expand(pattern))
-                    .filter((filename) => {
-                      return (
-                        (!allowJs && !checkIsTs(filename)) ||
-                        !checkIsIncluded(filename)
-                      );
-                    });
-            })();
+          const additionalAllowDefaultProject = (
+            await Array.fromAsync(
+              fs.glob(
+                [
+                  // List of common file names we’d like to add
+                  '*.config',
+                  '.storybook/{main,preview}',
+                  'scripts/**/*',
+                ]
+                  // Add all JS/TS file extensions
+                  .flatMap((patternStart) =>
+                    ALL_JS_FILES_EXTS.map((ext) => `${patternStart}.${ext}`),
+                  ),
+              ),
+            )
+          )
+            // Find files that are not included in tsconfig
+            // Note: tsconfig.fileNames are absolute paths
+            .filter(
+              (filename) =>
+                !tsconfig.fileNames.includes(resolve(dir, filename)),
+            );
+          debugLog(
+            'Detected files to add to allowDefaultProject:',
+            additionalAllowDefaultProject,
+          );
 
           // source: https://typescript-eslint.io/getting-started
 
