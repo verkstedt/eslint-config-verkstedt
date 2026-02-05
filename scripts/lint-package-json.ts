@@ -39,31 +39,41 @@ function lintPeerDependencies(packageJson: PackageJson) {
   const peerDeps = packageJson.peerDependencies ?? {};
   const peerDepsMeta = packageJson.peerDependenciesMeta ?? {};
   const devDeps = packageJson.devDependencies ?? {};
+  const prodDeps = packageJson.dependencies ?? {};
   const errors: Array<string> = [];
 
-  for (const [peerDep, peerVersion] of Object.entries(peerDeps)) {
-    const devVersion = devDeps[peerDep];
-    if (!devVersion) {
+  for (const [dep, peerVersion] of Object.entries(peerDeps)) {
+    if (!peerVersion.startsWith('>=')) {
       errors.push(
-        `Peer dependency "${peerDep}" is missing in devDependencies.`,
-      );
-    } else if (!peerVersion.startsWith('>=')) {
-      errors.push(
-        `Peer dependency "${peerDep}" should use '>=' version specifier, found "${peerVersion}".`,
-      );
-    } else if (!devVersion.startsWith('^')) {
-      errors.push(
-        `Dev dependency "${peerDep}" should use '^' version specifier, found "${devVersion}".`,
-      );
-    } else if (devVersion.replace('^', '') !== peerVersion.replace('>=', '')) {
-      errors.push(
-        `Version mismatch for "${peerDep}": peer "${peerVersion}", dev "${devVersion}".`,
+        `Peer dependency "${dep}" should use '>=' version specifier, found "${peerVersion}".`,
       );
     }
 
-    if (!(peerDep in peerDepsMeta)) {
+    const versionsEntries = [
+      ['dev', devDeps[dep]],
+      ['production', prodDeps[dep]],
+    ].filter(([, version]) => version);
+    if (versionsEntries.length === 0) {
       errors.push(
-        `Peer dependency "${peerDep}" is missing in peerDependenciesMeta.`,
+        `Peer dependency "${dep}" expected to be also listed in devDependencies or dependencies, but was not found.`,
+      );
+    } else {
+      for (const [depType, version] of versionsEntries) {
+        if (!version.startsWith('^')) {
+          errors.push(
+            `${depType} dependency "${dep}" should use '^' version specifier, found "${version}".`,
+          );
+        } else if (version.replace('^', '') !== peerVersion.replace('>=', '')) {
+          errors.push(
+            `Version mismatch for "${dep}": peer "${peerVersion}", ${depType} "${version}".`,
+          );
+        }
+      }
+    }
+
+    if (!(dep in peerDepsMeta)) {
+      errors.push(
+        `Peer dependency "${dep}" is missing in peerDependenciesMeta.`,
       );
     }
   }
