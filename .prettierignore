@@ -4,3 +4,6 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 *.min.js
+
+# Tests have their own linting config
+/test/
