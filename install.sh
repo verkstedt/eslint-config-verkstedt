@@ -271,6 +271,38 @@ eslint_setup ()
     fi
 }
 
+###
+# Get dependency specifier for @verkstedt/lint itself
+get_verkstedt_lint_pkg ()
+{
+    lint_dir="$1"
+    (
+        cd "$lint_dir"
+        name="@verkstedt/lint"
+        version=$( npm pkg get version | sed -E 's/^"|"$//g' )
+        printf '%s@%s' "$name" "$version"
+    )
+}
+
+###
+# Get dependency specifier for a dev dependency
+get_dev_dep_pkg ()
+{
+    lint_dir="$1"
+    pkg="$2"
+    (
+        cd "$lint_dir"
+        version="$( npm pkg get "devDependencies.$pkg" | sed -E 's/^"|"$//g' )"
+        if [ "$version" = "{}" ] || [ -z "$version" ] || [ "$version" = "null" ]
+        then
+            ERROR "Package '$pkg' not found in devDependencies of $lint_dir/package.json."
+            exit 70 # EX_SOFTWARE
+        fi
+        printf '%s@%s' "$pkg" "$version"
+    )
+}
+
+
 main ()
 {
     lint_dir=$( dirname_readlink "$0" )
@@ -284,25 +316,19 @@ main ()
         pkg_ls typescript > /dev/null 2>&1 && echo "1" || echo ""
     )
 
-    get_dep_with_version ()
-    {
-        pkg="$1"
-        ver="$( cat "$lint_dir/package.json" | jq --arg pkg "$pkg" -r '.devDependencies[$pkg]' )"
-        printf '%s@%s' "$pkg" "$ver"
-    }
-
     printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
+
     set -- \
-        /home/saji/src/@verkstedt/lint \
-        "$( get_dep_with_version eslint )" \
-        "$( get_dep_with_version prettier )"
+        "$( get_verkstedt_lint_pkg "$lint_dir" )" \
+        "$( get_dev_dep_pkg "$lint_dir" eslint )" \
+        "$( get_dev_dep_pkg "$lint_dir" prettier )"
     if [ -n "$uses_typescript" ]
     then
         # jiti is needed to load TypeScript ESLint config files
         set -- \
             "$@" \
-            "$( get_dep_with_version jiti )" \
-            "$( get_dep_with_version typescript-eslint )"
+            "$( get_dev_dep_pkg "$lint_dir" jiti )" \
+            "$( get_dev_dep_pkg "$lint_dir" typescript-eslint )"
     fi
     pkg_install_dev "$@"
 
