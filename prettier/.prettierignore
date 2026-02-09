@@ -1,7 +1,21 @@
+###
 # Generated
+
+# Change Log
 /CHANGELOG.md
+
+# Dependency lock files
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Minimised files
 *.min.js
-/_bmad
+
+# BMAD method
+/_bmad/
+/_bmad-output/
+/.claude/commands/bmad-*.md
+/.cursor/commands/bmad-*.md
+/.codex/prompts/bmad-*.md
+/.github/agents/bmad-*.md
