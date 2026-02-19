@@ -12,6 +12,9 @@ pnpm-lock.yaml
 # Minimised files
 *.min.js
 
+# Type definitions
+next-env.d.ts
+
 # BMAD method
 /_bmad/
 /_bmad-output/
