@@ -248,9 +248,9 @@ function getVerkstedtConfig({
   const ourNoRestrictedImportsConfig: NoRestrictedImportsConfig = {
     paths: [
       {
-        name: '@base-ui-components/react',
+        name: '@base-ui/react',
         message:
-          'Do not import directly from @base-ui-components/react -- use @base-ui-components/react/<component> instead',
+          'Do not import directly from @base-ui/react -- use @base-ui/react/<component> instead',
       },
       {
         name: 'clsx',
