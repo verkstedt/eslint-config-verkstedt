@@ -95,18 +95,22 @@ npx @verkstedt/lint@latest .
 ### Migration from `@verkstedt/eslint-config-verkstedt`
 
 1. Remove all `*eslint*`, `*prettier*` and `*stylelint*` packages you
-   have installed.
+   have installed and remove old Prettier and EsLint config files.
 
-2. Remove old Prettier and EsLint config files and replace them with
-   minimal ones from [Manual](#user-content-install-manual) installation
-   above.
+2. Commit as something like “chore: Remove old linting config”.
 
-3. Commit.
+3. Run the script from [Automatic](#user-content-install-automatic)
+   installation above.
 
-4. Run the script from [Automatic](#user-content-install-automatic)
-   installation above. Commit.
+4. Commit.
 
-5. Check if you need to restore any of customisation you had in your old
+5. Run `eslint --fix`
+
+6. Commit.
+
+7. Fix any remaining linting errors and commit.
+
+8. Check if you need to restore any of customisation you had in your old
    config files (they may be included in new config files!). Consider
    not adding things back to keep config consistent across projects.
 
