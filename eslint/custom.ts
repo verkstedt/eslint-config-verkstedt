@@ -310,6 +310,7 @@ function getVerkstedtConfig({
         'no-console': 'off',
         'no-await-in-loop': 'off',
         'css/no-important': 'off',
+        'react/no-array-index-key': 'off',
       },
     },
     {
