@@ -32,6 +32,7 @@ import {
   JSONC_FILES,
   MARKDOWN_FILES,
   MS_JSONC_FILES,
+  VANILLA_JS_EXTS,
 } from './file-globs.ts';
 import type { NoRestrictedImportsConfig } from './types.ts';
 
@@ -362,12 +363,24 @@ async function createVerkstedtConfig({
               ),
             )
           )
-            // Find files that are not included in tsconfig
             // Note: tsconfig.fileNames are absolute paths
-            .filter(
-              (filename) =>
-                !tsconfig.fileNames.includes(resolve(dir, filename)),
-            );
+            .filter((filename) => {
+              // Skip files included explicitly in tsconfig
+              if (tsconfig.fileNames.includes(resolve(dir, filename))) {
+                return false;
+              }
+              // Include vanilla JS files, only if allowJS is false
+              // (otherwise they can be pulled in to the project if they
+              // are imported in included files)
+              // Note: We could check if a file is included in the
+              // project or not, but for doing so, we’d have to create
+              // whole TS project, which is costly.
+              if (VANILLA_JS_EXTS.some((ext) => filename.endsWith(`.${ext}`))) {
+                return tsconfig.options.allowJs === false;
+              }
+              // Fall back to not including to be on the safe side
+              return false;
+            });
           debugLog(
             'Detected files to add to allowDefaultProject:',
             additionalAllowDefaultProject,

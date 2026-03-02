@@ -1,5 +1,6 @@
 const TS_EXTS = ['ts', 'mts'];
-const JS_EXTS = ['js', 'mjs', 'cjs', ...TS_EXTS];
+export const VANILLA_JS_EXTS = ['js', 'mjs', 'cjs'];
+const JS_EXTS = [...VANILLA_JS_EXTS, ...TS_EXTS];
 
 const REACT_TS_EXTS = ['tsx'];
 const REACT_JS_EXTS = ['jsx', ...REACT_TS_EXTS];
