@@ -180,6 +180,7 @@ prettier_setup ()
 {
     config_file_extension="$1"
     config_contents="$2"
+    ignore_contents="$3"
 
     expected_config_file="prettier.config.${config_file_extension}"
     expected_config_match="from '@verkstedt/lint/prettier'"
@@ -212,7 +213,7 @@ prettier_setup ()
 
     if ! [ -f ".prettierignore" ]
     then
-        true > .prettierignore
+        echo "$ignore_contents" > .prettierignore
     fi
 }
 
@@ -344,7 +345,29 @@ main ()
 
     printf "${ansi_bold}SETUP PRETTIER${ansi_reset}\n"
     prettier_config="$( read_file_from_markdown PRETTIER_CONFIG "$lint_dir/README.md" )"
-    prettier_setup "$config_file_extension" "$prettier_config"
+    if [ -z "$prettier_config" ]
+    then
+        ERROR "Failed to determine prettier config conents"
+        exit 70
+    fi
+    prettier_ignore="$(
+      for path in \
+          "$lint_dir/prettier/.prettierignore" \
+          "$lint_dir/esm/prettier/.prettierignore"
+      do
+          if [ -f "$path" ]
+          then
+              cat "$path"
+              break
+          fi
+      done
+    )"
+    if [ -z "$prettier_ignore" ]
+    then
+        ERROR "Failed to determine prettier ignore contents"
+        exit 70
+    fi
+    prettier_setup "$config_file_extension" "$prettier_config" "$prettier_ignore"
 
     printf "${ansi_bold}SETUP ESLINT${ansi_reset}\n"
     eslint_config="$( read_file_from_markdown ESLINT_CONFIG "$lint_dir/README.md" )"
