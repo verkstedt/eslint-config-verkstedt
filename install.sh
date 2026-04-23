@@ -321,7 +321,9 @@ main ()
     cd "$target_dir"
 
     uses_typescript=$(
-        pkg_ls typescript > /dev/null 2>&1 && echo "1" || echo ""
+        jq -r \
+            '(.dependencies + .devDependencies).typescript | if . == null then "" else "1" end' \
+            "$target_dir/package.json"
     )
 
     printf "${ansi_bold}REMOVE NPM PACKAGES${ansi_reset}\n"
