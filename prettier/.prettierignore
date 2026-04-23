@@ -22,3 +22,7 @@ next-env.d.ts
 /.cursor/commands/bmad-*.md
 /.codex/prompts/bmad-*.md
 /.github/agents/bmad-*.md
+
+###
+# Assets
+*.svg
