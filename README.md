@@ -93,7 +93,9 @@ npx @verkstedt/lint@latest .
 
 <a id=user-content-install-migrate-from-eslint-config-verkstedt></a>
 
-### Migration from `@verkstedt/eslint-config-verkstedt`
+#### Migration from `@verkstedt/eslint-config-verkstedt`
+
+<details>
 
 1. Remove all `*eslint*`, `*prettier*` and `*stylelint*` packages you
    have installed and remove old Prettier and EsLint config files.
@@ -121,6 +123,8 @@ npx @verkstedt/lint@latest .
 > `@typescript-eslint/no-unsafe-*` rules. Best approach is to
 > temporarily disable them and merge new config like that, but plan to
 > refactor the codebase to enable them back.
+
+</details>
 
 ### First run
 
