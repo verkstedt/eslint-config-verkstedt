@@ -45,6 +45,16 @@ pkg_ls ()
     fi
 }
 
+pkg_uninstall ()
+{
+    if [ -e yarn.lock ]
+    then
+        yarn uninstall "$@"
+    else
+        npm uninstall "$@"
+    fi
+}
+
 pkg_install_dev ()
 {
     if [ -e yarn.lock ]
@@ -316,6 +326,9 @@ main ()
     uses_typescript=$(
         pkg_ls typescript > /dev/null 2>&1 && echo "1" || echo ""
     )
+
+    printf "${ansi_bold}REMOVE NPM PACKAGES${ansi_reset}\n"
+    pkg_uninstall stylelint
 
     printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
 
