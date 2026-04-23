@@ -115,6 +115,13 @@ npx @verkstedt/lint@latest .
    config files (they may be included in new config files!). Consider
    not adding things back to keep config consistent across projects.
 
+> [!NOTE]
+> In some codebases, you may get a lot of errors from
+> `@typescript-eslint/no-explicit-any` and
+> `@typescript-eslint/no-unsafe-*` rules. Best approach is to
+> temporarily disable them and merge new config like that, but plan to
+> refactor the codebase to enable them back.
+
 ### First run
 
 ```sh

@@ -17,6 +17,7 @@ import cssModulesPlugin from 'eslint-plugin-css-modules';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import type reactPlugin from 'eslint-plugin-react';
 import globals from 'globals';
 import typescript from 'typescript';
 
@@ -46,7 +47,12 @@ type PromiseOrValue<Type> = Type | Promise<Type>;
 type ArrayOrItem<Type> = Type | Array<Type>;
 
 // Not all plugins are typed as {import('@eslint/core').Plugin}
-type AnyPlugin = Plugin | typeof json | typeof css;
+type AnyPlugin =
+  | Plugin
+  | typeof json
+  | typeof css
+  | typeof markdown
+  | typeof reactPlugin;
 type Config = ArrayOrItem<
   Omit<Linter.Config, 'plugins'> & {
     plugins?: Record<string, AnyPlugin>;
@@ -63,10 +69,7 @@ interface ModuleConfig {
   ) => PromiseOrValue<null | Config>;
 }
 
-const includeIgnoreFile = includeIgnoreFileOriginal as (
-  ignoreFilePath: string,
-  name?: string,
-) => Linter.Config;
+const includeIgnoreFile = includeIgnoreFileOriginal;
 
 function getColours(stream: WriteStream) {
   if (stream.isTTY || process.env.FORCE_COLOR === '1') {
