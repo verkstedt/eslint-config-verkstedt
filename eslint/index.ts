@@ -69,7 +69,7 @@ const includeIgnoreFile = includeIgnoreFileOriginal as (
 ) => Linter.Config;
 
 function getColours(stream: WriteStream) {
-  if (stream.isTTY) {
+  if (stream.isTTY || process.env.FORCE_COLOR === '1') {
     return {
       supported: true,
       reset: '\x1B[0m',
