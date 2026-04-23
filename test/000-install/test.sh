@@ -28,15 +28,19 @@ ASSERT_EQ () {
 }
 
 prepare () {
- rm -fv .prettierignore eslint.config.mjs prettier.config.mjs
- ../../install.sh .
+  rm -rf "./testarea"
+  mkdir "./testarea"
+  cd "./testarea"
+  git init --quiet
+  echo '{}' > package.json
+  ../../../install.sh . >/dev/null
 }
 
 prepare
 
 ASSERT_EQ ".prettierignore" \
   "$( cat ./.prettierignore )" \
-  "$( cat ../../prettier/.prettierignore )"
+  "$( cat ../../../prettier/.prettierignore )"
 
 ASSERT_EQ "prettier.config.mjs" \
   "$( cat ./prettier.config.mjs )" \
