@@ -3,11 +3,8 @@ set -eu
 
 print_help ()
 {
-    cat << EOF
-Set up linting.
-
-Usage: npx @verkstedt/lint TARGET_DIR
-EOF
+    printf "${ansi_bold}Set up linting.${ansi_reset}\n\n"
+    printf "${ansi_bold}Usage:${ansi_reset} npx @verkstedt/lint ${ansi_italic}TARGET_DIR${ansi_reset}\n"
 }
 
 ###
@@ -398,11 +395,13 @@ then
     ansi_error="\033[0;31m"
     ansi_success="\033[0;32m"
     ansi_bold="\033[1m"
+    ansi_italic="\033[3m"
     ansi_reset="\033[0m"
 else
     ansi_error=""
     ansi_success=""
     ansi_bold=""
+    ansi_italic=""
     ansi_reset=""
 fi
 
