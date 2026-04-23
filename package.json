@@ -51,6 +51,7 @@
   },
   "workspaces": [
     ".",
+    "test/000-install",
     "test/001-js",
     "test/002-ts",
     "test/003-react",

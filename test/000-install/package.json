@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test:unit:test": "./test.sh"
+  },
+  "devDependencies": {
+    "@verkstedt/lint": "^11.0.0-rc.5",
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.3"
+  }
+}
