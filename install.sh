@@ -385,6 +385,10 @@ main ()
     printf "${ansi_bold}SETUP ESLINT${ansi_reset}\n"
     eslint_config="$( read_file_from_markdown ESLINT_CONFIG "$lint_dir/README.md" )"
     eslint_setup "$config_file_extension" "$eslint_config"
+
+    printf "\n${ansi_success}✅ Installed %s ${ansi_reset}\n" "$( jq -r '.name + "@" + .version' "$lint_dir/package.json" )"
+    printf "Installation script modified your config files, but it is not infallible. ${ansi_bold}You should review the changes yourself.${ansi_reset}\n"
+    printf 'You probably want to commit current changes and then run `eslint --fix .` and commit that separately.\n'
 }
 
 # Set up global variables
@@ -392,10 +396,12 @@ main ()
 if should_use_color 1 && should_use_color 2
 then
     ansi_error="\033[0;31m"
+    ansi_success="\033[0;32m"
     ansi_bold="\033[1m"
     ansi_reset="\033[0m"
 else
     ansi_error=""
+    ansi_success=""
     ansi_bold=""
     ansi_reset=""
 fi
