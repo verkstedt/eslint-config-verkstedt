@@ -326,10 +326,10 @@ main ()
             "$target_dir/package.json"
     )
 
-    printf "${ansi_bold}REMOVE NPM PACKAGES${ansi_reset}\n"
+    printf "\n${ansi_bold}REMOVE NPM PACKAGES${ansi_reset}\n"
     pkg_uninstall stylelint
 
-    printf "${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
+    printf "\n${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
 
     set -- \
         "$( get_verkstedt_lint_pkg "$lint_dir" )" \
@@ -349,13 +349,13 @@ main ()
     then
         config_file_extension="ts"
 
-        printf "${ansi_bold}SETUP TYPESCRIPT${ansi_reset}\n"
+        printf "\n${ansi_bold}SETUP TYPESCRIPT${ansi_reset}\n"
         typescript_setup
     else
         config_file_extension="mjs"
     fi
 
-    printf "${ansi_bold}SETUP PRETTIER${ansi_reset}\n"
+    printf "\n${ansi_bold}SETUP PRETTIER${ansi_reset}\n"
     prettier_config="$( read_file_from_markdown PRETTIER_CONFIG "$lint_dir/README.md" )"
     if [ -z "$prettier_config" ]
     then
@@ -381,7 +381,7 @@ main ()
     fi
     prettier_setup "$config_file_extension" "$prettier_config" "$prettier_ignore"
 
-    printf "${ansi_bold}SETUP ESLINT${ansi_reset}\n"
+    printf "\n${ansi_bold}SETUP ESLINT${ansi_reset}\n"
     eslint_config="$( read_file_from_markdown ESLINT_CONFIG "$lint_dir/README.md" )"
     eslint_setup "$config_file_extension" "$eslint_config"
 
