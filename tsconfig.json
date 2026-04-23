@@ -12,6 +12,8 @@
     "outDir": "esm/",
     "sourceMap": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "types": ["node"],
+    "lib": ["esnext"]
   }
 }

@@ -8,6 +8,7 @@
     "rewriteRelativeImportExtensions": true,
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "types": ["node"]
   }
 }
