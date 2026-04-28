@@ -63,10 +63,7 @@ interface ModuleConfig {
   /** Name for humans only */
   name: string;
   /** Return EsLint config entry, or null to skip */
-  get: (
-    this: ModuleConfig,
-    config: Array<Config>,
-  ) => PromiseOrValue<null | Config>;
+  get: (this: ModuleConfig, config: Config) => PromiseOrValue<null | Config>;
 }
 
 const includeIgnoreFile = includeIgnoreFileOriginal;
@@ -179,7 +176,7 @@ function getMissingDepNameFromError(error: unknown) {
 }
 
 async function createConfigFromModules(allModuleConfigs: Array<ModuleConfig>) {
-  const config: Array<Config> = [];
+  const config: Config = [];
 
   const missingDeps = new Set<string>();
   for (const moduleConfig of allModuleConfigs) {
@@ -229,7 +226,7 @@ async function createVerkstedtConfig({
   dir,
   allowDefaultProject = [],
   noRestrictedImportsConfig = {},
-}: CreateVerkstedtConfigOptions): Promise<Array<Config>> {
+}: CreateVerkstedtConfigOptions): Promise<Array<Linter.Config>> {
   const startMs = performance.now();
 
   const packageJsonPath = resolve(dir, 'package.json');
@@ -675,7 +672,7 @@ async function createVerkstedtConfig({
   const durationMs = performance.now() - startMs;
   debugLog('Created ESLint config in', durationMs.toFixed(2), 'ms');
 
-  return config;
+  return config as Array<Linter.Config>;
 }
 
 export { createVerkstedtConfig, includeIgnoreFile };
