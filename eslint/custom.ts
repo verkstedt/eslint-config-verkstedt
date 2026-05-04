@@ -110,7 +110,10 @@ function getCodeSmellsRules({
     'no-param-reassign': 'error',
 
     // Allow disabling eslint rules for the whole file
-    'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
+    '@eslint-community/eslint-comments/disable-enable-pair': [
+      'error',
+      { allowWholeFile: true },
+    ],
   };
 }
 
@@ -190,7 +193,7 @@ function getStylisticRules({
         }),
 
     // Require descriptions to eslint comments
-    'eslint-comments/require-description': [
+    '@eslint-community/eslint-comments/require-description': [
       'error',
       { ignore: ['eslint-env', 'eslint-enable'] },
     ],
@@ -230,7 +233,6 @@ function getPracticalRules({
 
 interface GetVerkstedtConfigOptions {
   typescriptEsLintPlugin?: Plugin;
-  eslintCommentsPlugin: Plugin;
   noRestrictedImportsConfig: NoRestrictedImportsConfig;
 }
 
@@ -239,7 +241,6 @@ interface GetVerkstedtConfigOptions {
  */
 function getVerkstedtConfig({
   typescriptEsLintPlugin,
-  eslintCommentsPlugin,
   noRestrictedImportsConfig: userNoRestrictedImportsConfig,
 }: GetVerkstedtConfigOptions): Array<ConfigObject> {
   const typescriptPluginName =
@@ -278,12 +279,10 @@ function getVerkstedtConfig({
       linterOptions: {
         reportUnusedDisableDirectives: 'error',
       },
-      plugins: {
-        ...(typescriptPluginName
+      plugins:
+        typescriptPluginName && typescriptEsLintPlugin
           ? { [typescriptPluginName]: typescriptEsLintPlugin }
-          : {}),
-        'eslint-comments': eslintCommentsPlugin,
-      },
+          : {},
       rules: {
         ...getCodeSmellsRules({ typescriptPluginName }),
         ...getPromisesRules({ typescriptPluginName }),

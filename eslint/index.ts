@@ -11,10 +11,10 @@ import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
+import eslintCommentsConfigs from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import cssModulesPlugin from 'eslint-plugin-css-modules';
-import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import importPlugin from 'eslint-plugin-import';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import type reactPlugin from 'eslint-plugin-react';
@@ -634,11 +634,8 @@ async function createVerkstedtConfig({
       name: 'eslint-comments',
       get() {
         return {
-          plugins: {
-            'eslint-comments': eslintCommentsPlugin,
-          },
+          ...eslintCommentsConfigs.recommended,
           files: ALL_JS_FILES,
-          extends: compat.extends('plugin:eslint-comments/recommended'),
         };
       },
     },
@@ -660,7 +657,6 @@ async function createVerkstedtConfig({
 
         return getVerkstedtConfig({
           typescriptEsLintPlugin,
-          eslintCommentsPlugin,
           noRestrictedImportsConfig,
         });
       },
