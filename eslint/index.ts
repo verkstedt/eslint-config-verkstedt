@@ -11,15 +11,24 @@ import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
-import eslintCommentsConfigs from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import { recommended as eslintCommentsRecommended } from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import cssModulesPlugin from 'eslint-plugin-css-modules';
-import importPlugin from 'eslint-plugin-import';
+import {
+  createNodeResolver,
+  flatConfigs as importFlatConfigs,
+} from 'eslint-plugin-import-x';
+import nodePlugin from 'eslint-plugin-n';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import type reactPlugin from 'eslint-plugin-react';
 import globals from 'globals';
-import typescript from 'typescript';
+import {
+  parseJsonConfigFileContent,
+  readConfigFile,
+  sys as tsSys,
+} from 'typescript';
 
 import configPackageJson from '../package.json' with { type: 'json' };
 
@@ -128,10 +137,10 @@ function readTsConfig(tsconfigPath: string | null) {
     throw new Error('Failed to find tsconfig.json');
   }
 
-  const tsconfigResult = typescript.readConfigFile(
+  const tsconfigResult = readConfigFile(
     tsconfigPath,
     // eslint-disable-next-line @typescript-eslint/unbound-method -- this is fine
-    typescript.sys.readFile,
+    tsSys.readFile,
   );
   if (tsconfigResult.error) {
     const cause = tsconfigResult.error;
@@ -144,10 +153,9 @@ function readTsConfig(tsconfigPath: string | null) {
       cause,
     });
   }
-  const tsconfig = typescript.parseJsonConfigFileContent(
+  const tsconfig = parseJsonConfigFileContent(
     tsconfigResult.config,
-
-    typescript.sys,
+    tsSys,
     dirname(tsconfigPath),
   );
 
@@ -344,21 +352,34 @@ async function createVerkstedtConfig({
       name: 'import',
       get() {
         return [
-          importPlugin.flatConfigs.recommended,
-          usesTypeScript && importPlugin.flatConfigs.typescript,
-          usesReact && importPlugin.flatConfigs.react,
+          importFlatConfigs.recommended,
+          usesTypeScript && importFlatConfigs.typescript,
+          usesReact && importFlatConfigs.react,
           {
             settings: {
-              'import/resolver': {
-                typescript: usesTypeScript,
-                node: !usesTypeScript,
-                exports: true,
-              },
+              'import-x/resolver-next': [
+                usesTypeScript
+                  ? createTypeScriptImportResolver()
+                  : createNodeResolver(),
+              ],
             },
           },
         ]
           .filter((item) => item !== false)
           .map(({ languageOptions: _languageOptions, ...cfgItem }) => cfgItem);
+      },
+    },
+    {
+      name: 'node',
+      get() {
+        return {
+          files: ALL_JS_FILES,
+          plugins: { n: nodePlugin },
+          rules: {
+            // Always use `node:…` for Node.js built-ins
+            'n/prefer-node-protocol': 'error',
+          },
+        };
       },
     },
     {
@@ -666,7 +687,7 @@ async function createVerkstedtConfig({
       name: 'eslint-comments',
       get() {
         return {
-          ...eslintCommentsConfigs.recommended,
+          ...eslintCommentsRecommended,
           files: ALL_JS_FILES,
         };
       },

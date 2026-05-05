@@ -138,11 +138,8 @@ function getImportsRules({
   noRestrictedImportsConfig: NoRestrictedImportsConfig;
 }): RulesConfig {
   return {
-    // Always use `node:…` for Node.js built-ins
-    'import/enforce-node-protocol-usage': ['error', 'always'],
-
     // Sort imports
-    'import/order': [
+    'import-x/order': [
       'error',
       {
         'alphabetize': { order: 'asc', caseInsensitive: true },
