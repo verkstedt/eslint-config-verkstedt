@@ -477,11 +477,20 @@ async function createVerkstedtConfig({
                   },
                 },
               },
+              settings: {
+                react: { version: 'detect' },
+              },
             },
             {
-              ...(await import('eslint-plugin-react')).default.configs.flat[
-                'jsx-runtime'
-              ],
+              ...(await import('eslint-plugin-react')).default.configs.flat
+                .recommended,
+              files: ALL_JS_FILES,
+            },
+            {
+              rules: {
+                'react/prop-types': 'off',
+                'react/react-in-jsx-scope': 'off',
+              },
               files: ALL_JS_FILES,
             },
           ];
@@ -514,29 +523,22 @@ async function createVerkstedtConfig({
         } else {
           // source: https://nextjs.org/docs/app/api-reference/config/eslint#setup-eslint
 
-          const { default: nextVitals } =
-            // includes recommended config as well
-            await import('eslint-config-next/core-web-vitals');
-          const { default: nextTypeScript } = usesTypeScript
-            ? await import('eslint-config-next/typescript')
-            : { default: [] };
+          const { default: nextPlugin } =
+            await import('@next/eslint-plugin-next');
           return [
-            ...nextVitals
-              // import plugin already included in importPlugin.flatConfigs.recommended,
-              // defining it again breaks the config
-              .map((cfgItem) => {
-                if (!cfgItem.plugins?.import) {
-                  return cfgItem;
-                } else {
-                  const { import: _import, ...restPlugins } = cfgItem.plugins;
-                  return {
-                    ...cfgItem,
-                    plugins: restPlugins,
-                  };
-                }
-              }),
-            ...nextTypeScript,
+            {
+              ...nextPlugin.configs['core-web-vitals'],
+              files: ALL_JS_FILES,
+            },
             globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+            // https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/src/index.ts
+            {
+              rules: {
+                'react/jsx-no-target-blank': 'off',
+                'react/no-unknown-property': 'off',
+              },
+              files: ALL_JS_FILES,
+            },
           ];
         }
       },

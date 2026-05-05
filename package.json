@@ -76,8 +76,8 @@
     "holistic-check": "npm-run-all --print-name --print-label 'lint:!(ts)' build 'test:*'"
   },
   "peerDependencies": {
+    "@next/eslint-plugin-next": ">=16.2.4",
     "eslint": ">=9.39.2",
-    "eslint-config-next": ">=16.2.4",
     "eslint-import-resolver-typescript": ">=4.4.4",
     "eslint-plugin-lingui": ">=0.13.1",
     "eslint-plugin-react": ">=7.37.5",
@@ -92,7 +92,7 @@
     "eslint": {
       "optional": false
     },
-    "eslint-config-next": {
+    "@next/eslint-plugin-next": {
       "optional": true,
       "note": "Required if you are using Next.js."
     },
@@ -135,10 +135,10 @@
   },
   "devDependencies": {
     "@eslint/core": "^1.2.1",
+    "@next/eslint-plugin-next": "^16.2.4",
     "@types/eslint": "^9.6.1",
     "@types/node": "^24 <=24.12.0",
     "eslint": "^9.39.2",
-    "eslint-config-next": "^16.2.4",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-lingui": "^0.13.1",
     "eslint-plugin-react": "^7.37.5",

@@ -328,6 +328,7 @@ main ()
 
     printf "\n${ansi_bold}REMOVE CONFLICTING NPM PACKAGES${ansi_reset}\n"
     pkg_uninstall \
+        eslint-plugin-jsx-a11y \
         stylelint \
         eslint-plugin-react \
         eslint-plugin-react-hooks \

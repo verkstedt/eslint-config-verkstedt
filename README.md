@@ -147,6 +147,15 @@ packages.
 
 Run with `NODE_DEBUG=@verkstedt/lint` to see some debug logs.
 
+## Known caveats
+
+- No accessibility (`jsx-a11y`) rules for now. `eslint-plugin-jsx-a11y`
+  has not yet shipped ESLint 10 support; the upstream PR is open at
+  <https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081>.
+  Once that lands we will apply its `recommended` config whenever
+  `isFrontend` is true. Also remove uninstalling the plugin in
+  `install.sh`.
+
 ## License
 
 [ISC](./LICENSE)
