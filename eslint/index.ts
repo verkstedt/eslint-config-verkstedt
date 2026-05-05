@@ -12,6 +12,7 @@ import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
 import { recommended as eslintCommentsRecommended } from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import type reactPlugin from '@eslint-react/eslint-plugin';
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
@@ -21,7 +22,6 @@ import {
 } from 'eslint-plugin-import-x';
 import nodePlugin from 'eslint-plugin-n';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
-import type reactPlugin from 'eslint-plugin-react';
 import globals from 'globals';
 import {
   parseJsonConfigFileContent,
@@ -478,11 +478,29 @@ async function createVerkstedtConfig({
     {
       name: 'react',
       async get() {
-        // source: https://github.com/jsx-eslint/eslint-plugin-react
+        // source: https://eslint-react.xyz/docs/getting-started
 
         if (!usesReact) {
           return null;
         } else {
+          const { default: react } =
+            await import('@eslint-react/eslint-plugin');
+          const configName = usesTypeScript
+            ? 'recommended-type-checked'
+            : 'recommended';
+          // @eslint-react ships rules that overlap with eslint-plugin-react-hooks
+          // (which we still use). Turn off the @eslint-react versions so that
+          // existing `react-hooks/...` disable directives keep working.
+          const reactHooksConflictRules: Linter.RulesRecord =
+            Object.fromEntries(
+              Object.keys(
+                react.configs['disable-conflict-eslint-plugin-react-hooks']
+                  .rules ?? {},
+              ).map((rule) => [
+                rule.replace(/^react-hooks\//, '@eslint-react/'),
+                'off',
+              ]),
+            );
           return [
             {
               files: ALL_JS_FILES,
@@ -498,16 +516,12 @@ async function createVerkstedtConfig({
               },
             },
             {
-              ...(await import('eslint-plugin-react')).default.configs.flat
-                .recommended,
+              ...react.configs[configName],
               files: ALL_JS_FILES,
             },
             {
-              rules: {
-                'react/prop-types': 'off',
-                'react/react-in-jsx-scope': 'off',
-              },
               files: ALL_JS_FILES,
+              rules: reactHooksConflictRules,
             },
           ];
         }
