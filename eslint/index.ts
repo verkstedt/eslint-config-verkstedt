@@ -175,6 +175,37 @@ function getMissingDepNameFromError(error: unknown) {
   }
 }
 
+interface ProjectFlags {
+  usesTypeScript: boolean;
+  usesReact: boolean;
+  usesNextJs: boolean;
+  usesStoryBook: boolean;
+  isFrontend: boolean;
+}
+
+async function detectProjectFlags(
+  deps: Array<string>,
+  tsconfigPath: string | null,
+): Promise<ProjectFlags> {
+  const depsSet = new Set(deps);
+
+  const usesTypeScript =
+    depsSet.intersection(new Set(['typescript', 'ts-node', 'jiti'])).size > 0 ||
+    deps.some((dep) => /^@types\/.*$/.test(dep)) ||
+    (tsconfigPath != null && (await fileExists(tsconfigPath)));
+  const usesNextJs = depsSet.has('next');
+  const usesReact =
+    usesNextJs ||
+    depsSet.intersection(new Set(['react', 'react-dom'])).size > 0;
+  const usesStoryBook = depsSet.has('storybook');
+  const isFrontend =
+    usesReact ||
+    usesStoryBook ||
+    new Set(deps).intersection(new Set(['@11ty/eleventy', 'vite'])).size > 0;
+
+  return { usesTypeScript, usesReact, usesNextJs, usesStoryBook, isFrontend };
+}
+
 async function createConfigFromModules(allModuleConfigs: Array<ModuleConfig>) {
   const config: Config = [];
 
@@ -249,15 +280,14 @@ async function createVerkstedtConfig({
   );
 
   const tsconfigPath = await getTsConfigPath(dir);
-  const usesTypeScript: boolean =
-    deps.some((dep) => /^(typescript|ts-node|jiti|@types\/.*)$/.test(dep)) ||
-    (tsconfigPath != null && (await fileExists(tsconfigPath)));
-  const usesReact = deps.some((dep) => /^(react|react-dom)$/.test(dep));
-  const usesNextJs = deps.some((dep) => dep === 'next');
+  const { usesTypeScript, usesReact, usesNextJs, usesStoryBook, isFrontend } =
+    await detectProjectFlags(deps, tsconfigPath);
 
   debugLog('Uses TypeScript:', usesTypeScript, '; tsconfig at', tsconfigPath);
   debugLog('Uses React:', usesReact);
   debugLog('Uses Next.js:', usesNextJs);
+  debugLog('Uses StoryBook:', usesStoryBook);
+  debugLog('Is frontend:', isFrontend);
 
   const compat = new FlatCompat({
     baseDirectory: import.meta.dirname,
@@ -514,7 +544,7 @@ async function createVerkstedtConfig({
     {
       name: 'storybook',
       async get() {
-        if (!deps.some((dep) => dep === 'storybook')) {
+        if (!usesStoryBook) {
           return null;
         } else {
           // source: https://storybook.js.org/docs/configure/integration/eslint-plugin#configuration-flat-config-format
