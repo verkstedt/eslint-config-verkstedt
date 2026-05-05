@@ -23,6 +23,12 @@ next-env.d.ts
 /.codex/prompts/bmad-*.md
 /.github/agents/bmad-*.md
 
+# Git merge conflict files
+*_BACKUP_*.*
+*_BASE_*.*
+*_LOCAL_*.*
+*_REMOTE_*.*
+
 ###
 # Assets
 *.svg

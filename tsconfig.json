@@ -2,7 +2,14 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./typescript/tsconfig.base.json",
   "include": ["*.d.ts", "eslint/", "prettier/"],
-  "exclude": ["test/"],
+  "exclude": [
+    "test/",
+    // Git merge conflict files
+    "**/*_BACKUP_*.*",
+    "**/*_BASE_*.*",
+    "**/*_LOCAL_*.*",
+    "**/*_REMOTE_*.*"
+  ],
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
