@@ -4,10 +4,10 @@ import type { WriteStream } from 'node:tty';
 import { fileURLToPath } from 'node:url';
 import { debuglog, inspect } from 'node:util';
 
+import cssModulesPlugin from '@bhollis/eslint-plugin-css-modules';
 import { includeIgnoreFile as includeIgnoreFileOriginal } from '@eslint/compat';
 import type { Plugin } from '@eslint/core';
 import css from '@eslint/css';
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
@@ -15,7 +15,6 @@ import { recommended as eslintCommentsRecommended } from '@eslint-community/esli
 import type { Linter } from 'eslint';
 import { globalIgnores } from 'eslint/config';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
-import cssModulesPlugin from 'eslint-plugin-css-modules';
 import {
   createNodeResolver,
   flatConfigs as importFlatConfigs,
@@ -296,10 +295,6 @@ async function createVerkstedtConfig({
   debugLog('Uses Next.js:', usesNextJs);
   debugLog('Uses StoryBook:', usesStoryBook);
   debugLog('Is frontend:', isFrontend);
-
-  const compat = new FlatCompat({
-    baseDirectory: import.meta.dirname,
-  });
 
   const allModuleConfigs: Array<ModuleConfig> = [
     {
@@ -656,12 +651,7 @@ async function createVerkstedtConfig({
     {
       name: 'css-modules',
       get() {
-        return {
-          plugins: {
-            'css-modules': cssModulesPlugin,
-          },
-          extends: compat.extends('plugin:css-modules/recommended'),
-        };
+        return cssModulesPlugin.configs.recommended;
       },
     },
     {
