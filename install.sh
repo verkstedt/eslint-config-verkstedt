@@ -326,8 +326,13 @@ main ()
             "$target_dir/package.json"
     )
 
-    printf "\n${ansi_bold}REMOVE NPM PACKAGES${ansi_reset}\n"
-    pkg_uninstall stylelint
+    printf "\n${ansi_bold}REMOVE CONFLICTING NPM PACKAGES${ansi_reset}\n"
+    pkg_uninstall \
+        stylelint \
+        eslint-plugin-react \
+        eslint-plugin-react-hooks \
+        eslint-plugin-import \
+        eslint-config-next
 
     printf "\n${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
 
