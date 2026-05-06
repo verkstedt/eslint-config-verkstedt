@@ -46,9 +46,15 @@ pkg_uninstall ()
 {
     if [ -e yarn.lock ]
     then
-        yarn uninstall "$@"
+        (
+            set -x
+            yarn uninstall "$@"
+        )
     else
-        npm uninstall "$@"
+        (
+            set -x
+            npm uninstall "$@"
+        )
     fi
 }
 
@@ -56,9 +62,15 @@ pkg_install_dev ()
 {
     if [ -e yarn.lock ]
     then
-        yarn add -D "$@"
+        (
+            set -x
+            yarn add -D "$@"
+        )
     else
-        npm install --save-dev "$@"
+        (
+            set -x
+            npm install --save-dev "$@"
+        )
     fi
 }
 
