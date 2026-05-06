@@ -162,6 +162,11 @@ Run with `NODE_DEBUG=@verkstedt/lint` to see some debug logs.
   `isFrontend` is true. Also remove uninstalling the plugin in
   `install.sh`.
 
+- Installation script overwrites `extends` in `tsconfig.json`.
+  If your project already extends something you should copy options from
+  [`./typescript/tsconfig.base.json`](./typescript/tsconfig.base.json)
+  to your `tsconfig` and keep your `extends` as it is.
+
 - TypeScript is pinned to `^6.0.3 <6.1.0` (in both `peerDependencies`
   and `devDependencies`). This may look surprising, but `typescript-eslint`
   caps its `typescript` peer at `<6.1.0`, so we mirror that range here to
