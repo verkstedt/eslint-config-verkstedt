@@ -296,12 +296,21 @@ eslint_setup ()
 get_verkstedt_lint_pkg ()
 {
     lint_dir="$1"
-    (
-        cd "$lint_dir"
-        name="@verkstedt/lint"
-        version=$( npm pkg get version | sed -E 's/^"|"$//g' )
-        printf '%s@%s' "$name" "$version"
-    )
+    npm_cache_dir=$( npm config get cache 2>/dev/null )
+    # if this script is called from a npm cache, it means it was
+    # called as `npx @verkstedt/lint`. Otherwise it was probably called
+    # from local checkout, e.g. `npx ~/src/@verkstedt/lint`.
+    if echo "$lint_dir" | grep -qF "$npm_cache_dir"
+    then
+        (
+            cd "$lint_dir"
+            name="@verkstedt/lint"
+            version=$( npm pkg get version | sed -E 's/^"|"$//g' )
+            printf '%s@%s' "$name" "$version"
+        )
+    else
+        echo "$lint_dir"
+    fi
 }
 
 ###
@@ -338,6 +347,17 @@ main ()
             "$target_dir/package.json"
     )
 
+    npm_cache_dir=$( npm config get cache 2>/dev/null )
+    is_local_install=$(
+        # if this script is called from a npm cache, it means it was
+        # called as `npx @verkstedt/lint`. Otherwise it was probably called
+        # from local checkout, e.g. `npx ~/src/@verkstedt/lint`.
+        if ! echo "$lint_dir" | grep -qF "$npm_cache_dir"
+        then
+            echo "1"
+        fi
+    )
+
     printf "\n${ansi_bold}REMOVE CONFLICTING NPM PACKAGES${ansi_reset}\n"
     pkg_uninstall \
         eslint-plugin-jsx-a11y \
@@ -349,8 +369,16 @@ main ()
 
     printf "\n${ansi_bold}INSTALL NPM PACKAGES${ansi_reset}\n"
 
+    set --
+    if [ -n "$is_local_install" ]
+    then
+        set -- "$@" "$lint_dir"
+    else
+        set -- "$@" "$( get_verkstedt_lint_pkg "$lint_dir" )"
+    fi
+
     set -- \
-        "$( get_verkstedt_lint_pkg "$lint_dir" )" \
+        "$@" \
         "$( get_dev_dep_pkg "$lint_dir" eslint )" \
         "$( get_dev_dep_pkg "$lint_dir" prettier )"
     if [ -n "$uses_typescript" ]
@@ -403,7 +431,16 @@ main ()
     eslint_config="$( read_file_from_markdown ESLINT_CONFIG "$lint_dir/README.md" )"
     eslint_setup "$config_file_extension" "$eslint_config"
 
-    printf "\n${ansi_success}✅ Installed %s ${ansi_reset}\n" "$( jq -r '.name + "@" + .version' "$lint_dir/package.json" )"
+    if [ -n "$is_local_install" ]
+    then
+        source="'$lint_dir'"
+    else
+        source="npm"
+    fi
+    printf \
+        "\n${ansi_success}✅ Installed %s from %s${ansi_reset}\n" \
+        "$( jq -r '.name + "@" + .version' "$lint_dir/package.json" )" \
+        "$source"
     printf "Installation script modified your config files, but it is not infallible. ${ansi_bold}You should review the changes yourself.${ansi_reset}\n"
     printf 'You probably want to commit current changes and then run `eslint --fix .` and commit that separately.\n'
 }
