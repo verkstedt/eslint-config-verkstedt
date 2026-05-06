@@ -384,6 +384,9 @@ async function createVerkstedtConfig({
           return null;
         } else {
           const tsconfig = readTsConfig(tsconfigPath);
+          const allowJs = !!(
+            tsconfig.options.allowJs ?? tsconfig.options.checkJs
+          );
 
           /*
            * tsconfig usually doesn’t include config files, scripts and
@@ -415,14 +418,14 @@ async function createVerkstedtConfig({
               if (tsconfig.fileNames.includes(resolve(dir, filename))) {
                 return false;
               }
-              // Include vanilla JS files, only if allowJS is false
+              // Include vanilla JS files, only if allowJS is falsy
               // (otherwise they can be pulled in to the project if they
               // are imported in included files)
               // Note: We could check if a file is included in the
               // project or not, but for doing so, we’d have to create
               // whole TS project, which is costly.
               if (VANILLA_JS_EXTS.some((ext) => filename.endsWith(`.${ext}`))) {
-                return tsconfig.options.allowJs === false;
+                return !allowJs;
               }
               // Fall back to not including to be on the safe side
               return false;
