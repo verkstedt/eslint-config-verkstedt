@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 set -eu
 
+if node -e 'process.exit(1-require("node:util").debuglog("@verkstedt/lint").enabled)'
+then
+    set -x
+fi
+
 print_help ()
 {
     printf "${ansi_bold}Set up linting.${ansi_reset}\n\n"
