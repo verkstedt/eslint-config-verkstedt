@@ -21,7 +21,7 @@
     "url": "https://verkstedt.atlassian.net/jira/software/projects/VIP/boards/12"
   },
   "bin": {
-    "verkstedt-lint-setup": "./install.sh"
+    "verkstedt-lint-setup": "install.sh"
   },
   "type": "module",
   "engines": {
